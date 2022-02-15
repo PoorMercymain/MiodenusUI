@@ -8,6 +8,7 @@ namespace MiodenusUI
     {
         [UI] private Label _label = null;
         [UI] private ImageMenuItem _createButton = null;
+        [UI] private ImageMenuItem _exitButton = null;
 
         private int _counter;
 
@@ -20,10 +21,17 @@ namespace MiodenusUI
             builder.Autoconnect(this);
 
             DeleteEvent += Window_DeleteEvent;
+            _exitButton.Activated += Program_Quit;
             _createButton.Activated += CreateButton_Clicked;
+            
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+        {
+            Application.Quit();
+        }
+        
+        private void Program_Quit(object sender, EventArgs a)
         {
             Application.Quit();
         }
@@ -89,6 +97,19 @@ namespace MiodenusUI
             
             init.Add(fixedLayout);
             init.ShowAll();
+
+            okButton.Clicked += OkButton_Clicked;
+            cancelButton.Clicked += CancelButton_Clicked;
+            
+            void OkButton_Clicked(object sender, EventArgs a)
+            {
+                init.Close();
+            }
+        
+            void CancelButton_Clicked(object sender, EventArgs a)
+            {
+                init.Close();
+            }
         }
     }
 }
