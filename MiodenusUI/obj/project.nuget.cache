@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "9P1RwBw2XBvRgMvyXTnXMVHN93PKpkkQb1zuv5zmiYhVzJC9u+4/JbZJzWmeXm4aSEmBWR3M4MoGYbejqJ6WTg==",
+  "success": true,
+  "projectFilePath": "M:\\C#\\MiodenusUI\\MiodenusUI\\MiodenusUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\atksharp\\3.24.24.34\\atksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\cairosharp\\3.24.24.34\\cairosharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\gdksharp\\3.24.24.34\\gdksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\giosharp\\3.24.24.34\\giosharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\glibsharp\\3.24.24.34\\glibsharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\gtksharp\\3.24.24.34\\gtksharp.3.24.24.34.nupkg.sha512",
+    "C:\\Users\\PoorMercymain\\.nuget\\packages\\pangosharp\\3.24.24.34\\pangosharp.3.24.24.34.nupkg.sha512"
+  ],
+  "logs": []
+}
