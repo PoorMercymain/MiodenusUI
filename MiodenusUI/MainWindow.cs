@@ -78,6 +78,15 @@ namespace MiodenusUI
             TextView placeholderTextView4 = new TextView();
             SetPlaceholderTextViewSizeAndPosition(placeholderTextView4, 80, 104);
 
+            //Buttons
+            Button okButton = new Button("Ok");
+            okButton.SetSizeRequest(45, 30);
+            fixedLayout.Put(okButton, 275, 452);
+
+            Button cancelButton = new Button("Cancel");
+            cancelButton.SetSizeRequest(45, 30);
+            fixedLayout.Put(cancelButton, 155, 452);
+            
             init.Add(fixedLayout);
             init.ShowAll();
         }
