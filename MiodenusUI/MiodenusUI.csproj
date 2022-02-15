@@ -6,14 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="**\*.glade"/>
+        <None Remove="**\*.glade" />
         <EmbeddedResource Include="**\*.glade">
             <LogicalName>%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="GtkSharp" Version="3.24.24.*"/>
+        <PackageReference Include="GtkSharp" Version="3.24.24.*" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="OpenTK" Version="5.0.0-pre.6" />
+        <PackageReference Include="OpenTK.Mathematics" Version="5.0.0-pre.6" />
     </ItemGroup>
 
 </Project>

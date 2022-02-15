@@ -79,6 +79,153 @@
           "build/GtkSharp.targets": {}
         }
       },
+      "Newtonsoft.Json/13.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "OpenTK/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Compute": "5.0.0-pre.6",
+          "OpenTK.Core": "5.0.0-pre.6",
+          "OpenTK.Graphics": "5.0.0-pre.6",
+          "OpenTK.Input": "5.0.0-pre.6",
+          "OpenTK.Mathematics": "5.0.0-pre.6",
+          "OpenTK.OpenAL": "5.0.0-pre.6",
+          "OpenTK.Windowing.Common": "5.0.0-pre.6",
+          "OpenTK.Windowing.Desktop": "5.0.0-pre.6",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "5.0.0-pre.6"
+        }
+      },
+      "OpenTK.Compute/5.0.0-pre.6": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/OpenTK.Compute.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Compute.dll": {}
+        }
+      },
+      "OpenTK.Core/5.0.0-pre.6": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/OpenTK.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Core.dll": {}
+        }
+      },
+      "OpenTK.Graphics/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Mathematics": "[5.0.0-pre.6, 6.0.0-pre)"
+        },
+        "compile": {
+          "lib/net5.0/OpenTK.Graphics.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Graphics.dll": {}
+        }
+      },
+      "OpenTK.Input/5.0.0-pre.6": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/OpenTK.Input.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Input.dll": {}
+        }
+      },
+      "OpenTK.Mathematics/5.0.0-pre.6": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/OpenTK.Mathematics.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Mathematics.dll": {}
+        }
+      },
+      "OpenTK.OpenAL/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Mathematics": "[5.0.0-pre.6, 6.0.0-pre)"
+        },
+        "compile": {
+          "lib/net5.0/OpenTK.OpenAL.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.OpenAL.dll": {}
+        }
+      },
+      "OpenTK.redist.glfw/3.3.0-pre20200830200122": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libglfw.so.3.3": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-x64/native/libglfw.3.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/glfw3.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/glfw3.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "OpenTK.Windowing.Common/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Mathematics": "[5.0.0-pre.6, 6.0.0-pre)"
+        },
+        "compile": {
+          "lib/net5.0/OpenTK.Windowing.Common.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Windowing.Common.dll": {}
+        }
+      },
+      "OpenTK.Windowing.Desktop/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Mathematics": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Windowing.Common": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "[5.0.0-pre.6, 6.0.0-pre)"
+        },
+        "compile": {
+          "lib/net5.0/OpenTK.Windowing.Desktop.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Windowing.Desktop.dll": {}
+        }
+      },
+      "OpenTK.Windowing.GraphicsLibraryFramework/5.0.0-pre.6": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[5.0.0-pre.6, 6.0.0-pre)",
+          "OpenTK.redist.glfw": "[3.3.0-pre20200830200122, 3.4.0-pre)"
+        },
+        "compile": {
+          "lib/net5.0/OpenTK.Windowing.GraphicsLibraryFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/OpenTK.Windowing.GraphicsLibraryFramework.dll": {}
+        }
+      },
       "PangoSharp/3.24.24.34": {
         "type": "package",
         "dependencies": {
@@ -168,6 +315,186 @@
         "lib/netstandard2.0/GtkSharp.dll"
       ]
     },
+    "Newtonsoft.Json/13.0.1": {
+      "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "OpenTK/5.0.0-pre.6": {
+      "sha512": "61NLoJcORSBGKuHL40O8d+rGx12kxUc1SMXulv0KqDOAQqY6Rll6lUsSQzzfB+dp8BhkvachI3xEoJzI5TFb1Q==",
+      "type": "package",
+      "path": "opentk/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "opentk.5.0.0-pre.6.nupkg.sha512",
+        "opentk.nuspec"
+      ]
+    },
+    "OpenTK.Compute/5.0.0-pre.6": {
+      "sha512": "VTQy9a7z2Ttky5hRFI7yMOGh5J63Cd2cJB+LhvLN2DgvzSB3hS/VQPws1sqPGFHg7afBX1305NB74slYKBPMmw==",
+      "type": "package",
+      "path": "opentk.compute/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Compute.dll",
+        "lib/net5.0/OpenTK.Compute.pdb",
+        "lib/net5.0/OpenTK.Compute.xml",
+        "opentk.compute.5.0.0-pre.6.nupkg.sha512",
+        "opentk.compute.nuspec"
+      ]
+    },
+    "OpenTK.Core/5.0.0-pre.6": {
+      "sha512": "OKklZKiySUBnMuev+MSqBhWakmeavtyLetqT2TKXCWJANbSuBrY0li/QKGpb65OcJTWYBFGjJIRC1HVVm0QElA==",
+      "type": "package",
+      "path": "opentk.core/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Core.dll",
+        "lib/net5.0/OpenTK.Core.pdb",
+        "lib/net5.0/OpenTK.Core.xml",
+        "opentk.core.5.0.0-pre.6.nupkg.sha512",
+        "opentk.core.nuspec"
+      ]
+    },
+    "OpenTK.Graphics/5.0.0-pre.6": {
+      "sha512": "BgfP4i3yoz0KLUQiURRZrxlI/yNpvBIjNAX/qQCGNgYHYHnoWX+aJ6iR5CIh3Vl4SJJQOjO2nbdHfjrzkD416Q==",
+      "type": "package",
+      "path": "opentk.graphics/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Graphics.dll",
+        "lib/net5.0/OpenTK.Graphics.pdb",
+        "opentk.graphics.5.0.0-pre.6.nupkg.sha512",
+        "opentk.graphics.nuspec"
+      ]
+    },
+    "OpenTK.Input/5.0.0-pre.6": {
+      "sha512": "874yiYw/VaUwfVFtOQy+4jKUXm0lOCimvfSFpHZsMaMY3JQWMPIF/n3mmylr9e6VPAL8/JXjVedfh6/ZWS2pPg==",
+      "type": "package",
+      "path": "opentk.input/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Input.dll",
+        "lib/net5.0/OpenTK.Input.pdb",
+        "lib/net5.0/OpenTK.Input.xml",
+        "opentk.input.5.0.0-pre.6.nupkg.sha512",
+        "opentk.input.nuspec"
+      ]
+    },
+    "OpenTK.Mathematics/5.0.0-pre.6": {
+      "sha512": "sUapdwi/2V0ZXrRRcXPN8G+9lb97ZDYM4gTTMA+WYoIaPpfFmj41Ww8Bb4N+GTNM7c0o2pN96Kuma35pLht8Pg==",
+      "type": "package",
+      "path": "opentk.mathematics/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Mathematics.dll",
+        "lib/net5.0/OpenTK.Mathematics.pdb",
+        "lib/net5.0/OpenTK.Mathematics.xml",
+        "opentk.mathematics.5.0.0-pre.6.nupkg.sha512",
+        "opentk.mathematics.nuspec"
+      ]
+    },
+    "OpenTK.OpenAL/5.0.0-pre.6": {
+      "sha512": "CPQU2eW5/WhP2wF3j6LK4V2Q3hQjVgo28Hl9L2FbjK9umIuLRyM3WH/TRIJ/ZtoCx2speCxddcT9x22tmmB/rQ==",
+      "type": "package",
+      "path": "opentk.openal/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.OpenAL.dll",
+        "lib/net5.0/OpenTK.OpenAL.pdb",
+        "lib/net5.0/OpenTK.OpenAL.xml",
+        "opentk.openal.5.0.0-pre.6.nupkg.sha512",
+        "opentk.openal.nuspec"
+      ]
+    },
+    "OpenTK.redist.glfw/3.3.0-pre20200830200122": {
+      "sha512": "EKE9pJCFHScbqOv/t0zG1h5Eh24nWr44SXYnpYtAWDhJhzAoUoI8TwDRXGvTGhDeCBp8ONEaVsq9xRC+OQIxQA==",
+      "type": "package",
+      "path": "opentk.redist.glfw/3.3.0-pre20200830200122",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "COPYING.md",
+        "opentk.png",
+        "opentk.redist.glfw.3.3.0-pre20200830200122.nupkg.sha512",
+        "opentk.redist.glfw.nuspec",
+        "runtimes/linux-x64/native/libglfw.so.3.3",
+        "runtimes/osx-x64/native/libglfw.3.dylib",
+        "runtimes/win-x64/native/glfw3.dll",
+        "runtimes/win-x86/native/glfw3.dll"
+      ]
+    },
+    "OpenTK.Windowing.Common/5.0.0-pre.6": {
+      "sha512": "PB1aJvjBvA6ol8HTuoQEB2IgOmnFcZBAGWoCu+lXpqCIqH5EL3c3K8VZCI8ZJMN1CBqG/ydSpheEISegHfwQKA==",
+      "type": "package",
+      "path": "opentk.windowing.common/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Windowing.Common.dll",
+        "lib/net5.0/OpenTK.Windowing.Common.pdb",
+        "lib/net5.0/OpenTK.Windowing.Common.xml",
+        "opentk.windowing.common.5.0.0-pre.6.nupkg.sha512",
+        "opentk.windowing.common.nuspec"
+      ]
+    },
+    "OpenTK.Windowing.Desktop/5.0.0-pre.6": {
+      "sha512": "TzlFNu4CbnThTtKFM00sJ+92mppWwjU2Q0PUtwh5xqR9/+pzbNsNVqUsJJ2/jBO2/yjRt0UzFQ3I27HsGI+lwQ==",
+      "type": "package",
+      "path": "opentk.windowing.desktop/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Windowing.Desktop.dll",
+        "lib/net5.0/OpenTK.Windowing.Desktop.pdb",
+        "lib/net5.0/OpenTK.Windowing.Desktop.xml",
+        "opentk.windowing.desktop.5.0.0-pre.6.nupkg.sha512",
+        "opentk.windowing.desktop.nuspec"
+      ]
+    },
+    "OpenTK.Windowing.GraphicsLibraryFramework/5.0.0-pre.6": {
+      "sha512": "KVSkMFNpYwh/+xiZgP2ABqJTyJN6hH1a5SMfeIALou3aAqaSWzKuTMQOXuWzbJL1mPF7JxiNjmbvlnupEHPNSg==",
+      "type": "package",
+      "path": "opentk.windowing.graphicslibraryframework/5.0.0-pre.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/OpenTK.Windowing.GraphicsLibraryFramework.dll",
+        "lib/net5.0/OpenTK.Windowing.GraphicsLibraryFramework.pdb",
+        "lib/net5.0/OpenTK.Windowing.GraphicsLibraryFramework.xml",
+        "opentk.windowing.graphicslibraryframework.5.0.0-pre.6.nupkg.sha512",
+        "opentk.windowing.graphicslibraryframework.nuspec"
+      ]
+    },
     "PangoSharp/3.24.24.34": {
       "sha512": "QpBEIiE29sxkewdW7l7rVRJR1p3SGoPauHrjm0A3yxpYxj+St5x45weHI8jquMJAZBUdVQuXYHSZDW1lQeJ+PQ==",
       "type": "package",
@@ -183,7 +510,10 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "GtkSharp >= 3.24.24.*"
+      "GtkSharp >= 3.24.24.*",
+      "Newtonsoft.Json >= 13.0.1",
+      "OpenTK >= 5.0.0-pre.6",
+      "OpenTK.Mathematics >= 5.0.0-pre.6"
     ]
   },
   "packageFolders": {
@@ -233,6 +563,18 @@
           "GtkSharp": {
             "target": "Package",
             "version": "[3.24.24.*, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          },
+          "OpenTK": {
+            "target": "Package",
+            "version": "[5.0.0-pre.6, )"
+          },
+          "OpenTK.Mathematics": {
+            "target": "Package",
+            "version": "[5.0.0-pre.6, )"
           }
         },
         "imports": [

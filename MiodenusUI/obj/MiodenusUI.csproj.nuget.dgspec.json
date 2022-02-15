@@ -47,6 +47,18 @@
             "GtkSharp": {
               "target": "Package",
               "version": "[3.24.24.*, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[5.0.0-pre.6, )"
+            },
+            "OpenTK.Mathematics": {
+              "target": "Package",
+              "version": "[5.0.0-pre.6, )"
             }
           },
           "imports": [
