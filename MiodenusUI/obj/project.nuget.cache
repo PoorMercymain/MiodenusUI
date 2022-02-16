@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LSeE1fr+oiwkuhUAOC8ZpM+/BjSKxBuLNzg7bdAJ5qIKsoUwxSvCcLVRofR/odLLxmHamK2jnnJ7gNVOGNn4KQ==",
+  "dgSpecHash": "eS3KbhPlN2KHz02mO9ewLE+ERzhPAvz957OQb8kq/N5AHmbdB7qi37QovaAEwllaY2H710nAvoOLlrfWhWVgLA==",
   "success": true,
   "projectFilePath": "M:\\C#\\MiodenusUI\\MiodenusUI\\MiodenusUI.csproj",
   "expectedPackageFiles": [
@@ -11,17 +11,6 @@
     "C:\\Users\\PoorMercymain\\.nuget\\packages\\glibsharp\\3.24.24.34\\glibsharp.3.24.24.34.nupkg.sha512",
     "C:\\Users\\PoorMercymain\\.nuget\\packages\\gtksharp\\3.24.24.34\\gtksharp.3.24.24.34.nupkg.sha512",
     "C:\\Users\\PoorMercymain\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk\\5.0.0-pre.6\\opentk.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.compute\\5.0.0-pre.6\\opentk.compute.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.core\\5.0.0-pre.6\\opentk.core.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.graphics\\5.0.0-pre.6\\opentk.graphics.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.input\\5.0.0-pre.6\\opentk.input.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.mathematics\\5.0.0-pre.6\\opentk.mathematics.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.openal\\5.0.0-pre.6\\opentk.openal.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.redist.glfw\\3.3.0-pre20200830200122\\opentk.redist.glfw.3.3.0-pre20200830200122.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.windowing.common\\5.0.0-pre.6\\opentk.windowing.common.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.windowing.desktop\\5.0.0-pre.6\\opentk.windowing.desktop.5.0.0-pre.6.nupkg.sha512",
-    "C:\\Users\\PoorMercymain\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\5.0.0-pre.6\\opentk.windowing.graphicslibraryframework.5.0.0-pre.6.nupkg.sha512",
     "C:\\Users\\PoorMercymain\\.nuget\\packages\\pangosharp\\3.24.24.34\\pangosharp.3.24.24.34.nupkg.sha512"
   ],
   "logs": []
