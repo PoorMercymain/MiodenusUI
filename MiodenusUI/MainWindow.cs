@@ -13,6 +13,9 @@ namespace MiodenusUI
         [UI] private ImageMenuItem _exitButton = null;
         [UI] private Fixed _fixedMainWindow = null;
 
+        private string currentFilePath = "test.txt";
+        private Label animationInfoLabel = new Label();
+        
         private int _counter;
 
         public MainWindow() : this(new Builder("MainWindow.glade"))
@@ -26,13 +29,13 @@ namespace MiodenusUI
             LoaderMaf maf = new LoaderMaf();
 
             MAFStructure.Animation animation = new Animation();
-            animation = maf.Read("test.txt");
+            animation = maf.Read(currentFilePath);
             
-            Label animationInfoLabel = new Label(animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
+            animationInfoLabel.Text = animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
                                                  animation.AnimationInfo.Name + ", " + animation.AnimationInfo.Fps + " fps, " +
                                                  animation.AnimationInfo.FrameHeight + "x" +
                                                  animation.AnimationInfo.FrameWidth + ", " + animation.AnimationInfo.TimeLength + " seconds, " + 
-                                                 animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType);
+                                                 animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType;
             _fixedMainWindow.Put(animationInfoLabel, 800, 700);
             this.ShowAll();
 
@@ -168,7 +171,13 @@ namespace MiodenusUI
                 var writerNew = File.CreateText("test1.txt");
                 writerNew.Write(mafStr);
                 writerNew.Close();
-                
+
+                currentFilePath = "test1.txt";
+                animationInfoLabel.Text = animationNew.AnimationInfo.Type + ", " + animationNew.AnimationInfo.Version + ", " +
+                                     animationNew.AnimationInfo.Name + ", " + animationNew.AnimationInfo.Fps + " fps, " +
+                                     animationNew.AnimationInfo.FrameHeight + "x" +
+                                     animationNew.AnimationInfo.FrameWidth + ", " + animationNew.AnimationInfo.TimeLength + " seconds, " + 
+                                     animationNew.AnimationInfo.VideoName + ", " + animationNew.AnimationInfo.VideoType;
                 init.Close();
             }
         
