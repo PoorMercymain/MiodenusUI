@@ -12,6 +12,7 @@ namespace MiodenusUI
         [UI] private ImageMenuItem _createButton = null;
         [UI] private ImageMenuItem _exitButton = null;
         [UI] private Fixed _fixedMainWindow = null;
+        [UI] private ImageMenuItem _openButton = null;
 
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
@@ -50,7 +51,8 @@ namespace MiodenusUI
             DeleteEvent += Window_DeleteEvent;
             _exitButton.Activated += Program_Quit;
             _createButton.Activated += CreateButton_Clicked;
-            
+            _openButton.Activated += OpenButton_Clicked;
+
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -62,7 +64,31 @@ namespace MiodenusUI
         {
             Application.Quit();
         }
+        
+        private void OpenButton_Clicked(object sender, EventArgs a)
+        {
+            var openDialog = new FileChooserDialog("Open", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+            openDialog.ShowAll();
 
+            if (openDialog.Run() == (int)ResponseType.Accept) 
+            {
+
+                var mafOpen = new LoaderMaf();
+                var openedAnimation = new Animation();
+                openedAnimation = mafOpen.Read(openDialog.Filename);
+                
+                animationInfoLabel.Text = openedAnimation.AnimationInfo.Type + ", " + openedAnimation.AnimationInfo.Version + ", " +
+                                          openedAnimation.AnimationInfo.Name + ", " + openedAnimation.AnimationInfo.Fps + " fps, " +
+                                          openedAnimation.AnimationInfo.FrameHeight + "x" +
+                                          openedAnimation.AnimationInfo.FrameWidth + ", " + openedAnimation.AnimationInfo.TimeLength + " seconds, " + 
+                                          openedAnimation.AnimationInfo.VideoName + ", " + openedAnimation.AnimationInfo.VideoType;
+                
+            }
+
+            openDialog.Destroy();
+        }
+
+        
         private void CreateButton_Clicked(object sender, EventArgs a)
         {
             
