@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Gtk;
 using MiodenusUI.MAFStructure;
 using UI = Gtk.Builder.ObjectAttribute;
@@ -25,7 +26,7 @@ namespace MiodenusUI
             LoaderMaf maf = new LoaderMaf();
 
             MAFStructure.Animation animation = new Animation();
-            animation = maf.Load("test.txt");
+            animation = maf.Read("test.txt");
             
             Label animationInfoLabel = new Label(animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
                                                  animation.AnimationInfo.Name + ", " + animation.AnimationInfo.Fps + " fps, " +
@@ -34,6 +35,15 @@ namespace MiodenusUI
                                                  animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType);
             _fixedMainWindow.Put(animationInfoLabel, 800, 700);
             this.ShowAll();
+
+            var mafStr = maf.CreateMafString(animation);
+
+            var writer = File.CreateText("test1.txt");
+            writer.Write(mafStr);
+            writer.Close();
+            
+            animation = maf.Read("test1.txt");
+            
             DeleteEvent += Window_DeleteEvent;
             _exitButton.Activated += Program_Quit;
             _createButton.Activated += CreateButton_Clicked;
