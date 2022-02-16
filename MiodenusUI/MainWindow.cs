@@ -75,17 +75,29 @@ namespace MiodenusUI
             Label nameLabel = new Label("Name:");
             fixedLayout.Put(nameLabel, 10, 8);
 
-            Label placeholderLabel1 = new Label("Placeholder:");
-            fixedLayout.Put(placeholderLabel1, 10, 32);
+            Label typeLabel = new Label("Type:");
+            fixedLayout.Put(typeLabel, 10, 32);
             
-            Label placeholderLabel2 = new Label("Placeholder:");
-            fixedLayout.Put(placeholderLabel2, 10, 56);
+            Label versionLabel = new Label("Version:");
+            fixedLayout.Put(versionLabel, 10, 56);
             
-            Label placeholderLabel3 = new Label("Placeholder:");
-            fixedLayout.Put(placeholderLabel3, 10, 80);
+            Label videoTypeLabel = new Label("Video type:");
+            fixedLayout.Put(videoTypeLabel, 10, 80);
             
-            Label placeholderLabel4 = new Label("Placeholder:");
-            fixedLayout.Put(placeholderLabel4, 10, 104);
+            Label videoNameLabel = new Label("Video name:");
+            fixedLayout.Put(videoNameLabel, 10, 104);
+            
+            Label timeLengthLabel = new Label("Time length:");
+            fixedLayout.Put(timeLengthLabel, 10, 128);
+            
+            Label fpsLabel = new Label("FPS:");
+            fixedLayout.Put(fpsLabel, 10, 156);
+            
+            Label frameWidthLabel = new Label("Frame width:");
+            fixedLayout.Put(frameWidthLabel, 10, 180);
+            
+            Label frameHeightLabel = new Label("Frame height:");
+            fixedLayout.Put(frameHeightLabel, 10, 204);
             
             //Text views
             void SetPlaceholderTextViewSizeAndPosition(TextView placeholderTextView, int positionX, int positionY)
@@ -96,19 +108,31 @@ namespace MiodenusUI
             
             TextView nameTextView = new TextView();
             nameTextView.SetSizeRequest(430, 16);            
-            fixedLayout.Put(nameTextView, 50, 8);
+            fixedLayout.Put(nameTextView, 85, 8);
             
-            TextView placeholderTextView1 = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(placeholderTextView1, 80, 32);
+            TextView typeTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(typeTextView, 85, 32);
 
-            TextView placeholderTextView2 = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(placeholderTextView2, 80, 56);
+            TextView versionTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(versionTextView, 85, 56);
 
-            TextView placeholderTextView3 = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(placeholderTextView3, 80, 80);
+            TextView videoTypeTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 85, 80);
 
-            TextView placeholderTextView4 = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(placeholderTextView4, 80, 104);
+            TextView videoNameTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 85, 104);
+            
+            TextView timeLengthTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 85, 128);
+            
+            TextView fpsTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(fpsTextView, 85, 156);
+            
+            TextView frameWidthTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 85, 180);
+            
+            TextView frameHeightTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 85, 204);
 
             //Buttons
             Button okButton = new Button("Ok");
@@ -127,6 +151,24 @@ namespace MiodenusUI
             
             void OkButton_Clicked(object sender, EventArgs a)
             {
+                var animationNew = new Animation();
+                animationNew.AnimationInfo.Name = nameTextView.Buffer.Text;
+                animationNew.AnimationInfo.Type = typeTextView.Buffer.Text;
+                animationNew.AnimationInfo.Version = versionTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoType = videoTypeTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoName = videoNameTextView.Buffer.Text;
+                animationNew.AnimationInfo.TimeLength = int.Parse(timeLengthTextView.Buffer.Text);
+                animationNew.AnimationInfo.Fps = int.Parse(fpsTextView.Buffer.Text);
+                animationNew.AnimationInfo.FrameWidth = int.Parse(frameWidthTextView.Buffer.Text);
+                animationNew.AnimationInfo.FrameHeight = int.Parse(frameHeightTextView.Buffer.Text);
+                
+                LoaderMaf mafLoaderNew = new LoaderMaf();
+                var mafStr = mafLoaderNew.CreateMafString(animationNew);
+
+                var writerNew = File.CreateText("test1.txt");
+                writerNew.Write(mafStr);
+                writerNew.Close();
+                
                 init.Close();
             }
         
