@@ -15,10 +15,7 @@ namespace MiodenusUI
             app.Register(GLib.Cancellable.Current);
 
             var win = new MainWindow();
-            LoaderMaf maf = new LoaderMaf();
-
-            MAFStructure.Animation animation = new Animation();
-            animation = maf.Load("test.txt");
+            
             app.AddWindow(win);
 
             win.Show();

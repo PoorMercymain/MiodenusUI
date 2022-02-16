@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using MiodenusUI.MAFStructure;
 using UI = Gtk.Builder.ObjectAttribute;
 
 namespace MiodenusUI
@@ -9,6 +10,7 @@ namespace MiodenusUI
         [UI] private Label _label = null;
         [UI] private ImageMenuItem _createButton = null;
         [UI] private ImageMenuItem _exitButton = null;
+        [UI] private Fixed _fixedMainWindow = null;
 
         private int _counter;
 
@@ -19,7 +21,19 @@ namespace MiodenusUI
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
             builder.Autoconnect(this);
+            
+            LoaderMaf maf = new LoaderMaf();
 
+            MAFStructure.Animation animation = new Animation();
+            animation = maf.Load("test.txt");
+            
+            Label animationInfoLabel = new Label(animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
+                                                 animation.AnimationInfo.Name + ", " + animation.AnimationInfo.Fps + " fps, " +
+                                                 animation.AnimationInfo.FrameHeight + "x" +
+                                                 animation.AnimationInfo.FrameWidth + ", " + animation.AnimationInfo.TimeLength + " seconds, " + 
+                                                 animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType);
+            _fixedMainWindow.Put(animationInfoLabel, 800, 700);
+            this.ShowAll();
             DeleteEvent += Window_DeleteEvent;
             _exitButton.Activated += Program_Quit;
             _createButton.Activated += CreateButton_Clicked;
