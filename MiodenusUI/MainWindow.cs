@@ -128,6 +128,9 @@ namespace MiodenusUI
             Label frameHeightLabel = new Label("Frame height:");
             fixedLayout.Put(frameHeightLabel, 10, 204);
             
+            Label animationPathLabel = new Label("Animation path:");
+            fixedLayout.Put(animationPathLabel, 10, 228);
+            
             //Text views
             void SetPlaceholderTextViewSizeAndPosition(TextView placeholderTextView, int positionX, int positionY)
             {
@@ -136,32 +139,35 @@ namespace MiodenusUI
             }
             
             TextView nameTextView = new TextView();
-            nameTextView.SetSizeRequest(430, 16);            
-            fixedLayout.Put(nameTextView, 85, 8);
+            nameTextView.SetSizeRequest(400, 16);            
+            fixedLayout.Put(nameTextView, 95, 8);
             
             TextView typeTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(typeTextView, 85, 32);
+            SetPlaceholderTextViewSizeAndPosition(typeTextView, 95, 32);
 
             TextView versionTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(versionTextView, 85, 56);
+            SetPlaceholderTextViewSizeAndPosition(versionTextView, 95, 56);
 
             TextView videoTypeTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 85, 80);
+            SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 95, 80);
 
             TextView videoNameTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 85, 104);
+            SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 95, 104);
             
             TextView timeLengthTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 85, 128);
+            SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 95, 128);
             
             TextView fpsTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(fpsTextView, 85, 156);
+            SetPlaceholderTextViewSizeAndPosition(fpsTextView, 95, 156);
             
             TextView frameWidthTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 85, 180);
+            SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 95, 180);
             
             TextView frameHeightTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 85, 204);
+            SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 95, 204);
+            
+            TextView animationPathTextView = new TextView();
+            SetPlaceholderTextViewSizeAndPosition(animationPathTextView, 95, 228);
 
             //Buttons
             Button okButton = new Button("Ok");
@@ -194,11 +200,11 @@ namespace MiodenusUI
                 LoaderMaf mafLoaderNew = new LoaderMaf();
                 var mafStr = mafLoaderNew.CreateMafString(animationNew);
 
-                var writerNew = File.CreateText("test1.txt");
+                var writerNew = File.CreateText(animationPathTextView.Buffer.Text);
                 writerNew.Write(mafStr);
                 writerNew.Close();
 
-                currentFilePath = "test1.txt";
+                currentFilePath = animationPathTextView.Buffer.Text;
                 animationInfoLabel.Text = animationNew.AnimationInfo.Type + ", " + animationNew.AnimationInfo.Version + ", " +
                                      animationNew.AnimationInfo.Name + ", " + animationNew.AnimationInfo.Fps + " fps, " +
                                      animationNew.AnimationInfo.FrameHeight + "x" +
