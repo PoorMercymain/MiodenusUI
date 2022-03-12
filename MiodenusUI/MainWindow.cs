@@ -96,46 +96,46 @@ namespace MiodenusUI
                 Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
                 firstColumnBox.SetSizeRequest(5, 35);
                 firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
-                firstColumnBox.Padding = 5;
+                firstColumnBox.Margin = 5;
 
                 return firstColumnBox;
             }
 
             Box firstColumnBox1 = createFirstColumnBox();
+            //Box firstColumnInnerBox1 = createFirstColumnBox();
+            //firstColumnInnerBox1.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            //firstColumnBox1.Add(firstColumnInnerBox1);
+            
             Box firstColumnBox2 = createFirstColumnBox();
-            firstColumnBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            //Box firstColumnInnerBox2 = createFirstColumnBox();
+            //firstColumnInnerBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            //firstColumnBox2.Add(firstColumnInnerBox2);
+            
+            //firstColumnBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox3 = createFirstColumnBox();
             Box firstColumnBox4 = createFirstColumnBox();
-            firstColumnBox4.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox5 = createFirstColumnBox();
             Box firstColumnBox6 = createFirstColumnBox();
-            firstColumnBox6.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox7 = createFirstColumnBox();
             Box firstColumnBox8 = createFirstColumnBox();
-            firstColumnBox8.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox9 = createFirstColumnBox();
             Box firstColumnBox10 = createFirstColumnBox();
-            firstColumnBox10.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox11 = createFirstColumnBox();
             Box firstColumnBox12 = createFirstColumnBox();
-            firstColumnBox12.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox13 = createFirstColumnBox();
             Box firstColumnBox14 = createFirstColumnBox();
-            firstColumnBox14.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox15 = createFirstColumnBox();
             Box firstColumnBox16 = createFirstColumnBox();
-            firstColumnBox16.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             Box firstColumnBox17 = createFirstColumnBox();
             Box firstColumnBox18 = createFirstColumnBox();
-            firstColumnBox18.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             actionVBox1.Add(firstColumnBox1);
             actionVBox1.Add(firstColumnBox2);
