@@ -1,18 +1,20 @@
 using System;
 using System.IO;
+using Gdk;
+using GLib;
 using Gtk;
 using MiodenusUI.MAFStructure;
+using Application = Gtk.Application;
+using Menu = Gtk.Menu;
+using MenuItem = Gtk.MenuItem;
 using UI = Gtk.Builder.ObjectAttribute;
+using Window = Gtk.Window;
 
 namespace MiodenusUI
 {
     class MainWindow : Window
     {
         [UI] private Label _label = null;
-        [UI] private ImageMenuItem _createButton = null;
-        [UI] private ImageMenuItem _exitButton = null;
-        [UI] private Fixed _fixedMainWindow = null;
-        [UI] private ImageMenuItem _openButton = null;
 
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
@@ -25,6 +27,31 @@ namespace MiodenusUI
 
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
+            Gdk.Color mainColor = new Color(90, 103, 131);
+            Gdk.Color almostWhite = new Color(245, 244, 242);
+            Gdk.Color almostBlack = new Color(35, 42, 62);
+            
+            MenuBar bar = new MenuBar();
+            
+            Menu filemenu = new Menu();
+            MenuItem file = new MenuItem("File");
+            file.Submenu = filemenu;
+       
+            MenuItem newMenuItem = new MenuItem("New");
+            MenuItem openMenuItem = new MenuItem("Open");
+            MenuItem exitMenuItem = new MenuItem("Exit");
+            
+            filemenu.Append(newMenuItem);
+            filemenu.Append(openMenuItem);
+            filemenu.Append(exitMenuItem);
+            
+            bar.Append(file);
+            
+            VBox vbox = new VBox(false, 2);
+            vbox.PackStart(bar, false, false, 0);
+            
+            this.Add(vbox);
+            
             builder.Autoconnect(this);
             
             LoaderMaf maf = new LoaderMaf();
@@ -37,7 +64,126 @@ namespace MiodenusUI
                                                  animation.AnimationInfo.FrameHeight + "x" +
                                                  animation.AnimationInfo.FrameWidth + ", " + animation.AnimationInfo.TimeLength + " seconds, " + 
                                                  animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType;
-            _fixedMainWindow.Put(animationInfoLabel, 800, 700);
+
+            animationInfoLabel.ModifyFg(Gtk.StateType.Normal, almostWhite);
+
+            HBox animationInfoOuterHBox = new HBox();
+            HBox animationInfoHBox = new HBox();
+            HBox testHBox = new HBox();
+            VBox actionVBox1 = new VBox();
+            VBox actionVBox2 = new VBox();
+            VBox actionVBox3 = new VBox();
+
+            actionVBox1.BorderWidth = 2;
+            actionVBox1.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            actionVBox2.BorderWidth = 2;
+            actionVBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            actionVBox3.BorderWidth = 2;
+            actionVBox3.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            //actionVBox1.StyleContext.SetProperty("border-color", new Value("#232A3E"));
+
+            testHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
+            
+            testHBox.PackStart(actionVBox1, false, false, 0);
+            testHBox.PackEnd(actionVBox3, false, false, 0);
+
+            actionVBox1.SetSizeRequest(400, 35);
+            actionVBox3.SetSizeRequest(400, 35);
+
+            Box createFirstColumnBox()
+            {
+                Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
+                firstColumnBox.SetSizeRequest(5, 35);
+                firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
+                firstColumnBox.Padding = 5;
+
+                return firstColumnBox;
+            }
+
+            Box firstColumnBox1 = createFirstColumnBox();
+            Box firstColumnBox2 = createFirstColumnBox();
+            firstColumnBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox3 = createFirstColumnBox();
+            Box firstColumnBox4 = createFirstColumnBox();
+            firstColumnBox4.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox5 = createFirstColumnBox();
+            Box firstColumnBox6 = createFirstColumnBox();
+            firstColumnBox6.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox7 = createFirstColumnBox();
+            Box firstColumnBox8 = createFirstColumnBox();
+            firstColumnBox8.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox9 = createFirstColumnBox();
+            Box firstColumnBox10 = createFirstColumnBox();
+            firstColumnBox10.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox11 = createFirstColumnBox();
+            Box firstColumnBox12 = createFirstColumnBox();
+            firstColumnBox12.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox13 = createFirstColumnBox();
+            Box firstColumnBox14 = createFirstColumnBox();
+            firstColumnBox14.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox15 = createFirstColumnBox();
+            Box firstColumnBox16 = createFirstColumnBox();
+            firstColumnBox16.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            Box firstColumnBox17 = createFirstColumnBox();
+            Box firstColumnBox18 = createFirstColumnBox();
+            firstColumnBox18.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            actionVBox1.Add(firstColumnBox1);
+            actionVBox1.Add(firstColumnBox2);
+            actionVBox1.Add(firstColumnBox3);
+            actionVBox1.Add(firstColumnBox4);
+            actionVBox1.Add(firstColumnBox5);
+            actionVBox1.Add(firstColumnBox6);
+            actionVBox1.Add(firstColumnBox7);
+            actionVBox1.Add(firstColumnBox8);
+            actionVBox1.Add(firstColumnBox9);
+            actionVBox1.Add(firstColumnBox10);
+            actionVBox1.Add(firstColumnBox11);
+            actionVBox1.Add(firstColumnBox12);
+            actionVBox1.Add(firstColumnBox13);
+            actionVBox1.Add(firstColumnBox14);
+            actionVBox1.Add(firstColumnBox15);
+            actionVBox1.Add(firstColumnBox16);
+            actionVBox1.Add(firstColumnBox17);
+            actionVBox1.Add(firstColumnBox18);
+
+            testHBox.Add(actionVBox1);
+            testHBox.Add(actionVBox2);
+            testHBox.Add(actionVBox3);
+
+            vbox.Add(testHBox);
+            
+            animationInfoHBox.Add(animationInfoLabel);
+
+            animationInfoHBox.Margin = 10;
+            
+            animationInfoOuterHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            vbox.PackStart(animationInfoOuterHBox, false, false, 0);
+            
+            animationInfoHBox.Halign = Align.End;
+            animationInfoHBox.Valign = Align.End;
+            
+            animationInfoOuterHBox.Add(animationInfoHBox);
+            
+            vbox.Add(animationInfoOuterHBox);
+
+            //HBox labelHbox = new HBox();
+            //labelHbox.SetSizeRequest(100, 100);
+            //Gdk.Color color = new Gdk.Color(255, 0, 0);
+            //Label test = new Label("test");
+            //labelHbox.Add(test);
+            //labelHbox.ModifyBg(Gtk.StateType.Normal, color);
+            
             this.ShowAll();
 
             var mafStr = maf.CreateMafString(animation);
@@ -49,9 +195,9 @@ namespace MiodenusUI
             animation = maf.Read("test1.txt");
             
             DeleteEvent += Window_DeleteEvent;
-            _exitButton.Activated += Program_Quit;
-            _createButton.Activated += CreateButton_Clicked;
-            _openButton.Activated += OpenButton_Clicked;
+            exitMenuItem.Activated += Program_Quit;
+            newMenuItem.Activated += CreateButton_Clicked;
+            openMenuItem.Activated += OpenButton_Clicked;
 
         }
 
