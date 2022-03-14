@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Gdk;
 using GLib;
@@ -27,6 +28,8 @@ namespace MiodenusUI
 
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
+            int firstColumnBoxesAmount = 100;
+            
             Gdk.Color mainColor = new Color(90, 103, 131);
             Gdk.Color almostWhite = new Color(245, 244, 242);
             Gdk.Color almostBlack = new Color(35, 42, 62);
@@ -70,6 +73,10 @@ namespace MiodenusUI
             HBox animationInfoOuterHBox = new HBox();
             HBox animationInfoHBox = new HBox();
             HBox testHBox = new HBox();
+            ScrolledWindow scroll = new ScrolledWindow();
+            scroll.ShadowType = ShadowType.EtchedIn;
+            scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
+
             VBox actionVBox1 = new VBox();
             VBox actionVBox2 = new VBox();
             VBox actionVBox3 = new VBox();
@@ -91,72 +98,36 @@ namespace MiodenusUI
             actionVBox1.SetSizeRequest(400, 35);
             actionVBox3.SetSizeRequest(400, 35);
 
-            Box createFirstColumnBox()
+            Button createFirstColumnBox()
             {
-                Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
+                Button firstColumnBox = new Button("test");
                 firstColumnBox.SetSizeRequest(5, 35);
                 firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
                 firstColumnBox.Margin = 5;
+                
+                /*Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
+                firstColumnBox.SetSizeRequest(5, 35);
+                firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
+                firstColumnBox.Margin = 5;*/
 
                 return firstColumnBox;
             }
 
-            Box firstColumnBox1 = createFirstColumnBox();
-            //Box firstColumnInnerBox1 = createFirstColumnBox();
-            //firstColumnInnerBox1.ModifyBg(Gtk.StateType.Normal, almostBlack);
-            //firstColumnBox1.Add(firstColumnInnerBox1);
-            
-            Box firstColumnBox2 = createFirstColumnBox();
-            //Box firstColumnInnerBox2 = createFirstColumnBox();
-            //firstColumnInnerBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
-            //firstColumnBox2.Add(firstColumnInnerBox2);
-            
-            //firstColumnBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
-            
-            Box firstColumnBox3 = createFirstColumnBox();
-            Box firstColumnBox4 = createFirstColumnBox();
-            
-            Box firstColumnBox5 = createFirstColumnBox();
-            Box firstColumnBox6 = createFirstColumnBox();
-            
-            Box firstColumnBox7 = createFirstColumnBox();
-            Box firstColumnBox8 = createFirstColumnBox();
-            
-            Box firstColumnBox9 = createFirstColumnBox();
-            Box firstColumnBox10 = createFirstColumnBox();
-            
-            Box firstColumnBox11 = createFirstColumnBox();
-            Box firstColumnBox12 = createFirstColumnBox();
-            
-            Box firstColumnBox13 = createFirstColumnBox();
-            Box firstColumnBox14 = createFirstColumnBox();
-            
-            Box firstColumnBox15 = createFirstColumnBox();
-            Box firstColumnBox16 = createFirstColumnBox();
-            
-            Box firstColumnBox17 = createFirstColumnBox();
-            Box firstColumnBox18 = createFirstColumnBox();
-            
-            actionVBox1.Add(firstColumnBox1);
-            actionVBox1.Add(firstColumnBox2);
-            actionVBox1.Add(firstColumnBox3);
-            actionVBox1.Add(firstColumnBox4);
-            actionVBox1.Add(firstColumnBox5);
-            actionVBox1.Add(firstColumnBox6);
-            actionVBox1.Add(firstColumnBox7);
-            actionVBox1.Add(firstColumnBox8);
-            actionVBox1.Add(firstColumnBox9);
-            actionVBox1.Add(firstColumnBox10);
-            actionVBox1.Add(firstColumnBox11);
-            actionVBox1.Add(firstColumnBox12);
-            actionVBox1.Add(firstColumnBox13);
-            actionVBox1.Add(firstColumnBox14);
-            actionVBox1.Add(firstColumnBox15);
-            actionVBox1.Add(firstColumnBox16);
-            actionVBox1.Add(firstColumnBox17);
-            actionVBox1.Add(firstColumnBox18);
+            List<Button> firstColumnBoxes = new List<Button>();
+            for(var i = 0;i<firstColumnBoxesAmount;i++)
+            {
+                Button firstColumnBox = createFirstColumnBox();
+                firstColumnBoxes.Add(firstColumnBox);
+            }
 
-            testHBox.Add(actionVBox1);
+            for (var i = 0; i < firstColumnBoxesAmount; i++)
+            {
+                actionVBox1.Add(firstColumnBoxes[i]);
+            }
+            
+            scroll.Add(actionVBox1);
+
+            testHBox.PackStart(scroll, true, true, 0);
             testHBox.Add(actionVBox2);
             testHBox.Add(actionVBox3);
 
