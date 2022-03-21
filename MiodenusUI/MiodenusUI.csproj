@@ -10,6 +10,9 @@
         <EmbeddedResource Include="**\*.glade">
             <LogicalName>%(Filename)%(Extension)</LogicalName>
         </EmbeddedResource>
+        <None Update="test.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>

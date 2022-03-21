@@ -23,3 +23,4 @@ M:\C#\MiodenusUI\MiodenusUI\obj\Debug\net5.0\ref\MiodenusUI.dll
 M:\C#\MiodenusUI\MiodenusUI\obj\Debug\net5.0\MiodenusUI.pdb
 M:\C#\MiodenusUI\MiodenusUI\obj\Debug\net5.0\MiodenusUI.genruntimeconfig.cache
 M:\C#\MiodenusUI\MiodenusUI\bin\Debug\net5.0\Newtonsoft.Json.dll
+M:\C#\MiodenusUI\MiodenusUI\bin\Debug\net5.0\test.txt

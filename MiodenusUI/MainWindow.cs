@@ -50,7 +50,7 @@ namespace MiodenusUI
             
             bar.Append(file);
             
-            VBox vbox = new VBox(false, 2);
+            VBox vbox = new VBox();
             vbox.PackStart(bar, false, false, 0);
             
             this.Add(vbox);
@@ -74,8 +74,8 @@ namespace MiodenusUI
             HBox animationInfoHBox = new HBox();
             HBox testHBox = new HBox();
             ScrolledWindow scroll = new ScrolledWindow();
-            scroll.ShadowType = ShadowType.EtchedIn;
-            scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
+            //scroll.ShadowType = ShadowType.EtchedIn;
+            //scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
 
             VBox actionVBox1 = new VBox();
             VBox actionVBox2 = new VBox();
@@ -92,7 +92,7 @@ namespace MiodenusUI
 
             testHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
             
-            testHBox.PackStart(actionVBox1, false, false, 0);
+            //testHBox.PackStart(actionVBox1, false, false, 0);
             testHBox.PackEnd(actionVBox3, false, false, 0);
 
             actionVBox1.SetSizeRequest(400, 35);
@@ -101,8 +101,8 @@ namespace MiodenusUI
             Button createFirstColumnBox()
             {
                 Button firstColumnBox = new Button("test");
-                firstColumnBox.SetSizeRequest(5, 35);
-                firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
+                //firstColumnBox.SetSizeRequest(400, 35);
+                //firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
                 firstColumnBox.Margin = 5;
                 
                 /*Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
@@ -118,16 +118,18 @@ namespace MiodenusUI
             {
                 Button firstColumnBox = createFirstColumnBox();
                 firstColumnBoxes.Add(firstColumnBox);
+                actionVBox1.Add(firstColumnBox);
             }
 
-            for (var i = 0; i < firstColumnBoxesAmount; i++)
-            {
-                actionVBox1.Add(firstColumnBoxes[i]);
-            }
+            //for (var i = 0; i < firstColumnBoxesAmount; i++)
+            //{
+                //actionVBox1.Add(firstColumnBoxes[i]);
+            //}
             
+            //actionVBox1.Add(scroll);
             scroll.Add(actionVBox1);
 
-            testHBox.PackStart(scroll, true, true, 0);
+            testHBox.PackStart(scroll, false, false, 0);//testHBox.Add(scroll);//PackStart(scroll, true, true, 0);
             testHBox.Add(actionVBox2);
             testHBox.Add(actionVBox3);
 
