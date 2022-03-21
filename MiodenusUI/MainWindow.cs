@@ -15,46 +15,48 @@ namespace MiodenusUI
 {
     class MainWindow : Window
     {
-        [UI] private Label _label = null;
-
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
         
-        private int _counter;
-
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
         }
 
-        private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
+        private MenuBar CreateMenuBar(MenuItem newMenuItem, MenuItem openMenuItem, MenuItem exitMenuItem)
         {
-            int firstColumnBoxesAmount = 100;
-            
-            Gdk.Color mainColor = new Color(90, 103, 131);
-            Gdk.Color almostWhite = new Color(245, 244, 242);
-            Gdk.Color almostBlack = new Color(35, 42, 62);
-            
             MenuBar bar = new MenuBar();
             
             Menu filemenu = new Menu();
             MenuItem file = new MenuItem("File");
             file.Submenu = filemenu;
-       
-            MenuItem newMenuItem = new MenuItem("New");
-            MenuItem openMenuItem = new MenuItem("Open");
-            MenuItem exitMenuItem = new MenuItem("Exit");
             
             filemenu.Append(newMenuItem);
             filemenu.Append(openMenuItem);
             filemenu.Append(exitMenuItem);
             
             bar.Append(file);
+
+            return bar;
+        }
+
+        private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
+        {
+            Box allWindowElements = new Box(Gtk.Orientation.Vertical, 0);
             
-            VBox vbox = new VBox();
-            vbox.PackStart(bar, false, false, 0);
+            int firstColumnBoxesAmount = 100;
             
-            this.Add(vbox);
+            Gdk.Color mainColor = new Color(90, 103, 131);
+            Gdk.Color almostWhite = new Color(245, 244, 242);
+            Gdk.Color almostBlack = new Color(35, 42, 62);
             
+            MenuItem newMenuItem = new MenuItem("New");
+            MenuItem openMenuItem = new MenuItem("Open");
+            MenuItem exitMenuItem = new MenuItem("Exit");
+
+            MenuBar bar = CreateMenuBar(newMenuItem, openMenuItem, exitMenuItem);
+            
+            allWindowElements.PackStart(bar, false, false, 0);
+
             builder.Autoconnect(this);
             
             LoaderMaf maf = new LoaderMaf();
@@ -70,85 +72,102 @@ namespace MiodenusUI
 
             animationInfoLabel.ModifyFg(Gtk.StateType.Normal, almostWhite);
 
-            HBox animationInfoOuterHBox = new HBox();
-            HBox animationInfoHBox = new HBox();
-            HBox testHBox = new HBox();
-            ScrolledWindow scroll = new ScrolledWindow();
-            //scroll.ShadowType = ShadowType.EtchedIn;
-            //scroll.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
-
-            VBox actionVBox1 = new VBox();
-            VBox actionVBox2 = new VBox();
-            VBox actionVBox3 = new VBox();
-
-            actionVBox1.BorderWidth = 2;
-            actionVBox1.ModifyBg(Gtk.StateType.Normal, almostBlack);
-            actionVBox2.BorderWidth = 2;
-            actionVBox2.ModifyBg(Gtk.StateType.Normal, almostBlack);
-            actionVBox3.BorderWidth = 2;
-            actionVBox3.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            Box animationInfoOuterHBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box animationInfoHBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box backgroundHBox = new Box(Gtk.Orientation.Horizontal, 0);
             
-            //actionVBox1.StyleContext.SetProperty("border-color", new Value("#232A3E"));
+            ScrolledWindow scrolledTimelinesNames = new ScrolledWindow();
 
-            testHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
+            Box timelinesNamesVBox = new Box(Gtk.Orientation.Vertical, 0);
+            Box timelinesVBox = new Box(Gtk.Orientation.Vertical, 0);
+            Box propertiesVBox = new Box(Gtk.Orientation.Vertical, 0);
+
+            timelinesNamesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            timelinesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            propertiesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+
+            timelinesNamesVBox.Margin = 5;
+            timelinesVBox.Margin = 5;
+            propertiesVBox.Margin = 5;
             
-            //testHBox.PackStart(actionVBox1, false, false, 0);
-            testHBox.PackEnd(actionVBox3, false, false, 0);
+            backgroundHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
 
-            actionVBox1.SetSizeRequest(400, 35);
-            actionVBox3.SetSizeRequest(400, 35);
+            timelinesNamesVBox.SetSizeRequest(400, 35);
+            propertiesVBox.SetSizeRequest(400, 35);
 
             Button createFirstColumnBox()
             {
-                Button firstColumnBox = new Button("test");
-                //firstColumnBox.SetSizeRequest(400, 35);
-                //firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
-                firstColumnBox.Margin = 5;
+                Button firstColumnButton = new Button("test");
                 
-                /*Box firstColumnBox = new Box(Gtk.Orientation.Vertical, 0);
-                firstColumnBox.SetSizeRequest(5, 35);
-                firstColumnBox.ModifyBg(Gtk.StateType.Normal, mainColor);
-                firstColumnBox.Margin = 5;*/
+                firstColumnButton.Margin = 5;
 
-                return firstColumnBox;
+                return firstColumnButton;
             }
 
-            List<Button> firstColumnBoxes = new List<Button>();
-            for(var i = 0;i<firstColumnBoxesAmount;i++)
+            List<Button> firstColumnButtons = new List<Button>();
+            Box scrolledTimelinesElementsBox = new Box(Gtk.Orientation.Vertical, 0);
+            for(var i = 0;i<100;i++)
             {
                 Button firstColumnBox = createFirstColumnBox();
-                firstColumnBoxes.Add(firstColumnBox);
-                actionVBox1.Add(firstColumnBox);
+                firstColumnButtons.Add(firstColumnBox);
+                scrolledTimelinesElementsBox.Add(firstColumnButtons[^1]);
             }
 
-            //for (var i = 0; i < firstColumnBoxesAmount; i++)
-            //{
-                //actionVBox1.Add(firstColumnBoxes[i]);
-            //}
+            scrolledTimelinesElementsBox.Vexpand = true;
             
-            //actionVBox1.Add(scroll);
-            scroll.Add(actionVBox1);
+            scrolledTimelinesNames.Add(scrolledTimelinesElementsBox);
+            
+            timelinesNamesVBox.Add(scrolledTimelinesNames);
 
-            testHBox.PackStart(scroll, false, false, 0);//testHBox.Add(scroll);//PackStart(scroll, true, true, 0);
-            testHBox.Add(actionVBox2);
-            testHBox.Add(actionVBox3);
+            Box timelinesBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box divBox = new Box(Gtk.Orientation.Vertical, 0);
+            Box divHBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box macBox = new Box(Gtk.Orientation.Horizontal, 0);
 
-            vbox.Add(testHBox);
+            macBox.SetSizeRequest(300,600);
+            macBox.Margin = 5;
+            
+            macBox.ModifyBg(Gtk.StateType.Normal, almostWhite);
+            
+            divBox.Add(macBox);
+            
+            divHBox.PackStart(timelinesNamesVBox, false, false, 0);
+            timelinesVBox.Expand = true;
+            divHBox.Add(timelinesVBox);
+            
+            divBox.Add(divHBox);
+            
+            timelinesBox.Add(divBox);
+
+            //backgroundHBox.PackStart(timelinesNamesVBox, false, false, 0);//testHBox.Add(scroll);//PackStart(scroll, true, true, 0);
+            //timelinesVBox.Expand = true;
+            //backgroundHBox.Add(timelinesVBox);
+            backgroundHBox.Add(timelinesBox);
+            backgroundHBox.PackEnd(propertiesVBox,false,false,0);//backgroundHBox.Add(propertiesVBox);
+
+            allWindowElements.Add(backgroundHBox);
             
             animationInfoHBox.Add(animationInfoLabel);
 
             animationInfoHBox.Margin = 10;
             
+            animationInfoHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
             animationInfoOuterHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
-            vbox.PackStart(animationInfoOuterHBox, false, false, 0);
+            //animationInfoOuterHBox.Add(animationInfoHBox);
+            
+            //animationInfoOuterHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            
+            allWindowElements.PackEnd(animationInfoOuterHBox, false, false, 0);
             
             animationInfoHBox.Halign = Align.End;
-            animationInfoHBox.Valign = Align.End;
+            //animationInfoHBox.Valign = Align.End;
             
-            animationInfoOuterHBox.Add(animationInfoHBox);
+            //animationInfoHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
             
-            vbox.Add(animationInfoOuterHBox);
+            animationInfoOuterHBox.PackEnd(animationInfoHBox, false, false, 0);
+            
+            //allWindowElements.Add(animationInfoHBox);
 
             //HBox labelHbox = new HBox();
             //labelHbox.SetSizeRequest(100, 100);
@@ -156,6 +175,7 @@ namespace MiodenusUI
             //Label test = new Label("test");
             //labelHbox.Add(test);
             //labelHbox.ModifyBg(Gtk.StateType.Normal, color);
+            Add(allWindowElements);
             
             this.ShowAll();
 

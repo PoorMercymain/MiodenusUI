@@ -1,0 +1,10 @@
+﻿/MiodenusUI/MiodenusUI.csproj
+
+.idea/
+.vscode/
+.vs/
+
+bin/
+obj/
+
+*.user
