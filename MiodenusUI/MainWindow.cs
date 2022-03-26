@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Gdk;
 using GLib;
 using Gtk;
-using MiodenusUI.MAFStructure;
+using MiodenusUI.MafStructure;
 using Application = Gtk.Application;
 using Menu = Gtk.Menu;
 using MenuItem = Gtk.MenuItem;
 using UI = Gtk.Builder.ObjectAttribute;
 using Window = Gtk.Window;
+using WrapMode = Pango.WrapMode;
 
 namespace MiodenusUI
 {
@@ -17,6 +19,11 @@ namespace MiodenusUI
     {
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
+        MenuItem openMenuItem = new MenuItem("Open");
+        Button includeButton = new Button("Choose files");
+        private Label choosenIncludes = new Label("");
+        private Label animationPath = new Label("");
+        private Button animationPathButton = new Button("Choose file");
         
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
@@ -41,7 +48,21 @@ namespace MiodenusUI
 
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
+            CssProvider css = new CssProvider();
+            try
+            {
+                css.LoadFromPath("style.css");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Application.Quit();
+            }
+            
             Box allWindowElements = new Box(Gtk.Orientation.Vertical, 0);
+            
+            allWindowElements.StyleContext.AddProvider(css, 0);
+            allWindowElements.StyleContext.AddClass("GtkBox");
             
             int firstColumnBoxesAmount = 100;
             
@@ -50,7 +71,7 @@ namespace MiodenusUI
             Gdk.Color almostBlack = new Color(35, 42, 62);
             
             MenuItem newMenuItem = new MenuItem("New");
-            MenuItem openMenuItem = new MenuItem("Open");
+            //MenuItem openMenuItem = new MenuItem("Open");
             MenuItem exitMenuItem = new MenuItem("Exit");
 
             MenuBar bar = CreateMenuBar(newMenuItem, openMenuItem, exitMenuItem);
@@ -61,14 +82,14 @@ namespace MiodenusUI
             
             LoaderMaf maf = new LoaderMaf();
 
-            MAFStructure.Animation animation = new Animation();
+            MiodenusUI.MafStructure.Animation animation = new MiodenusUI.MafStructure.Animation();
             animation = maf.Read(currentFilePath);
             
             animationInfoLabel.Text = animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
                                                  animation.AnimationInfo.Name + ", " + animation.AnimationInfo.Fps + " fps, " +
                                                  animation.AnimationInfo.FrameHeight + "x" +
-                                                 animation.AnimationInfo.FrameWidth + ", " + animation.AnimationInfo.TimeLength + " seconds, " + 
-                                                 animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoType;
+                                                 animation.AnimationInfo.FrameWidth + ", " + animation.AnimationInfo.TimeLength + " milliseconds, " + 
+                                                 animation.AnimationInfo.VideoName + ", " + animation.AnimationInfo.VideoFormat;
 
             animationInfoLabel.ModifyFg(Gtk.StateType.Normal, almostWhite);
 
@@ -81,6 +102,9 @@ namespace MiodenusUI
             Box timelinesNamesVBox = new Box(Gtk.Orientation.Vertical, 0);
             Box timelinesVBox = new Box(Gtk.Orientation.Vertical, 0);
             Box propertiesVBox = new Box(Gtk.Orientation.Vertical, 0);
+            
+            propertiesVBox.StyleContext.AddProvider(css, 1);
+            propertiesVBox.StyleContext.AddClass(".box");
 
             timelinesNamesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
             timelinesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
@@ -100,6 +124,8 @@ namespace MiodenusUI
                 Button firstColumnButton = new Button("test");
                 
                 firstColumnButton.Margin = 5;
+                
+                firstColumnButton.ModifyBg(Gtk.StateType.Normal, mainColor);
 
                 return firstColumnButton;
             }
@@ -115,34 +141,44 @@ namespace MiodenusUI
 
             scrolledTimelinesElementsBox.Vexpand = true;
             
-            scrolledTimelinesNames.Add(scrolledTimelinesElementsBox);
+            //scrolledTimelinesNames.Add(scrolledTimelinesElementsBox);
             
-            timelinesNamesVBox.Add(scrolledTimelinesNames);
+            timelinesNamesVBox.Add(scrolledTimelinesElementsBox/*scrolledTimelinesNames*/);
+            //timelinesNamesVBox.Fill = false;
 
             Box timelinesBox = new Box(Gtk.Orientation.Horizontal, 0);
             Box divBox = new Box(Gtk.Orientation.Vertical, 0);
             Box divHBox = new Box(Gtk.Orientation.Horizontal, 0);
             Box macBox = new Box(Gtk.Orientation.Horizontal, 0);
 
+            
+            
+            macBox.Vexpand = true;
+            
             macBox.SetSizeRequest(300,600);
             macBox.Margin = 5;
             
             macBox.ModifyBg(Gtk.StateType.Normal, almostWhite);
             
+            //macBox.Vexpand = true;
+            
             divBox.Add(macBox);
             
             divHBox.PackStart(timelinesNamesVBox, false, false, 0);
-            timelinesVBox.Expand = true;
+            timelinesVBox.Hexpand = true;
+            //timelinesVBox.Vexpand = false;
             divHBox.Add(timelinesVBox);
             
             divBox.Add(divHBox);
             
             timelinesBox.Add(divBox);
+            
+            scrolledTimelinesNames.Add(timelinesBox);
 
             //backgroundHBox.PackStart(timelinesNamesVBox, false, false, 0);//testHBox.Add(scroll);//PackStart(scroll, true, true, 0);
             //timelinesVBox.Expand = true;
             //backgroundHBox.Add(timelinesVBox);
-            backgroundHBox.Add(timelinesBox);
+            backgroundHBox.Add(scrolledTimelinesNames/*timelinesBox*/);
             backgroundHBox.PackEnd(propertiesVBox,false,false,0);//backgroundHBox.Add(propertiesVBox);
 
             allWindowElements.Add(backgroundHBox);
@@ -152,6 +188,7 @@ namespace MiodenusUI
             animationInfoHBox.Margin = 10;
             
             animationInfoHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
+            //animationInfoHBox.
             animationInfoOuterHBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
             
             //animationInfoOuterHBox.Add(animationInfoHBox);
@@ -215,13 +252,29 @@ namespace MiodenusUI
                 var mafOpen = new LoaderMaf();
                 var openedAnimation = new Animation();
                 openedAnimation = mafOpen.Read(openDialog.Filename);
-                
-                animationInfoLabel.Text = openedAnimation.AnimationInfo.Type + ", " + openedAnimation.AnimationInfo.Version + ", " +
-                                          openedAnimation.AnimationInfo.Name + ", " + openedAnimation.AnimationInfo.Fps + " fps, " +
-                                          openedAnimation.AnimationInfo.FrameHeight + "x" +
-                                          openedAnimation.AnimationInfo.FrameWidth + ", " + openedAnimation.AnimationInfo.TimeLength + " seconds, " + 
-                                          openedAnimation.AnimationInfo.VideoName + ", " + openedAnimation.AnimationInfo.VideoType;
-                
+
+                if (sender == openMenuItem)
+                {
+                    animationInfoLabel.Text = openedAnimation.AnimationInfo.Type + ", " + openedAnimation.AnimationInfo.Version + ", " +
+                                                              openedAnimation.AnimationInfo.Name + ", " + openedAnimation.AnimationInfo.Fps + " fps, " +
+                                                              openedAnimation.AnimationInfo.FrameHeight + "x" +
+                                                              openedAnimation.AnimationInfo.FrameWidth + ", " + openedAnimation.AnimationInfo.TimeLength + " seconds, " + 
+                                                              openedAnimation.AnimationInfo.VideoName + ", " + openedAnimation.AnimationInfo.VideoFormat;
+                }
+                else if(sender == includeButton)
+                {
+                    if (choosenIncludes.Text.Length > 0)
+                    {
+                        choosenIncludes.Text += "\n";
+                    }
+                    
+                    choosenIncludes.Text += openDialog.Filename;
+                    
+                }
+                else if(sender == animationPathButton)
+                {
+                    animationPath.Text = openDialog.Filename;
+                }
             }
 
             openDialog.Destroy();
@@ -235,120 +288,312 @@ namespace MiodenusUI
 
             init.SetDefaultSize(500, 500);
             init.Resizable = false;
-            
-            Fixed fixedLayout = new Fixed();
-            fixedLayout.SetSizeRequest(500,500);
+
+            Box newFileCreationBox = new Box(Gtk.Orientation.Horizontal, 0);
+
+            Box labelsBox = new Box(Gtk.Orientation.Vertical, 0);
+
+            labelsBox.Margin = 5;
+
+            //Fixed fixedLayout = new Fixed();
+            //fixedLayout.SetSizeRequest(500,500);
             
             //Text labels
             Label nameLabel = new Label("Name:");
-            fixedLayout.Put(nameLabel, 10, 8);
+            nameLabel.MarginBottom = 6;
+            labelsBox.Add(nameLabel);
+            //fixedLayout.Put(nameLabel, 10, 8);
 
             Label typeLabel = new Label("Type:");
-            fixedLayout.Put(typeLabel, 10, 32);
+            typeLabel.MarginBottom = 6;
+            labelsBox.Add(typeLabel);
+            //fixedLayout.Put(typeLabel, 10, 32);
             
             Label versionLabel = new Label("Version:");
-            fixedLayout.Put(versionLabel, 10, 56);
+            versionLabel.MarginBottom = 6;
+            labelsBox.Add(versionLabel);
+            //fixedLayout.Put(versionLabel, 10, 56);
             
-            Label videoTypeLabel = new Label("Video type:");
-            fixedLayout.Put(videoTypeLabel, 10, 80);
+            Label videoFormatLabel = new Label("Video format:");
+            videoFormatLabel.MarginBottom = 6;
+            labelsBox.Add(videoFormatLabel);
+            //fixedLayout.Put(videoTypeLabel, 10, 80);
             
+            Label videoCodecLabel = new Label("Video codec:");
+            videoCodecLabel.MarginBottom = 6;
+            labelsBox.Add(videoCodecLabel);
+            
+            Label videoBitrateLabel = new Label("Video bitrate:");
+            videoBitrateLabel.MarginBottom = 6;
+            labelsBox.Add(videoBitrateLabel);
+
             Label videoNameLabel = new Label("Video name:");
-            fixedLayout.Put(videoNameLabel, 10, 104);
+            videoNameLabel.MarginBottom = 6;
+            labelsBox.Add(videoNameLabel);
+            //fixedLayout.Put(videoNameLabel, 10, 104);
             
-            Label timeLengthLabel = new Label("Time length:");
-            fixedLayout.Put(timeLengthLabel, 10, 128);
+            Label timeLengthLabel = new Label("Video length (milliseconds):");
+            timeLengthLabel.MarginBottom = 6;
+            labelsBox.Add(timeLengthLabel);
+            //fixedLayout.Put(timeLengthLabel, 10, 128);
             
             Label fpsLabel = new Label("FPS:");
-            fixedLayout.Put(fpsLabel, 10, 156);
+            fpsLabel.MarginBottom = 6;
+            labelsBox.Add(fpsLabel);
+            //fixedLayout.Put(fpsLabel, 10, 156);
+            
+            Label multisamplingLabel = new Label("Enable multisampling:");
+            
+            
+            multisamplingLabel.MarginBottom = 6;
+            labelsBox.Add(multisamplingLabel);
             
             Label frameWidthLabel = new Label("Frame width:");
-            fixedLayout.Put(frameWidthLabel, 10, 180);
-            
+            frameWidthLabel.MarginBottom = 6;
+            labelsBox.Add(frameWidthLabel);
+            //fixedLayout.Put(frameWidthLabel, 10, 180);
+
             Label frameHeightLabel = new Label("Frame height:");
-            fixedLayout.Put(frameHeightLabel, 10, 204);
+            frameHeightLabel.MarginBottom = 6;
+            labelsBox.Add(frameHeightLabel);
+            //fixedLayout.Put(frameHeightLabel, 10, 204);
+            
+            Label backgroundColorLabel = new Label("Background color:");
+            backgroundColorLabel.MarginBottom = 20;
+            labelsBox.Add(backgroundColorLabel);
+            
+            Label includeLabel = new Label("Include:");
+            includeLabel.MarginBottom = 16;
+            labelsBox.Add(includeLabel);
             
             Label animationPathLabel = new Label("Animation path:");
-            fixedLayout.Put(animationPathLabel, 10, 228);
+            animationPathLabel.MarginBottom = 6;
+            labelsBox.Add(animationPathLabel);
+            //fixedLayout.Put(animationPathLabel, 10, 228);
+            
+            newFileCreationBox.Add(labelsBox);
+
+            Box choicesBox = new Box(Gtk.Orientation.Vertical, 0);
+
+            choicesBox.Margin = 5;
             
             //Text views
-            void SetPlaceholderTextViewSizeAndPosition(TextView placeholderTextView, int positionX, int positionY)
+            /*void SetPlaceholderTextViewSizeAndPosition(TextView placeholderTextView, int positionX, int positionY)
             {
                 placeholderTextView.SetSizeRequest(400, 16);            
                 fixedLayout.Put(placeholderTextView, positionX, positionY);
-            }
+            }*/
             
             TextView nameTextView = new TextView();
-            nameTextView.SetSizeRequest(400, 16);            
-            fixedLayout.Put(nameTextView, 95, 8);
+            nameTextView.SetSizeRequest(400,16);
+            nameTextView.MarginBottom = 5;
+            choicesBox.Add(nameTextView);
+            //nameTextView.SetSizeRequest(400, 16);            
+            //fixedLayout.Put(nameTextView, 95, 8);
             
             TextView typeTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(typeTextView, 95, 32);
+            typeTextView.SetSizeRequest(400, 16);
+            typeTextView.MarginBottom = 5;
+            choicesBox.Add(typeTextView);
+            //SetPlaceholderTextViewSizeAndPosition(typeTextView, 95, 32);
 
             TextView versionTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(versionTextView, 95, 56);
+            versionTextView.SetSizeRequest(400, 16);
+            versionTextView.MarginBottom = 5;
+            choicesBox.Add(versionTextView);
+            //SetPlaceholderTextViewSizeAndPosition(versionTextView, 95, 56);
 
-            TextView videoTypeTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 95, 80);
+            TextView videoFormatTextView = new TextView();
+            videoFormatTextView.SetSizeRequest(400, 16);
+            videoFormatTextView.MarginBottom = 5;
+            choicesBox.Add(videoFormatTextView);
+            //SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 95, 80);
 
-            TextView videoNameTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 95, 104);
+            TextView videoCodecTextView = new TextView();
+            videoCodecTextView.SetSizeRequest(400, 16);
+            videoCodecTextView.MarginBottom = 5;
+            choicesBox.Add(videoCodecTextView);
             
+            TextView videoBitrateTextView = new TextView();
+            videoBitrateTextView.SetSizeRequest(400, 16);
+            videoBitrateTextView.MarginBottom = 5;
+            choicesBox.Add(videoBitrateTextView);
+            
+            TextView videoNameTextView = new TextView();
+            videoNameTextView.SetSizeRequest(400, 16);
+            videoNameTextView.MarginBottom = 5;
+            choicesBox.Add(videoNameTextView);
+            //SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 95, 104);
+
             TextView timeLengthTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 95, 128);
+            timeLengthTextView.SetSizeRequest(400, 16);
+            timeLengthTextView.MarginBottom = 5;
+            choicesBox.Add(timeLengthTextView);
+            //SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 95, 128);
             
             TextView fpsTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(fpsTextView, 95, 156);
+            fpsTextView.SetSizeRequest(400, 16);
+            fpsTextView.MarginBottom = 5;
+            choicesBox.Add(fpsTextView);
+            //SetPlaceholderTextViewSizeAndPosition(fpsTextView, 95, 156);
+            
+            Box multisamplingBox = new Box(Gtk.Orientation.Horizontal,0);
+            multisamplingBox.SetSizeRequest(400, 16);
+            multisamplingBox.MarginBottom = 5;
+            RadioButton multisamplingOn = new RadioButton("On");
+            RadioButton multisamplingOff = new RadioButton(multisamplingOn, "Off");
+            multisamplingBox.Add(multisamplingOn);
+            multisamplingBox.Add(multisamplingOff);
+            choicesBox.Add(multisamplingBox);
             
             TextView frameWidthTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 95, 180);
+            frameWidthTextView.SetSizeRequest(400, 16);
+            frameWidthTextView.MarginBottom = 5;
+            choicesBox.Add(frameWidthTextView);
+            //SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 95, 180);
             
             TextView frameHeightTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 95, 204);
+            frameHeightTextView.SetSizeRequest(400, 16);
+            frameHeightTextView.MarginBottom = 5;
+            choicesBox.Add(frameHeightTextView);
+            //SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 95, 204);
             
-            TextView animationPathTextView = new TextView();
-            SetPlaceholderTextViewSizeAndPosition(animationPathTextView, 95, 228);
+            TextView backgroundColorTextViewR = new TextView();
+            TextView backgroundColorTextViewG = new TextView();
+            TextView backgroundColorTextViewB = new TextView();
+            Box backgroundColorComponents = new Box(Gtk.Orientation.Horizontal, 0);
+            backgroundColorComponents.SetSizeRequest(400, 16);
+            backgroundColorComponents.Hexpand = true;
+            backgroundColorComponents.MarginBottom = 5;
+            backgroundColorTextViewR.SetSizeRequest((400-10)/3, 16);
+            backgroundColorTextViewR.MarginEnd = 5;
+            backgroundColorTextViewG.SetSizeRequest((400-10)/3, 16);
+            backgroundColorTextViewG.MarginEnd = 5;
+            backgroundColorTextViewB.SetSizeRequest((400-10)/3, 16);
+            backgroundColorComponents.Add(backgroundColorTextViewR);
+            backgroundColorComponents.Add(backgroundColorTextViewG);
+            backgroundColorComponents.Add(backgroundColorTextViewB);
+            choicesBox.Add(backgroundColorComponents);
+            
+            //Button includeButton = new Button("Choose files");
+            choosenIncludes.Text = "";
+            Box includesBox = new Box(Gtk.Orientation.Horizontal, 0);
+            includesBox.SetSizeRequest(400, 16);
+            includeButton.SetSizeRequest(50, 16);
+            ScrolledWindow scrolledChoosenIncludes = new ScrolledWindow();
+            choosenIncludes.SetSizeRequest(300,16);
+            scrolledChoosenIncludes.SetSizeRequest(300,16);
+            scrolledChoosenIncludes.Add(choosenIncludes);
+            includeButton.MarginBottom = 5;
+            includesBox.Add(scrolledChoosenIncludes);
+            includesBox.Add(includeButton);
+            choicesBox.Add(includesBox);
+            
+            //TextView animationPathTextView = new TextView();
 
+            animationPath.Text = "";
+            Box animationPathBox = new Box(Gtk.Orientation.Horizontal, 0);
+            animationPathBox.SetSizeRequest(400, 16);
+            animationPathButton.SetSizeRequest(50, 16);
+            ScrolledWindow scrolledAnimationPath = new ScrolledWindow();
+            animationPath.SetSizeRequest(300,16);
+            scrolledAnimationPath.SetSizeRequest(300,16);
+            scrolledAnimationPath.Add(animationPath);
+            animationPathButton.MarginBottom = 5;
+            animationPathBox.Add(scrolledAnimationPath);
+            animationPathBox.Add(animationPathButton);
+            choicesBox.Add(animationPathBox);
+            
+            //animationPathTextView.SetSizeRequest(400, 16);
+            //animationPathTextView.MarginBottom = 5;
+            //choicesBox.Add(animationPathTextView);
+            //SetPlaceholderTextViewSizeAndPosition(animationPathTextView, 95, 228);
+
+            newFileCreationBox.Add(choicesBox);
+            
             //Buttons
             Button okButton = new Button("Ok");
-            okButton.SetSizeRequest(45, 30);
-            fixedLayout.Put(okButton, 275, 452);
+            
+            labelsBox.Add(okButton);
+            
+            //okButton.SetSizeRequest(45, 30);
+            //fixedLayout.Put(okButton, 275, 452);
 
             Button cancelButton = new Button("Cancel");
-            cancelButton.SetSizeRequest(45, 30);
-            fixedLayout.Put(cancelButton, 155, 452);
             
-            init.Add(fixedLayout);
+            choicesBox.Add(cancelButton);
+            
+            //cancelButton.SetSizeRequest(45, 30);
+            //fixedLayout.Put(cancelButton, 155, 452);
+            
+            init.Add(newFileCreationBox);
             init.ShowAll();
 
+            /*if (multisamplingOn.Active)
+            {
+                Console.WriteLine("multisampling changed");
+            }*/
+
+            //multisamplingOn.Act += Multisampling_Changed;
+            animationPathButton.Clicked += OpenButton_Clicked;
+            includeButton.Clicked += OpenButton_Clicked;
             okButton.Clicked += OkButton_Clicked;
             cancelButton.Clicked += CancelButton_Clicked;
-            
+
+            void Multisampling_Changed(object sender, EventArgs a)
+            {
+                Console.WriteLine("multisampling changed");
+            }
+
             void OkButton_Clicked(object sender, EventArgs a)
             {
                 var animationNew = new Animation();
                 animationNew.AnimationInfo.Name = nameTextView.Buffer.Text;
                 animationNew.AnimationInfo.Type = typeTextView.Buffer.Text;
                 animationNew.AnimationInfo.Version = versionTextView.Buffer.Text;
-                animationNew.AnimationInfo.VideoType = videoTypeTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoFormat = videoFormatTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoCodec = videoCodecTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoBitrate = int.Parse(videoBitrateTextView.Buffer.Text);
                 animationNew.AnimationInfo.VideoName = videoNameTextView.Buffer.Text;
                 animationNew.AnimationInfo.TimeLength = int.Parse(timeLengthTextView.Buffer.Text);
                 animationNew.AnimationInfo.Fps = int.Parse(fpsTextView.Buffer.Text);
+                animationNew.AnimationInfo.EnableMultisampling = multisamplingOn.Active;
                 animationNew.AnimationInfo.FrameWidth = int.Parse(frameWidthTextView.Buffer.Text);
                 animationNew.AnimationInfo.FrameHeight = int.Parse(frameHeightTextView.Buffer.Text);
-                
+                animationNew.AnimationInfo.BackgroundColor[0] = float.Parse(backgroundColorTextViewR.Buffer.Text);
+                animationNew.AnimationInfo.BackgroundColor[1] = float.Parse(backgroundColorTextViewG.Buffer.Text);
+                animationNew.AnimationInfo.BackgroundColor[2] = float.Parse(backgroundColorTextViewB.Buffer.Text);
+
+                List<string> choosenIncludesList = new List<string>();
+                using (System.IO.StringReader reader = new System.IO.StringReader(choosenIncludes.Text))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        choosenIncludesList.Add(line);
+                    }
+                }
+
+                animationNew.AnimationInfo.Include = new string[choosenIncludesList.Count];
+
+                for (var i = 0; i < choosenIncludesList.Count; i++)
+                {
+                    animationNew.AnimationInfo.Include[i]=(choosenIncludesList[i]);
+                }
+
                 LoaderMaf mafLoaderNew = new LoaderMaf();
                 var mafStr = mafLoaderNew.CreateMafString(animationNew);
 
-                var writerNew = File.CreateText(animationPathTextView.Buffer.Text);
+                var writerNew = File.CreateText(animationPath.Text);
                 writerNew.Write(mafStr);
                 writerNew.Close();
 
-                currentFilePath = animationPathTextView.Buffer.Text;
+                currentFilePath = animationPath.Text;
                 animationInfoLabel.Text = animationNew.AnimationInfo.Type + ", " + animationNew.AnimationInfo.Version + ", " +
                                      animationNew.AnimationInfo.Name + ", " + animationNew.AnimationInfo.Fps + " fps, " +
                                      animationNew.AnimationInfo.FrameHeight + "x" +
-                                     animationNew.AnimationInfo.FrameWidth + ", " + animationNew.AnimationInfo.TimeLength + " seconds, " + 
-                                     animationNew.AnimationInfo.VideoName + ", " + animationNew.AnimationInfo.VideoType;
+                                     animationNew.AnimationInfo.FrameWidth + ", " + animationNew.AnimationInfo.TimeLength + " milliseconds, " + 
+                                     animationNew.AnimationInfo.VideoName + ", " + animationNew.AnimationInfo.VideoFormat;
                 init.Close();
             }
         

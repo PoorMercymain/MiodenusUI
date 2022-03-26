@@ -1,6 +1,6 @@
 using System;
 using Gtk;
-using MiodenusUI.MAFStructure;
+using MiodenusUI.MafStructure;
 
 namespace MiodenusUI
 {

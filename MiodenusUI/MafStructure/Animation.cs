@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MiodenusUI.MAFStructure
+namespace MiodenusUI.MafStructure
 {
     public class Animation
     {
