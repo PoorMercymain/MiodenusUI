@@ -243,7 +243,7 @@ namespace MiodenusUI
 
         private void ChooseFolderButton_Clicked(object sender, EventArgs a)
         {
-            var chooseFolderDialog = new FileChooserDialog("Choose folder", this, FileChooserAction.Save, "Cancel",
+            var chooseFolderDialog = new FileChooserDialog("Choose folder and filename", this, FileChooserAction.Save, "Cancel",
                 ResponseType.Cancel, "Choose", ResponseType.Accept);
             chooseFolderDialog.ShowAll();
 
