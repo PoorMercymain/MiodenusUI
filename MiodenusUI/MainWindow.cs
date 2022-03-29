@@ -20,10 +20,14 @@ namespace MiodenusUI
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
         MenuItem openMenuItem = new MenuItem("Open");
-        Button includeButton = new Button("Choose files");
+        Button includeButton = new Button("Browse");
         private Label choosenIncludes = new Label("");
         private Label animationPath = new Label("");
-        private Button animationPathButton = new Button("Choose file");
+        private Button animationPathButton = new Button("Browse");
+        
+        Gdk.Color mainColor = new Color(90, 103, 131);
+        Gdk.Color almostWhite = new Color(245, 244, 242);
+        Gdk.Color almostBlack = new Color(35, 42, 62);
         
         public MainWindow() : this(new Builder("MainWindow.glade"))
         {
@@ -51,7 +55,8 @@ namespace MiodenusUI
             CssProvider css = new CssProvider();
             try
             {
-                css.LoadFromPath("style.css");
+                css.LoadFromPath("M:\\C#\\MiodenusUI\\MiodenusUI\\style.css");
+                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, Gtk.StyleProviderPriority.Application);
             }
             catch (Exception e)
             {
@@ -65,10 +70,8 @@ namespace MiodenusUI
             allWindowElements.StyleContext.AddClass("GtkBox");
             
             int firstColumnBoxesAmount = 100;
+
             
-            Gdk.Color mainColor = new Color(90, 103, 131);
-            Gdk.Color almostWhite = new Color(245, 244, 242);
-            Gdk.Color almostBlack = new Color(35, 42, 62);
             
             MenuItem newMenuItem = new MenuItem("New");
             //MenuItem openMenuItem = new MenuItem("Open");
@@ -241,19 +244,7 @@ namespace MiodenusUI
             Application.Quit();
         }
 
-        private void ChooseFolderButton_Clicked(object sender, EventArgs a)
-        {
-            var chooseFolderDialog = new FileChooserDialog("Choose folder and filename", this, FileChooserAction.Save, "Cancel",
-                ResponseType.Cancel, "Choose", ResponseType.Accept);
-            chooseFolderDialog.ShowAll();
-
-            if (chooseFolderDialog.Run()==(int)ResponseType.Accept)
-            {
-                animationPath.Text = chooseFolderDialog.Filename;
-            }
-            
-            chooseFolderDialog.Destroy();
-        }
+        
 
         private void OpenButton_Clicked(object sender, EventArgs a)
         {
@@ -307,6 +298,8 @@ namespace MiodenusUI
             init.Resizable = false;
 
             Box newFileCreationBox = new Box(Gtk.Orientation.Horizontal, 0);
+            
+            newFileCreationBox.ModifyBg(StateType.Normal, new Color(90, 103, 131));
 
             Box labelsBox = new Box(Gtk.Orientation.Vertical, 0);
 
@@ -316,73 +309,88 @@ namespace MiodenusUI
             //fixedLayout.SetSizeRequest(500,500);
             
             //Text labels
-            Label animationNameLabel = new Label("Name:");
-            animationNameLabel.MarginBottom = 6;
+            Label animationNameLabel = new Label("Animation name:");
+            animationNameLabel.MarginBottom = 17;
+            animationNameLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(animationNameLabel);
             //fixedLayout.Put(nameLabel, 10, 8);
             
-            Label videoNameLabel = new Label("Video name:");
-            videoNameLabel.MarginBottom = 6;
+            Label videoNameLabel = new Label("Video path:");
+            videoNameLabel.MarginBottom = 20;
+            videoNameLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(videoNameLabel);
             //fixedLayout.Put(videoNameLabel, 10, 104);
 
             Label typeLabel = new Label("Type:");
             typeLabel.MarginBottom = 6;
+            typeLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(typeLabel);
             //fixedLayout.Put(typeLabel, 10, 32);
             
             Label versionLabel = new Label("Version:");
-            versionLabel.MarginBottom = 6;
+            versionLabel.MarginBottom = 16;
+            versionLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(versionLabel);
             //fixedLayout.Put(versionLabel, 10, 56);
             
             Label videoFormatLabel = new Label("Video format:");
-            videoFormatLabel.MarginBottom = 7;
+            videoFormatLabel.MarginBottom = 23;
+            videoFormatLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(videoFormatLabel);
             //fixedLayout.Put(videoTypeLabel, 10, 80);
             
             Label videoCodecLabel = new Label("Video codec:");
-            videoCodecLabel.MarginBottom = 7;
+            videoCodecLabel.MarginBottom = 14;
+            videoCodecLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(videoCodecLabel);
             
             Label videoBitrateLabel = new Label("Video bitrate:");
             videoBitrateLabel.MarginBottom = 6;
+            videoBitrateLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(videoBitrateLabel);
             
-            Label timeLengthLabel = new Label("Video length (milliseconds):");
-            timeLengthLabel.MarginBottom = 9;
+            Label timeLengthLabel = new Label("Video length (ms):");
+            timeLengthLabel.MarginBottom = 6;
+            timeLengthLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(timeLengthLabel);
             //fixedLayout.Put(timeLengthLabel, 10, 128);
             
             Label fpsLabel = new Label("FPS:");
             fpsLabel.MarginBottom = 6;
+            fpsLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(fpsLabel);
             //fixedLayout.Put(fpsLabel, 10, 156);
             
-            Label multisamplingLabel = new Label("Enable multisampling:");
-            multisamplingLabel.MarginBottom = 8;
+            Label multisamplingLabel = new Label("Multisampling:");
+            multisamplingLabel.MarginBottom = 10;
+            multisamplingLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(multisamplingLabel);
             
             Label frameWidthLabel = new Label("Frame width:");
             frameWidthLabel.MarginBottom = 6;
+            frameWidthLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(frameWidthLabel);
             //fixedLayout.Put(frameWidthLabel, 10, 180);
 
             Label frameHeightLabel = new Label("Frame height:");
             frameHeightLabel.MarginBottom = 20;
+            frameHeightLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(frameHeightLabel);
             //fixedLayout.Put(frameHeightLabel, 10, 204);
             
             Label backgroundColorLabel = new Label("Background color:");
             backgroundColorLabel.MarginBottom = 35;
+            backgroundColorLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(backgroundColorLabel);
             
-            Label includeLabel = new Label("Include:");
+            Label includeLabel = new Label("Includes:");
             includeLabel.MarginBottom = 30;
+            includeLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(includeLabel);
             
             Label animationPathLabel = new Label("Animation path:");
             animationPathLabel.MarginBottom = 19;
+            animationPathLabel.ModifyFg(StateType.Normal, almostWhite);
             labelsBox.Add(animationPathLabel);
             //fixedLayout.Put(animationPathLabel, 10, 228);
             
@@ -402,64 +410,114 @@ namespace MiodenusUI
             TextView animationNameTextView = new TextView();
             animationNameTextView.SetSizeRequest(400,16);
             animationNameTextView.MarginBottom = 5;
+            animationNameTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Name;
             choicesBox.Add(animationNameTextView);
             //nameTextView.SetSizeRequest(400, 16);            
             //fixedLayout.Put(nameTextView, 95, 8);
+
+            Label videoPath = new Label(DefaultMafParameters.AnimationInfo.VideoName+"."+DefaultMafParameters.AnimationInfo.VideoFormat);
+            videoPath.ModifyFg(StateType.Normal, almostWhite);
+            Box videoPathBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Button videoPathButton = new Button("Browse");
+            videoPathBox.SetSizeRequest(400, 16);
+            videoPathButton.SetSizeRequest(50, 16);
+            ScrolledWindow scrolledVideoPath = new ScrolledWindow();
+            videoPath.SetSizeRequest(300,16);
+            scrolledVideoPath.SetSizeRequest(300,16);
+            scrolledVideoPath.Add(videoPath);
+            videoPathButton.MarginBottom = 5;
+            videoPathBox.Add(scrolledVideoPath);
+            videoPathBox.Add(videoPathButton);
+            choicesBox.Add(videoPathBox);
             
-            TextView videoNameTextView = new TextView();
+            
+            /*TextView videoNameTextView = new TextView();
             videoNameTextView.SetSizeRequest(400, 16);
             videoNameTextView.MarginBottom = 5;
-            choicesBox.Add(videoNameTextView);
+            choicesBox.Add(videoNameTextView);*/
             //SetPlaceholderTextViewSizeAndPosition(videoNameTextView, 95, 104);
 
             TextView typeTextView = new TextView();
             typeTextView.SetSizeRequest(400, 16);
-            typeTextView.Buffer.Text = ".maf";
+            typeTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Type;
             typeTextView.Editable = false;
             typeTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
+            //typeTextView.CanFocus = false;
             typeTextView.MarginBottom = 5;
             choicesBox.Add(typeTextView);
             //SetPlaceholderTextViewSizeAndPosition(typeTextView, 95, 32);
 
             TextView versionTextView = new TextView();
             versionTextView.SetSizeRequest(400, 16);
-            versionTextView.Buffer.Text = "1.0";
+            versionTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Version;
             versionTextView.Editable = false;
             versionTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
+            //versionTextView.CanFocus = false;
             versionTextView.MarginBottom = 5;
             choicesBox.Add(versionTextView);
             //SetPlaceholderTextViewSizeAndPosition(versionTextView, 95, 56);
 
-            TextView videoFormatTextView = new TextView();
-            videoFormatTextView.SetSizeRequest(400, 16);
-            videoFormatTextView.MarginBottom = 5;
-            choicesBox.Add(videoFormatTextView);
+            string[] availableVideoFormats = new string[]
+            {
+                "mp4",
+                "flv"
+            };
+
+            ComboBox videoFormatChooser = new ComboBox(availableVideoFormats);
+            videoFormatChooser.Active = 0;
+            
+            //TextView videoFormatTextView = new TextView();
+            //videoFormatTextView.SetSizeRequest(400, 16);
+            videoFormatChooser.MarginBottom = 5;
+            Box videoFormatChoiceBox = new Box(Gtk.Orientation.Horizontal, 0);
+            videoFormatChoiceBox.Add(videoFormatChooser);
+            choicesBox.Add(videoFormatChoiceBox);
             //SetPlaceholderTextViewSizeAndPosition(videoTypeTextView, 95, 80);
 
             Box codecChoiceBox = new Box(Gtk.Orientation.Horizontal, 0);
+
+            string[] availableCodecs = new string[]
+            {
+                "libx264",
+                "libx264rgb",
+                "libxvid",
+                "mpeg1video",
+                "mpeg2video",
+                "mpeg4",
+                "png",
+                "H.264"
+            };
+
+            ComboBox codecChooser = new ComboBox(availableCodecs);
             
-            RadioButton mpeg4 = new RadioButton("MPEG4");
-            RadioButton H264 = new RadioButton(mpeg4, "H.264");
+            //codecChooser.HasDefault = true;
+            codecChooser.Active = 7;
             
-            codecChoiceBox.Add(mpeg4);
-            codecChoiceBox.Add(H264);
+            //RadioButton mpeg4 = new RadioButton("MPEG4");
+            //RadioButton H264 = new RadioButton(mpeg4, "H.264");
+            
+            codecChoiceBox.Add(codecChooser);
+            //codecChoiceBox.Add(H264);
             
             codecChoiceBox.MarginBottom = 5;
             choicesBox.Add(codecChoiceBox);
             
             TextView videoBitrateTextView = new TextView();
             videoBitrateTextView.SetSizeRequest(400, 16);
+            videoBitrateTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.VideoBitrate.ToString();
             videoBitrateTextView.MarginBottom = 5;
             choicesBox.Add(videoBitrateTextView);
 
             TextView timeLengthTextView = new TextView();
             timeLengthTextView.SetSizeRequest(400, 16);
+            timeLengthTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.TimeLength.ToString();
             timeLengthTextView.MarginBottom = 5;
             choicesBox.Add(timeLengthTextView);
             //SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 95, 128);
             
             TextView fpsTextView = new TextView();
             fpsTextView.SetSizeRequest(400, 16);
+            fpsTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Fps.ToString();
             fpsTextView.MarginBottom = 5;
             choicesBox.Add(fpsTextView);
             //SetPlaceholderTextViewSizeAndPosition(fpsTextView, 95, 156);
@@ -475,12 +533,14 @@ namespace MiodenusUI
             
             TextView frameWidthTextView = new TextView();
             frameWidthTextView.SetSizeRequest(400, 16);
+            frameWidthTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.FrameWidth.ToString();
             frameWidthTextView.MarginBottom = 5;
             choicesBox.Add(frameWidthTextView);
             //SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 95, 180);
             
             TextView frameHeightTextView = new TextView();
             frameHeightTextView.SetSizeRequest(400, 16);
+            frameHeightTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.FrameHeight.ToString();
             frameHeightTextView.MarginBottom = 5;
             choicesBox.Add(frameHeightTextView);
             //SetPlaceholderTextViewSizeAndPosition(frameHeightTextView, 95, 204);
@@ -497,16 +557,21 @@ namespace MiodenusUI
             Label choosenColorRedComponent = new Label("");
             Label choosenColorGreenComponent = new Label("");
             Label choosenColorBlueComponent = new Label("");
+            
+            choosenColorRedComponent.ModifyFg(StateType.Normal, almostWhite);
+            choosenColorGreenComponent.ModifyFg(StateType.Normal, almostWhite);
+            choosenColorBlueComponent.ModifyFg(StateType.Normal, almostWhite);
+            
             Box choosenColorBox = new Box(Gtk.Orientation.Horizontal,0);
-            choosenColorBox.ModifyBg(StateType.Normal, new Color(0,0,0));
+            choosenColorBox.ModifyBg(StateType.Normal, new Color((byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255)));
             
-            rgbBackground[0] = 0;
-            rgbBackground[1] = 0;
-            rgbBackground[2] = 0;
+            rgbBackground[0] = DefaultMafParameters.AnimationInfo.BackgroundColor[0];
+            rgbBackground[1] = DefaultMafParameters.AnimationInfo.BackgroundColor[1];
+            rgbBackground[2] = DefaultMafParameters.AnimationInfo.BackgroundColor[2];
             
-            choosenColorRedComponent.Text = "Red = 0";
-            choosenColorGreenComponent.Text = "Green = 0";
-            choosenColorBlueComponent.Text = "Blue = 0";
+            choosenColorRedComponent.Text = $"Red = {DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255}";
+            choosenColorGreenComponent.Text = $"Green = {DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255}";
+            choosenColorBlueComponent.Text = $"Blue = {DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255}";
             
             choosenColorRedComponent.MarginEnd = 5;
             choosenColorGreenComponent.MarginEnd = 5;
@@ -535,6 +600,7 @@ namespace MiodenusUI
             
             //Button includeButton = new Button("Choose files");
             choosenIncludes.Text = "";
+            choosenIncludes.ModifyFg(StateType.Normal, almostWhite);
             Box includesBox = new Box(Gtk.Orientation.Horizontal, 0);
             includesBox.SetSizeRequest(400, 16);
             includeButton.SetSizeRequest(50, 16);
@@ -550,6 +616,7 @@ namespace MiodenusUI
             //TextView animationPathTextView = new TextView();
 
             animationPath.Text = "";
+            animationPath.ModifyFg(StateType.Normal, almostWhite);
             Box animationPathBox = new Box(Gtk.Orientation.Horizontal, 0);
             animationPathBox.SetSizeRequest(400, 16);
             animationPathButton.SetSizeRequest(50, 16);
@@ -572,6 +639,8 @@ namespace MiodenusUI
             //Buttons
             Button okButton = new Button("Ok");
             
+            okButton.Sensitive = false;
+            
             labelsBox.Add(okButton);
             
             //okButton.SetSizeRequest(45, 30);
@@ -593,7 +662,21 @@ namespace MiodenusUI
             }*/
 
             //multisamplingOn.Act += Multisampling_Changed;
+
+            typeTextView.Buffer.Changed += InputMade;
+            versionTextView.Buffer.Changed += InputMade;
+            animationNameTextView.Buffer.Changed += InputMade;
+            //videoFormatTextView.Buffer.Changed += InputMade;
+            videoFormatChooser.Changed += VideoFormatChanged;
+            videoBitrateTextView.Buffer.Changed += InputMade;
+            //videoNameTextView.Buffer.Changed += InputMade;
+            timeLengthTextView.Buffer.Changed += InputMade;
+            fpsTextView.Buffer.Changed += InputMade;
+            frameWidthTextView.Buffer.Changed += InputMade;
+            frameHeightTextView.Buffer.Changed += InputMade;
+
             animationPathButton.Clicked += ChooseFolderButton_Clicked;
+            videoPathButton.Clicked += ChooseFolderButton_Clicked;
             includeButton.Clicked += OpenButton_Clicked;
             okButton.Clicked += OkButton_Clicked;
             cancelButton.Clicked += CancelButton_Clicked;
@@ -604,6 +687,64 @@ namespace MiodenusUI
             frameWidthTextView.Buffer.Changed += CheckInt;
             frameHeightTextView.Buffer.Changed += CheckInt;
 
+            void VideoFormatChanged(object sender, EventArgs a)
+            {
+                if (videoPath.Text != "")
+                {
+                    videoPath.Text = System.IO.Path.ChangeExtension(videoPath.Text,
+                        availableVideoFormats[videoFormatChooser.Active]);
+                }
+            }
+
+            void InputMade(object sender, EventArgs a)
+            {
+                okButton.Sensitive = typeTextView.Buffer.Text != "" && versionTextView.Buffer.Text != "" &&
+                                     animationNameTextView.Buffer.Text != "" && 
+                                     videoBitrateTextView.Buffer.Text != "" && videoPath.Text != "" &&
+                                     timeLengthTextView.Buffer.Text != "" && fpsTextView.Buffer.Text != "" &&
+                                     frameWidthTextView.Buffer.Text != "" && frameHeightTextView.Buffer.Text != "" &&
+                                     animationPath.Text != "";
+            }
+            
+            void ChooseFolderButton_Clicked(object sender, EventArgs a)
+            {
+                var chooseFolderDialog = new FileChooserDialog("Choose folder and filename", init, FileChooserAction.Save, "Cancel",
+                    ResponseType.Cancel, "Choose", ResponseType.Accept);
+                chooseFolderDialog.ShowAll();
+    
+                if (chooseFolderDialog.Run()==(int)ResponseType.Accept)
+                {
+                    if (sender == animationPathButton)
+                    {
+                        animationPath.Text = chooseFolderDialog.Filename;
+                                            
+                        if (!(System.IO.Path.GetFileName(animationPath.Text).Contains('.')))
+                        {
+                            animationPath.Text += ".maf";
+                        }
+                    }
+                    else if(sender == videoPathButton)
+                    {
+                        videoPath.Text = chooseFolderDialog.Filename;
+                        
+                        if (!(System.IO.Path.GetFileName(videoPath.Text).Contains('.')))
+                        {
+                            videoPath.Text += $".{availableVideoFormats[videoFormatChooser.Active]}";
+                        }
+                    }
+                    
+                }
+
+                okButton.Sensitive = typeTextView.Buffer.Text != "" && versionTextView.Buffer.Text != "" &&
+                                     animationNameTextView.Buffer.Text != "" &&
+                                     videoBitrateTextView.Buffer.Text != "" && videoPath.Text != "" &&
+                                     timeLengthTextView.Buffer.Text != "" && fpsTextView.Buffer.Text != "" &&
+                                     frameWidthTextView.Buffer.Text != "" && frameHeightTextView.Buffer.Text != "" &&
+                                     animationPath.Text != "";
+                
+                chooseFolderDialog.Destroy();
+            }
+            
             void Multisampling_Changed(object sender, EventArgs a)
             {
                 Console.WriteLine("multisampling changed");
@@ -611,7 +752,7 @@ namespace MiodenusUI
 
             void ChooseColorButton_Clicked(object sender, EventArgs a)
             {
-                ColorChooserDialog chooseColorWindow = new ColorChooserDialog("Choose color", this);
+                ColorChooserDialog chooseColorWindow = new ColorChooserDialog("Choose color", init);
                 chooseColorWindow.ShowAll();
 
                 if (chooseColorWindow.Run() == (int)ResponseType.Ok)
@@ -635,20 +776,13 @@ namespace MiodenusUI
                 animationNew.AnimationInfo.Name = animationNameTextView.Buffer.Text;
                 animationNew.AnimationInfo.Type = typeTextView.Buffer.Text;
                 animationNew.AnimationInfo.Version = versionTextView.Buffer.Text;
-                animationNew.AnimationInfo.VideoFormat = videoFormatTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoFormat = availableVideoFormats[videoFormatChooser.Active];
 
-                if (mpeg4.Active)
-                {
-                    animationNew.AnimationInfo.VideoCodec = "MPEG4";
-                }
-                else
-                {
-                    animationNew.AnimationInfo.VideoCodec = "H.264";
-                }
+                animationNew.AnimationInfo.VideoCodec = availableCodecs[codecChooser.Active]=="H.264" ? "h264" : availableCodecs[codecChooser.Active];
                 
                 //animationNew.AnimationInfo.VideoCodec = videoCodecTextView.Buffer.Text;
                 animationNew.AnimationInfo.VideoBitrate = int.Parse(videoBitrateTextView.Buffer.Text);
-                animationNew.AnimationInfo.VideoName = videoNameTextView.Buffer.Text;
+                animationNew.AnimationInfo.VideoName = videoPath.Text;
                 animationNew.AnimationInfo.TimeLength = int.Parse(timeLengthTextView.Buffer.Text);
                 animationNew.AnimationInfo.Fps = int.Parse(fpsTextView.Buffer.Text);
                 animationNew.AnimationInfo.EnableMultisampling = multisamplingOn.Active;
@@ -675,6 +809,11 @@ namespace MiodenusUI
                     animationNew.AnimationInfo.Include[i]=(choosenIncludesList[i]);
                 }
 
+                /*if (!(System.IO.Path.GetFileName(animationPath.Text).Contains('.')))
+                {
+                    animationPath.Text += ".maf";
+                }*/
+                
                 LoaderMaf mafLoaderNew = new LoaderMaf();
                 var mafStr = mafLoaderNew.CreateMafString(animationNew);
 
