@@ -53,26 +53,19 @@ namespace MiodenusUI
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
             CssProvider css = new CssProvider();
-            try
-            {
-                css.LoadFromPath("M:\\C#\\MiodenusUI\\MiodenusUI\\style.css");
-                Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, Gtk.StyleProviderPriority.Application);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Application.Quit();
-            }
+            
+            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, Gtk.StyleProviderPriority.User);
+            string cssStyles = "";
+            cssStyles = File.ReadAllText("M:\\C#\\MiodenusUI\\MiodenusUI\\style.css");
+            css.LoadFromData(cssStyles);
             
             Box allWindowElements = new Box(Gtk.Orientation.Vertical, 0);
-            
+
             allWindowElements.StyleContext.AddProvider(css, 0);
             allWindowElements.StyleContext.AddClass("GtkBox");
             
             int firstColumnBoxesAmount = 100;
 
-            
-            
             MenuItem newMenuItem = new MenuItem("New");
             //MenuItem openMenuItem = new MenuItem("Open");
             MenuItem exitMenuItem = new MenuItem("Exit");
@@ -113,6 +106,10 @@ namespace MiodenusUI
             timelinesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
             propertiesVBox.ModifyBg(Gtk.StateType.Normal, almostBlack);
 
+            timelinesNamesVBox.Name = "rounded_box";
+            timelinesVBox.Name = "rounded_box";
+            propertiesVBox.Name = "rounded_box";
+
             timelinesNamesVBox.Margin = 5;
             timelinesVBox.Margin = 5;
             propertiesVBox.Margin = 5;
@@ -124,21 +121,22 @@ namespace MiodenusUI
 
             Button createFirstColumnBox()
             {
-                Button firstColumnButton = new Button("test");
+                Button firstColumnButton = new Button("Choose model path");
                 
                 firstColumnButton.Margin = 5;
-                
-                firstColumnButton.ModifyBg(Gtk.StateType.Normal, mainColor);
+
+                firstColumnButton.ModifyFg(Gtk.StateType.Normal, almostWhite);
 
                 return firstColumnButton;
             }
 
             List<Button> firstColumnButtons = new List<Button>();
             Box scrolledTimelinesElementsBox = new Box(Gtk.Orientation.Vertical, 0);
-            for(var i = 0;i<100;i++)
+            for(var i = 0;i<1;i++)
             {
-                Button firstColumnBox = createFirstColumnBox();
-                firstColumnButtons.Add(firstColumnBox);
+                Button firstColumnButton = createFirstColumnBox();
+                firstColumnButton.Name = "main_color_button";
+                firstColumnButtons.Add(firstColumnButton);
                 scrolledTimelinesElementsBox.Add(firstColumnButtons[^1]);
             }
 
@@ -232,6 +230,253 @@ namespace MiodenusUI
             newMenuItem.Activated += CreateButton_Clicked;
             openMenuItem.Activated += OpenButton_Clicked;
 
+            for (var i = 0; i < firstColumnButtons.Count; i++)
+            {
+                firstColumnButtons[i].Clicked += AddModel_Clicked;
+            }
+
+            void AddModel_Clicked(object sender, EventArgs a)
+            {
+                var addModelWindow = new Window("Set up your model");
+                
+                addModelWindow.SetSizeRequest(500,210);
+
+                addModelWindow.Resizable = false;
+
+                Box addModelWindowAllElements = new Box(Gtk.Orientation.Vertical, 0);
+                Box addModelWindowLabelsAndChoices = new Box(Gtk.Orientation.Horizontal, 0);
+                Box addModelWindowResponseButtons = new Box(Gtk.Orientation.Horizontal, 0);
+
+                Box addNewModelLabels = new Box(Gtk.Orientation.Vertical, 0);
+                Box addNewModelChoices = new Box(Gtk.Orientation.Vertical, 0);
+
+                addModelWindowAllElements.ModifyBg(StateType.Normal, mainColor);
+                
+                Label newModelNameLabel = new Label("Model name:");
+                newModelNameLabel.ModifyFg(StateType.Normal, almostWhite);
+                newModelNameLabel.MarginTop = 5;
+                newModelNameLabel.MarginBottom = 5;
+                newModelNameLabel.MarginStart = 5;
+                Label newModelTypeLabel = new Label("Model type:");
+                newModelTypeLabel.ModifyFg(StateType.Normal, almostWhite);
+                newModelTypeLabel.MarginBottom = 17;
+                newModelTypeLabel.MarginStart = 5;
+                Label newModelPathLabel = new Label("Model path:");
+                newModelPathLabel.ModifyFg(StateType.Normal, almostWhite);
+                newModelPathLabel.MarginBottom = 28;
+                newModelPathLabel.MarginStart = 5;
+                newModelPathLabel.MarginEnd = 5;
+                Label newModelColorLabel = new Label("Model color:");
+                newModelColorLabel.ModifyFg(StateType.Normal, almostWhite);
+                newModelColorLabel.MarginBottom = 23;
+                newModelColorLabel.MarginStart = 5;
+                Label newModelCalculatedNormalsLabel = new Label("Calculated normals:");
+                newModelCalculatedNormalsLabel.ModifyFg(StateType.Normal, almostWhite);
+                newModelCalculatedNormalsLabel.MarginBottom = 5;
+                newModelCalculatedNormalsLabel.MarginStart = 5;
+
+                addNewModelLabels.Add(newModelNameLabel);
+                addNewModelLabels.Add(newModelTypeLabel);
+                addNewModelLabels.Add(newModelPathLabel);
+                addNewModelLabels.Add(newModelColorLabel);
+                addNewModelLabels.Add(newModelCalculatedNormalsLabel);
+
+                TextView newModelName = new TextView();
+                newModelName.MarginEnd = 5;
+                newModelName.Buffer.Text = DefaultMafParameters.ModelInfo.Name;
+                newModelName.MarginBottom = 5;
+                newModelName.MarginTop = 5;
+                newModelName.ModifyBg(StateType.Normal, new Color(212,224,238));
+                addNewModelChoices.Add(newModelName);
+                
+                TextView newModelType = new TextView();
+                newModelType.SetSizeRequest(16,16);
+                newModelType.Hexpand = true;
+                newModelType.Buffer.Text = DefaultMafParameters.ModelInfo.Type;
+                newModelType.ModifyFg(StateType.Normal, almostWhite);
+                newModelType.MarginBottom = 5;
+                newModelType.ModifyBg(StateType.Normal, mainColor);
+                newModelType.Editable = false;
+                addNewModelChoices.Add(newModelType);
+                
+                Box newModelPathBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Label newModelPath = new Label(DefaultMafParameters.ModelInfo.Filename);
+                newModelPath.SetSizeRequest(290,16);
+                
+                ScrolledWindow newModelPathScrolledWindow = new ScrolledWindow();
+                newModelPathScrolledWindow.SetSizeRequest(290,16);
+                newModelPathScrolledWindow.Add(newModelPath);
+                
+                Button newModelPathButton = new Button("Browse");
+                newModelPathButton.Name = "light_blue_button";
+                
+                newModelPathBox.Add(newModelPathScrolledWindow);
+                newModelPathBox.PackEnd(newModelPathButton, false, false,0);
+                newModelPathButton.MarginEnd = 10;
+
+                newModelPathBox.MarginBottom = 7;
+                
+                addNewModelChoices.Add(newModelPathBox);
+                
+                Button chooseColorButton = new Button("Choose color");
+                chooseColorButton.Name = "light_blue_button";
+                Label choosenColorRedComponent = new Label($"Red = {DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255}");
+                Label choosenColorGreenComponent = new Label($"Green = {DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255}");
+                Label choosenColorBlueComponent = new Label($"Blue = {DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255}");
+                
+                choosenColorRedComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorGreenComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorBlueComponent.ModifyFg(StateType.Normal, almostWhite);
+                /*choosenColorRedComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorGreenComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorBlueComponent.ModifyFg(StateType.Normal, almostWhite);*/
+                
+                Box choosenColorBox = new Box(Gtk.Orientation.Horizontal,0);
+                choosenColorBox.ModifyBg(StateType.Normal, new Color((byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255)));
+
+                float[] rgbModelColor = new float[3];
+                
+                rgbModelColor[0] = DefaultMafParameters.AnimationInfo.BackgroundColor[0];
+                rgbModelColor[1] = DefaultMafParameters.AnimationInfo.BackgroundColor[1];
+                rgbModelColor[2] = DefaultMafParameters.AnimationInfo.BackgroundColor[2];
+                
+                choosenColorRedComponent.MarginEnd = 5;
+                choosenColorGreenComponent.MarginEnd = 5;
+                choosenColorBlueComponent.MarginEnd = 5;
+
+                Box modelColorComponentsVBox = new Box(Gtk.Orientation.Vertical, 0);
+                
+                modelColorComponentsVBox.Add(choosenColorRedComponent);
+                modelColorComponentsVBox.Add(choosenColorGreenComponent);
+                modelColorComponentsVBox.Add(choosenColorBlueComponent);
+                
+                choosenColorBox.MarginEnd = 5;
+                choosenColorBox.SetSizeRequest(40,10);
+                choosenColorBox.Expand = false;
+
+                Box modelColorComponents = new Box(Gtk.Orientation.Horizontal, 0);
+                
+                modelColorComponents.Add(modelColorComponentsVBox);
+                modelColorComponents.Add(choosenColorBox);
+                modelColorComponents.Add(chooseColorButton);
+
+                modelColorComponents.MarginBottom = 5;
+                
+                addNewModelChoices.Add(modelColorComponents);
+
+                Box calculatedNormalsBox = new Box(Gtk.Orientation.Horizontal, 0);
+                RadioButton calculatedNormalsOff = new RadioButton("Don`t use");
+                RadioButton calculatedNormalsOn = new RadioButton(calculatedNormalsOff,"Use");
+                
+                calculatedNormalsOn.ModifyFg(StateType.Normal, almostWhite);
+                calculatedNormalsOff.ModifyFg(StateType.Normal, almostWhite);
+                
+                calculatedNormalsBox.Add(calculatedNormalsOn);
+                calculatedNormalsBox.Add(calculatedNormalsOff);
+                
+                addNewModelChoices.Add(calculatedNormalsBox);
+                
+                Button addNewModelButtonOk = new Button("Ok");
+                Button addNewModelButtonCancel = new Button("Cancel");
+
+                addNewModelButtonCancel.Name = "dark_blue_button";
+                addNewModelButtonCancel.Margin = 7;
+                addNewModelButtonCancel.Hexpand = true;
+                addNewModelButtonCancel.SetSizeRequest(20,35);
+
+                addNewModelButtonOk.Name = "light_blue_button";
+                addNewModelButtonOk.Margin = 7;
+                addNewModelButtonOk.Hexpand = true;
+                addNewModelButtonOk.SetSizeRequest(20,35);
+                addNewModelButtonOk.Sensitive = false;
+                
+                addModelWindowLabelsAndChoices.Add(addNewModelLabels);
+                addModelWindowLabelsAndChoices.Add(addNewModelChoices);
+                
+                addModelWindowResponseButtons.Add(addNewModelButtonOk);
+                addModelWindowResponseButtons.Add(addNewModelButtonCancel);
+                
+                addModelWindowAllElements.Add(addModelWindowLabelsAndChoices);
+                addModelWindowAllElements.Add(addModelWindowResponseButtons);
+                
+                addModelWindow.Add(addModelWindowAllElements);
+                
+                addModelWindow.ShowAll();
+
+                newModelPathButton.Clicked += ModelPathButton_Clicked;
+                chooseColorButton.Clicked += ChooseColorButton_Clicked;
+                newModelName.Buffer.Changed += ModelName_Changed;
+                addNewModelButtonOk.Clicked += OkButton_Clicked;
+
+                void ModelName_Changed(object sender, EventArgs a)
+                {
+                    addNewModelButtonOk.Sensitive = newModelPath.Text != "" && newModelName.Buffer.Text != "";
+                }
+
+                void ModelPathButton_Clicked(object sender, EventArgs a)
+                {
+                    var chooseFolderDialog = new FileChooserDialog("Choose folder and filename", addModelWindow, FileChooserAction.Save, "Cancel",
+                        ResponseType.Cancel, "Choose", ResponseType.Accept);
+                    chooseFolderDialog.ShowAll();
+    
+                    if (chooseFolderDialog.Run()==(int)ResponseType.Accept)
+                    {
+                        newModelPath.Text = chooseFolderDialog.Filename;
+                                            
+                        if (!(System.IO.Path.GetFileName(newModelPath.Text).Contains('.')))
+                        {
+                            newModelPath.Text += ".maf";
+                        }
+                    }
+
+                    addNewModelButtonOk.Sensitive = newModelPath.Text != "" && newModelName.Buffer.Text != "";
+
+                    chooseFolderDialog.Destroy();
+                }
+                
+                void ChooseColorButton_Clicked(object sender, EventArgs a)
+                {
+                    ColorChooserDialog chooseColorWindow = new ColorChooserDialog("Choose color", addModelWindow);
+                    chooseColorWindow.ShowAll();
+
+                    if (chooseColorWindow.Run() == (int)ResponseType.Ok)
+                    {
+                        choosenColorRedComponent.Text = $"Red = {(((float)chooseColorWindow.Rgba.Red)*255).ToString()}";
+                        choosenColorGreenComponent.Text = $"Green = {(((float)chooseColorWindow.Rgba.Green)*255).ToString()}";
+                        choosenColorBlueComponent.Text = $"Blue = {(((float)chooseColorWindow.Rgba.Blue)*255).ToString()}";
+
+                        choosenColorBox.ModifyBg(StateType.Normal, new Color((byte)(chooseColorWindow.Rgba.Red*255), (byte)(chooseColorWindow.Rgba.Green*255), (byte)(chooseColorWindow.Rgba.Blue*255)));
+
+                        rgbModelColor[0] = (float) chooseColorWindow.Rgba.Red;
+                        rgbModelColor[1] = (float) chooseColorWindow.Rgba.Green;
+                        rgbModelColor[2] = (float) chooseColorWindow.Rgba.Blue;
+                    }
+                    addNewModelButtonOk.Sensitive = newModelPath.Text != "" && newModelName.Buffer.Text != "";
+                    chooseColorWindow.Destroy();
+                }
+                
+                void OkButton_Clicked(object sender, EventArgs a)
+                {
+                    animation.ModelsInfo.Add(new ModelInfo());
+                    animation.ModelsInfo[0].Name = newModelName.Buffer.Text;
+                    animation.ModelsInfo[0].Type = newModelType.Buffer.Text;
+                    animation.ModelsInfo[0].Filename = newModelPath.Text;
+                    animation.ModelsInfo[0].Color[0] = rgbModelColor[0];
+                    animation.ModelsInfo[0].Color[1] = rgbModelColor[1];
+                    animation.ModelsInfo[0].Color[2] = rgbModelColor[2];
+                    animation.ModelsInfo[0].UseCalculatedNormals = calculatedNormalsOn.Active;
+
+                    LoaderMaf mafLoaderNew = new LoaderMaf();
+                    var mafStr = mafLoaderNew.CreateMafString(animation);
+    
+                    var writerNew = File.CreateText(currentFilePath);
+                    writerNew.Write(mafStr);
+                    writerNew.Close();
+                    
+                    addModelWindow.Close();
+                }
+            }
+
         }
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -288,6 +533,9 @@ namespace MiodenusUI
         
         private void CreateButton_Clicked(object sender, EventArgs a)
         {
+            includeButton.Name = "browse_button";
+            animationPathButton.Name = "browse_button";
+            
             int fpsLength = 0;
             
             float[] rgbBackground = new float[3];
@@ -408,6 +656,8 @@ namespace MiodenusUI
             }*/
             
             TextView animationNameTextView = new TextView();
+            animationNameTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //animationNameTextView.ModifyFg(StateType.Normal, almostWhite);
             animationNameTextView.SetSizeRequest(400,16);
             animationNameTextView.MarginBottom = 5;
             animationNameTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Name;
@@ -419,6 +669,7 @@ namespace MiodenusUI
             videoPath.ModifyFg(StateType.Normal, almostWhite);
             Box videoPathBox = new Box(Gtk.Orientation.Horizontal, 0);
             Button videoPathButton = new Button("Browse");
+            videoPathButton.Name = "browse_button";
             videoPathBox.SetSizeRequest(400, 16);
             videoPathButton.SetSizeRequest(50, 16);
             ScrolledWindow scrolledVideoPath = new ScrolledWindow();
@@ -441,7 +692,9 @@ namespace MiodenusUI
             typeTextView.SetSizeRequest(400, 16);
             typeTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Type;
             typeTextView.Editable = false;
-            typeTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
+            typeTextView.ModifyBg(StateType.Normal, mainColor);
+            typeTextView.ModifyFg(StateType.Normal, almostWhite);
+            //typeTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
             //typeTextView.CanFocus = false;
             typeTextView.MarginBottom = 5;
             choicesBox.Add(typeTextView);
@@ -451,7 +704,9 @@ namespace MiodenusUI
             versionTextView.SetSizeRequest(400, 16);
             versionTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Version;
             versionTextView.Editable = false;
-            versionTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
+            versionTextView.ModifyBg(StateType.Normal, mainColor);
+            versionTextView.ModifyFg(StateType.Normal, almostWhite);
+            //versionTextView.ModifyBg(StateType.Normal, new Color(240,240,240));
             //versionTextView.CanFocus = false;
             versionTextView.MarginBottom = 5;
             choicesBox.Add(versionTextView);
@@ -503,12 +758,16 @@ namespace MiodenusUI
             choicesBox.Add(codecChoiceBox);
             
             TextView videoBitrateTextView = new TextView();
+            videoBitrateTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //videoBitrateTextView.ModifyFg(StateType.Normal, almostWhite);
             videoBitrateTextView.SetSizeRequest(400, 16);
             videoBitrateTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.VideoBitrate.ToString();
             videoBitrateTextView.MarginBottom = 5;
             choicesBox.Add(videoBitrateTextView);
 
             TextView timeLengthTextView = new TextView();
+            timeLengthTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //timeLengthTextView.ModifyFg(StateType.Normal, almostWhite);
             timeLengthTextView.SetSizeRequest(400, 16);
             timeLengthTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.TimeLength.ToString();
             timeLengthTextView.MarginBottom = 5;
@@ -516,6 +775,8 @@ namespace MiodenusUI
             //SetPlaceholderTextViewSizeAndPosition(timeLengthTextView, 95, 128);
             
             TextView fpsTextView = new TextView();
+            fpsTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //fpsTextView.ModifyFg(StateType.Normal, almostWhite);
             fpsTextView.SetSizeRequest(400, 16);
             fpsTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.Fps.ToString();
             fpsTextView.MarginBottom = 5;
@@ -526,12 +787,16 @@ namespace MiodenusUI
             multisamplingBox.SetSizeRequest(400, 16);
             multisamplingBox.MarginBottom = 5;
             RadioButton multisamplingOn = new RadioButton("On");
+            multisamplingOn.ModifyFg(StateType.Normal, almostWhite);
             RadioButton multisamplingOff = new RadioButton(multisamplingOn, "Off");
+            multisamplingOff.ModifyFg(StateType.Normal, almostWhite);
             multisamplingBox.Add(multisamplingOn);
             multisamplingBox.Add(multisamplingOff);
             choicesBox.Add(multisamplingBox);
             
             TextView frameWidthTextView = new TextView();
+            frameWidthTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //frameWidthTextView.ModifyFg(StateType.Normal, almostWhite);
             frameWidthTextView.SetSizeRequest(400, 16);
             frameWidthTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.FrameWidth.ToString();
             frameWidthTextView.MarginBottom = 5;
@@ -539,6 +804,8 @@ namespace MiodenusUI
             //SetPlaceholderTextViewSizeAndPosition(frameWidthTextView, 95, 180);
             
             TextView frameHeightTextView = new TextView();
+            frameHeightTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            //frameHeightTextView.ModifyFg(StateType.Normal, almostWhite);
             frameHeightTextView.SetSizeRequest(400, 16);
             frameHeightTextView.Buffer.Text = DefaultMafParameters.AnimationInfo.FrameHeight.ToString();
             frameHeightTextView.MarginBottom = 5;
@@ -554,6 +821,7 @@ namespace MiodenusUI
             backgroundColorComponents.Hexpand = true;
             backgroundColorComponents.MarginBottom = 5;
             Button chooseColorButton = new Button("Choose color");
+            chooseColorButton.Name = "light_blue_button";
             Label choosenColorRedComponent = new Label("");
             Label choosenColorGreenComponent = new Label("");
             Label choosenColorBlueComponent = new Label("");
@@ -635,25 +903,42 @@ namespace MiodenusUI
             //SetPlaceholderTextViewSizeAndPosition(animationPathTextView, 95, 228);
 
             newFileCreationBox.Add(choicesBox);
+
+            Box responseBox = new Box(Gtk.Orientation.Horizontal, 0);
             
+            responseBox.ModifyBg(StateType.Normal, mainColor);
             //Buttons
             Button okButton = new Button("Ok");
+
+            okButton.Name = "light_blue_button";
+
+            okButton.Margin = 7;
+            okButton.Expand = true;
             
             okButton.Sensitive = false;
             
-            labelsBox.Add(okButton);
+            responseBox.Add(okButton);
+            //labelsBox.Add(okButton);
             
             //okButton.SetSizeRequest(45, 30);
             //fixedLayout.Put(okButton, 275, 452);
 
             Button cancelButton = new Button("Cancel");
+            cancelButton.Name = "dark_blue_button";
+            cancelButton.Margin = 7;
+            cancelButton.Expand = true;
+            Box responseAndCreationBox = new Box(Gtk.Orientation.Vertical, 0);
             
-            choicesBox.Add(cancelButton);
+            responseAndCreationBox.Add(newFileCreationBox);
+            
+            responseBox.Add(cancelButton);
+            //choicesBox.Add(cancelButton);
             
             //cancelButton.SetSizeRequest(45, 30);
             //fixedLayout.Put(cancelButton, 155, 452);
-            
-            init.Add(newFileCreationBox);
+            //newFileCreationBox.Add(responseBox);
+            responseAndCreationBox.Add(responseBox);
+            init.Add(responseAndCreationBox);
             init.ShowAll();
 
             /*if (multisamplingOn.Active)
