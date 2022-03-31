@@ -17,6 +17,10 @@ namespace MiodenusUI
 {
     class MainWindow : Window
     {
+        MiodenusUI.MafStructure.Animation animation = new MiodenusUI.MafStructure.Animation();
+        LoaderMaf maf = new LoaderMaf();
+        private List<Button> modelsNamesButtons = new List<Button>();
+        private List<Button> modelsNamesRemoveButtons = new List<Button>();
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
         MenuItem openMenuItem = new MenuItem("Open");
@@ -56,7 +60,7 @@ namespace MiodenusUI
             
             Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, css, Gtk.StyleProviderPriority.User);
             string cssStyles = "";
-            cssStyles = File.ReadAllText("M:\\C#\\MiodenusUI\\MiodenusUI\\style.css");
+            cssStyles = File.ReadAllText("style.css");
             css.LoadFromData(cssStyles);
             
             Box allWindowElements = new Box(Gtk.Orientation.Vertical, 0);
@@ -76,9 +80,9 @@ namespace MiodenusUI
 
             builder.Autoconnect(this);
             
-            LoaderMaf maf = new LoaderMaf();
+            
 
-            MiodenusUI.MafStructure.Animation animation = new MiodenusUI.MafStructure.Animation();
+            //MiodenusUI.MafStructure.Animation animation = new MiodenusUI.MafStructure.Animation();
             animation = maf.Read(currentFilePath);
             
             animationInfoLabel.Text = animation.AnimationInfo.Type + ", " + animation.AnimationInfo.Version + ", " +
@@ -139,6 +143,11 @@ namespace MiodenusUI
                 firstColumnButtons.Add(firstColumnButton);
                 scrolledTimelinesElementsBox.Add(firstColumnButtons[^1]);
             }
+
+            /*for (var i = 0; i < modelsNamesButtons.Count; i++)
+            {
+                scrolledTimelinesElementsBox.PackStart(modelsNamesButtons[i], false,false,0);
+            }*/
 
             scrolledTimelinesElementsBox.Vexpand = true;
             
@@ -215,15 +224,42 @@ namespace MiodenusUI
             //labelHbox.ModifyBg(Gtk.StateType.Normal, color);
             Add(allWindowElements);
             
-            this.ShowAll();
+            
 
             var mafStr = maf.CreateMafString(animation);
 
-            var writer = File.CreateText("test1.txt");
+            var writer = File.CreateText(currentFilePath);
             writer.Write(mafStr);
             writer.Close();
             
-            animation = maf.Read("test1.txt");
+            animation = maf.Read(currentFilePath);
+            
+            for (var i = 0; i < animation.ModelsInfo.Count; i++)
+            {
+                Button modelButton = new Button(animation.ModelsInfo[i].Name);
+                Button removeModelButton = new Button("Remove");
+    
+                Box modelAndRemoveButtonBox = new Box(Gtk.Orientation.Horizontal, 0);
+                        
+                modelsNamesButtons.Add(modelButton);
+                modelsNamesRemoveButtons.Add(removeModelButton);
+    
+                modelsNamesRemoveButtons.Last().Name = "main_color_button";
+                modelsNamesRemoveButtons.Last().Margin = 5;
+                modelsNamesRemoveButtons.Last().ModifyFg(StateType.Normal, almostWhite);
+    
+                modelsNamesButtons.Last().Name = "main_color_button";
+                modelsNamesButtons.Last().Margin = 5;
+                modelsNamesButtons.Last().ModifyFg(StateType.Normal, almostWhite);
+                modelsNamesButtons.Last().WidthRequest = 310;
+                modelAndRemoveButtonBox.Add(modelsNamesButtons.Last());
+                modelAndRemoveButtonBox.PackEnd(modelsNamesRemoveButtons.Last(), false, false, 0);
+                scrolledTimelinesElementsBox.Add(modelAndRemoveButtonBox);
+                    
+                modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
+            }
+            
+            this.ShowAll();
             
             DeleteEvent += Window_DeleteEvent;
             exitMenuItem.Activated += Program_Quit;
@@ -233,6 +269,26 @@ namespace MiodenusUI
             for (var i = 0; i < firstColumnButtons.Count; i++)
             {
                 firstColumnButtons[i].Clicked += AddModel_Clicked;
+            }
+            
+            void RemoveModel_Clicked(object sender, EventArgs a)
+            {
+                var i = modelsNamesRemoveButtons.IndexOf((Button) sender);
+                modelsNamesButtons[i].Destroy();
+                modelsNamesRemoveButtons[i].Destroy();
+                    
+                modelsNamesButtons.Remove(modelsNamesButtons[i]);
+                modelsNamesRemoveButtons.Remove(modelsNamesRemoveButtons[i]);
+
+                animation.ModelsInfo.Remove(animation.ModelsInfo[i]);
+                
+                var mafStr = maf.CreateMafString(animation);
+
+                var writer = File.CreateText(currentFilePath);
+                writer.Write(mafStr);
+                writer.Close();
+
+                ShowAll();
             }
 
             void AddModel_Clicked(object sender, EventArgs a)
@@ -263,7 +319,7 @@ namespace MiodenusUI
                 newModelTypeLabel.MarginStart = 5;
                 Label newModelPathLabel = new Label("Model path:");
                 newModelPathLabel.ModifyFg(StateType.Normal, almostWhite);
-                newModelPathLabel.MarginBottom = 28;
+                newModelPathLabel.MarginBottom = 40;
                 newModelPathLabel.MarginStart = 5;
                 newModelPathLabel.MarginEnd = 5;
                 Label newModelColorLabel = new Label("Model color:");
@@ -400,16 +456,39 @@ namespace MiodenusUI
                 addModelWindowAllElements.Add(addModelWindowResponseButtons);
                 
                 addModelWindow.Add(addModelWindowAllElements);
-                
+
                 addModelWindow.ShowAll();
 
                 newModelPathButton.Clicked += ModelPathButton_Clicked;
                 chooseColorButton.Clicked += ChooseColorButton_Clicked;
                 newModelName.Buffer.Changed += ModelName_Changed;
                 addNewModelButtonOk.Clicked += OkButton_Clicked;
+                addNewModelButtonCancel.Clicked += CancelButton_Clicked;
+                for (var i = 0; i < modelsNamesRemoveButtons.Count; i++)
+                {
+                    modelsNamesRemoveButtons[i].Clicked += RemoveModel_Clicked;
+                }
 
+                void CancelButton_Clicked(object sender, EventArgs a)
+                {
+                    /*for (var i = 0; i!=firstColumnButtons.Count; i++)
+                    {
+                        firstColumnButtons[i].Destroy();
+                    }
+
+                    firstColumnButtons = new List<Button>();
+                    
+                    ShowAll();*/
+                    addModelWindow.Close();
+                }
+                
                 void ModelName_Changed(object sender, EventArgs a)
                 {
+                    if (newModelName.Buffer.Text.Length == 55)
+                    {
+                        newModelName.Buffer.Text = newModelName.Buffer.Text.Remove(newModelName.Buffer.Text.Length-1, 1);
+                    }
+                    
                     addNewModelButtonOk.Sensitive = newModelPath.Text != "" && newModelName.Buffer.Text != "";
                 }
 
@@ -457,14 +536,39 @@ namespace MiodenusUI
                 
                 void OkButton_Clicked(object sender, EventArgs a)
                 {
-                    animation.ModelsInfo.Add(new ModelInfo());
-                    animation.ModelsInfo[0].Name = newModelName.Buffer.Text;
-                    animation.ModelsInfo[0].Type = newModelType.Buffer.Text;
-                    animation.ModelsInfo[0].Filename = newModelPath.Text;
-                    animation.ModelsInfo[0].Color[0] = rgbModelColor[0];
-                    animation.ModelsInfo[0].Color[1] = rgbModelColor[1];
-                    animation.ModelsInfo[0].Color[2] = rgbModelColor[2];
-                    animation.ModelsInfo[0].UseCalculatedNormals = calculatedNormalsOn.Active;
+                    ModelInfo newModel = new ModelInfo();
+                    newModel.Name = newModelName.Buffer.Text;
+                    newModel.Type = newModelType.Buffer.Text;
+                    newModel.Filename = newModelPath.Text;
+                    newModel.Color[0] = rgbModelColor[0];
+                    newModel.Color[1] = rgbModelColor[1];
+                    newModel.Color[2] = rgbModelColor[2];
+                    newModel.UseCalculatedNormals = calculatedNormalsOn.Active;
+                    
+                    animation.ModelsInfo.Add(newModel);
+
+                    Button modelButton = new Button(newModel.Name);
+                    Button removeModelButton = new Button("Remove");
+
+                    Box modelAndRemoveButtonBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    
+                    modelsNamesButtons.Add(modelButton);
+                    modelsNamesRemoveButtons.Add(removeModelButton);
+
+                    modelsNamesRemoveButtons.Last().Name = "main_color_button";
+                    modelsNamesRemoveButtons.Last().Margin = 5;
+                    modelsNamesRemoveButtons.Last().ModifyFg(StateType.Normal, almostWhite);
+
+                    modelsNamesButtons.Last().Name = "main_color_button";
+                    modelsNamesButtons.Last().Margin = 5;
+                    modelsNamesButtons.Last().ModifyFg(StateType.Normal, almostWhite);
+                    modelsNamesButtons.Last().WidthRequest = 310;
+                    modelAndRemoveButtonBox.Add(modelsNamesButtons.Last());
+                    modelAndRemoveButtonBox.PackEnd(modelsNamesRemoveButtons.Last(), false, false, 0);
+                    scrolledTimelinesElementsBox.Add(modelAndRemoveButtonBox);
+
+                    modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
+                    ShowAll();
 
                     LoaderMaf mafLoaderNew = new LoaderMaf();
                     var mafStr = mafLoaderNew.CreateMafString(animation);
@@ -526,6 +630,9 @@ namespace MiodenusUI
                     //animationPath.Text = openDialog.Filename;
                 //}
             }
+
+            currentFilePath = openDialog.Filename;
+            animation = maf.Read(currentFilePath);
 
             openDialog.Destroy();
         }

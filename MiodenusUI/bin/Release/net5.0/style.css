@@ -1,0 +1,37 @@
+#dark_blue_button {
+	background-image : none;
+    background-color : #232a3e;
+	color : #f5f4f2;
+	border : none;
+	border-radius : 20px;
+}
+
+#light_blue_button{
+	background-image : none;
+	background-color : #d4e0ee;
+	border : none;
+	border-radius : 20px;
+}
+
+#browse_button{
+	background-image : none;
+	background-color : #d4e0ee;
+	border : none;
+	border-radius : 20px;
+}
+
+#main_color_widget{
+	background-color : #576885;
+}
+
+#main_color_button{
+	background-image : none;
+	border-radius : 10px;
+	border : none;
+	border-color : #576885;
+	background-color : #576885;
+}
+
+#rounded_box{
+	border-radius : 10px;
+}
