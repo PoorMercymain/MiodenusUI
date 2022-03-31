@@ -464,10 +464,10 @@ namespace MiodenusUI
                 newModelName.Buffer.Changed += ModelName_Changed;
                 addNewModelButtonOk.Clicked += OkButton_Clicked;
                 addNewModelButtonCancel.Clicked += CancelButton_Clicked;
-                for (var i = 0; i < modelsNamesRemoveButtons.Count; i++)
+                /*for (var i = 0; i < modelsNamesRemoveButtons.Count; i++)
                 {
                     modelsNamesRemoveButtons[i].Clicked += RemoveModel_Clicked;
-                }
+                }*/
 
                 void CancelButton_Clicked(object sender, EventArgs a)
                 {
