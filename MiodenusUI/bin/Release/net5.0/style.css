@@ -32,6 +32,10 @@
 	background-color : #576885;
 }
 
+#main_color_button label{
+	color : white;
+}
+
 #rounded_box{
 	border-radius : 10px;
 }

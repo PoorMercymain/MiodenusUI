@@ -20,4 +20,9 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="bin\Debug\net5.0\style.css" />
+      <Content Include="bin\Release\net5.0\style.css" />
+    </ItemGroup>
+
 </Project>
