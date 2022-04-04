@@ -143,6 +143,7 @@ namespace MiodenusUI
                 firstColumnButton.Name = "main_color_button";
                 //firstColumnButton.ModifyFg(StateType.Normal, mainColor);
                 //firstColumnButton.Child.ModifyFg(StateType.Normal, almostWhite);
+                //firstColumnButton.Relief = ReliefStyle.None;
                 firstColumnButtons.Add(firstColumnButton);
                 scrolledTimelinesElementsBox.Add(firstColumnButtons[^1]);
             }
@@ -728,33 +729,64 @@ namespace MiodenusUI
             List<RadioButton> actionStateIsModelVisibleRadioButtons = new List<RadioButton>();
 
             Window addActionWindow = new Window("Set up your action");
+            ScrolledWindow addActionWindowAllElementsScrolled = new ScrolledWindow();
             Box addActionWindowAllElements = new Box(Gtk.Orientation.Horizontal, 0);
+            
+            addActionWindow.ModifyBg(StateType.Normal, mainColor);
 
+            addActionWindow.WidthRequest = 611;
+            addActionWindow.HeightRequest = 115;
             addActionWindowAllElements.Add(addActionWindowLabels);
             addActionWindowAllElements.Add(addActionWindowResponses);
             
-            addActionWindow.Add(addActionWindowAllElements);
+            addActionWindowAllElementsScrolled.Add(addActionWindowAllElements);
+            addActionWindow.Add(addActionWindowAllElementsScrolled);
 
             Label actionNameLabel = new Label("Action name:");
-            addActionWindowLabels.Add(actionNameLabel);
-            actionNameLabel.MarginStart = 5;
-            actionNameLabel.MarginTop = 5;
-            actionNameLabel.MarginEnd = 5;
+            actionNameLabel.ModifyFg(StateType.Normal, almostWhite);
+            Box actionNameLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+            actionNameLabelBox.Add(actionNameLabel);
+            addActionWindowLabels.Add(actionNameLabelBox);
+            actionNameLabelBox.MarginStart = 5;
+            actionNameLabelBox.MarginTop = 5;
+            actionNameLabelBox.MarginEnd = 5;
 
             TextView actionNameTextView = new TextView();
-            actionNameTextView.SetSizeRequest(350, 16);
-            actionNameTextView.MarginEnd = 5;
+            actionNameTextView.SetSizeRequest(450, 16);
+            actionNameTextView.MarginEnd = 6;
             actionNameTextView.MarginTop = 5;
             addActionWindowResponses.Add(actionNameTextView);
 
             Label actionStatesLabel = new Label("Action states:");
-            addActionWindowLabels.Add(actionStatesLabel);
-            actionStatesLabel.MarginStart = 5;
-            actionStatesLabel.MarginTop = 7;
-            actionStatesLabel.MarginEnd = 5;
+            actionStatesLabel.ModifyFg(StateType.Normal, almostWhite);
+            Box actionStatesLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+            actionStatesLabelBox.Add(actionStatesLabel);
+            addActionWindowLabels.Add(actionStatesLabelBox);
+            actionStatesLabelBox.MarginStart = 5;
+            actionStatesLabelBox.MarginTop = 15;
+            actionStatesLabelBox.MarginEnd = 5;
 
             Button addNewActionStateButton = new Button("Add");
+            addNewActionStateButton.Name = "light_blue_button";
             addNewActionStateButton.Data.Add("id", actionStatesCounter);
+            addNewActionStateButton.MarginTop = 5;
+            addNewActionStateButton.MarginEnd = 6;
+
+            Button addActionOkButton = new Button("Ok");
+            addActionOkButton.Name = "light_blue_button";
+            addActionOkButton.MarginTop = 20;
+            addActionOkButton.MarginBottom = 5;
+            addActionOkButton.MarginStart = 5;
+            addActionWindowLabels.PackEnd(addActionOkButton, false, false, 0);
+            
+            Button addActionCancelButton = new Button("Cancel");
+            addActionCancelButton.Name = "dark_blue_button";
+            addActionCancelButton.MarginTop = 20;
+            addActionCancelButton.MarginBottom = 5;
+            addActionCancelButton.MarginStart = 5;
+            addActionWindowResponses.PackEnd(addActionCancelButton, false, false, 0);
+
+            addActionWindow.Resizable = false;
             addNewActionStateButton.Clicked += AddActionState_Clicked;
             addActionWindowResponses.Add(addNewActionStateButton);
             
@@ -762,32 +794,40 @@ namespace MiodenusUI
             {
                 actionStatesCounter++;
                 
+                addActionWindow.HeightRequest = 480;
                 if (actionStatesCounter == 1)
                 {
                     Label actionStateTimeLabel = new Label("Action state time:");
-                    actionStateTimeLabel.MarginStart = 5;
-                    actionStateTimeLabel.MarginTop = 20;
-                    actionStateTimeLabel.MarginEnd = 5;
-                    addActionWindowLabels.Add(actionStateTimeLabel);
+                    actionStateTimeLabel.ModifyFg(StateType.Normal, almostWhite);
+                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    actionStateTimeLabelBox.Add(actionStateTimeLabel);
+                    actionStateTimeLabelBox.MarginStart = 5;
+                    actionStateTimeLabelBox.MarginTop = 15;
+                    actionStateTimeLabelBox.MarginEnd = 5;
+                    addActionWindowLabels.Add(actionStateTimeLabelBox);
                     
                     TextView actionStateTimeTextView = new TextView();
-                    actionStateTimeTextView.SetSizeRequest(350, 16);
+                    actionStateTimeTextView.SetSizeRequest(346, 16);
                     actionStateTimeTextView.MarginTop = 7;
-                    actionStateTimeTextView.MarginEnd = 5;
+                    actionStateTimeTextView.MarginEnd = 6;
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                 }
                 else
                 {
                     Label actionStateTimeLabel = new Label("Action state time:");
-                    actionStateTimeLabel.MarginStart = 5;
-                    actionStateTimeLabel.MarginTop = 23;
-                    actionStateTimeLabel.MarginEnd = 5;
-                    addActionWindowLabels.Add(actionStateTimeLabel);
+                    actionStateTimeLabel.ModifyFg(StateType.Normal, almostWhite);
+                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    actionStateTimeLabelBox.Add(actionStateTimeLabel);
+                    actionStateTimeLabelBox.MarginStart = 5;
+                    actionStateTimeLabelBox.MarginTop = 15;
+                    actionStateTimeLabelBox.MarginEnd = 5;
+                    addActionWindowLabels.Add(actionStateTimeLabelBox);
                     
                     TextView actionStateTimeTextView = new TextView();
-                    actionStateTimeTextView.SetSizeRequest(350, 16);
-                    actionStateTimeTextView.MarginEnd = 5;
+                    actionStateTimeTextView.SetSizeRequest(346, 16);
+                    actionStateTimeTextView.MarginEnd = 7;
+                    actionStateTimeTextView.MarginTop = 14;
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                 }
@@ -795,15 +835,22 @@ namespace MiodenusUI
                 
 
                 Label actionStateModelVisibilityLabel = new Label("Model visibility:");
-                actionStateModelVisibilityLabel.MarginStart = 5;
-                actionStateModelVisibilityLabel.MarginTop = 7;
-                actionStateModelVisibilityLabel.MarginEnd = 5;
-                actionStateModelVisibilityLabel.MarginBottom = 15;
-                addActionWindowLabels.Add(actionStateModelVisibilityLabel);
+                Box actionStateModelVisibilityLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                actionStateModelVisibilityLabel.ModifyFg(StateType.Normal, almostWhite);
+                actionStateModelVisibilityLabelBox.Add(actionStateModelVisibilityLabel);
+                actionStateModelVisibilityLabelBox.MarginStart = 5;
+                actionStateModelVisibilityLabelBox.MarginTop = 5;
+                actionStateModelVisibilityLabelBox.MarginEnd = 10;
+                actionStateModelVisibilityLabelBox.MarginBottom = 15;
+                addActionWindowLabels.Add(actionStateModelVisibilityLabelBox);
                 
                 Box actionStateModelVisibilityBox = new Box(Gtk.Orientation.Horizontal, 0);
+                actionStateModelVisibilityBox.MarginTop = 5;
+                actionStateModelVisibilityBox.MarginBottom = 5;
                 RadioButton actionStateModelVisibilityOn = new RadioButton("On");
+                actionStateModelVisibilityOn.ModifyFg(StateType.Normal, almostWhite);
                 RadioButton actionStateModelVisibilityOff = new RadioButton(actionStateModelVisibilityOn, "Off");
+                actionStateModelVisibilityOff.ModifyFg(StateType.Normal, almostWhite);
                 actionStateModelVisibilityBox.Add(actionStateModelVisibilityOn);
                 actionStateIsModelVisibleRadioButtons.Add(actionStateModelVisibilityOn);
                 actionStateModelVisibilityBox.Add(actionStateModelVisibilityOff);
@@ -813,7 +860,12 @@ namespace MiodenusUI
                 float[] rgbModelColor = new float[3];
 
                 Label actionStateColorLabel = new Label("Model color:");
-                addActionWindowLabels.Add(actionStateColorLabel);
+                Box actionStateColorLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                actionStateColorLabel.ModifyFg(StateType.Normal, almostWhite);
+                actionStateColorLabelBox.Add(actionStateColorLabel);
+                actionStateColorLabelBox.MarginTop = 7;
+                actionStateColorLabelBox.MarginStart = 5;
+                addActionWindowLabels.Add(actionStateColorLabelBox);
                 
                 Box backgroundColorComponents = new Box(Gtk.Orientation.Horizontal, 0);
                 Box backgroundColorComponentsVBox = new Box(Gtk.Orientation.Vertical, 0);
@@ -826,6 +878,10 @@ namespace MiodenusUI
                 Label choosenColorRedComponent = new Label("");
                 Label choosenColorGreenComponent = new Label("");
                 Label choosenColorBlueComponent = new Label("");
+                
+                choosenColorRedComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorGreenComponent.ModifyFg(StateType.Normal, almostWhite);
+                choosenColorBlueComponent.ModifyFg(StateType.Normal, almostWhite);
 
                 Box choosenColorBox = new Box(Gtk.Orientation.Horizontal,0);
                 choosenColorBox.ModifyBg(StateType.Normal, new Color((byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255)));
@@ -855,6 +911,287 @@ namespace MiodenusUI
                 backgroundColorComponents.Add(chooseColorButton);
                 
                 addActionWindowResponses.Add(backgroundColorComponents);
+
+                Label resetScaleLabel = new Label("Reset scale:");
+                Box resetScaleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetScaleLabel.ModifyFg(StateType.Normal, almostWhite);
+                resetScaleLabelBox.Add(resetScaleLabel);
+                resetScaleLabelBox.MarginStart = 5;
+                resetScaleLabelBox.MarginTop = 24;
+                resetScaleLabelBox.MarginEnd = 7;
+                addActionWindowLabels.Add(resetScaleLabelBox);
+
+                Box resetScaleBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetScaleBox.MarginBottom = 5;
+                addActionWindowResponses.Add(resetScaleBox);
+
+                RadioButton resetScaleNo = new RadioButton("No");
+                resetScaleNo.ModifyFg(StateType.Normal, almostWhite);
+                RadioButton resetScaleYes = new RadioButton(resetScaleNo, "Yes");
+                resetScaleYes.ModifyFg(StateType.Normal, almostWhite);
+                resetScaleBox.Add(resetScaleYes);
+                resetScaleBox.Add(resetScaleNo);
+
+                Label transformationScale = new Label("Scale:");
+                Box transformationScaleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                transformationScale.ModifyFg(StateType.Normal, almostWhite);
+                transformationScaleLabelBox.Add(transformationScale);
+                transformationScale.MarginStart = 5;
+                transformationScale.MarginTop = 5;
+                transformationScale.MarginEnd = 5;
+                addActionWindowLabels.Add(transformationScaleLabelBox);
+
+                Box transformationScaleBox = new Box(Gtk.Orientation.Horizontal, 0);
+                addActionWindowResponses.Add(transformationScaleBox);
+
+                TextView transformationScaleX = new TextView();
+                transformationScaleX.WidthRequest = 146;
+                transformationScaleX.MarginEnd = 5;
+                TextView transformationScaleY = new TextView();
+                transformationScaleY.WidthRequest = 146;
+                transformationScaleY.MarginEnd = 5;
+                TextView transformationScaleZ = new TextView();
+                transformationScaleZ.WidthRequest = 146;
+                
+                transformationScaleBox.Add(transformationScaleX);
+                transformationScaleBox.Add(transformationScaleY);
+                transformationScaleBox.Add(transformationScaleZ);
+
+                Label resetLocalRotationLabel = new Label("Reset local rotation:");
+                Box resetLocalRotationLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetLocalRotationLabel.ModifyFg(StateType.Normal, almostWhite);
+                resetLocalRotationLabelBox.Add(resetLocalRotationLabel);
+                resetLocalRotationLabelBox.MarginTop = 7;
+                resetLocalRotationLabelBox.MarginStart = 5;
+                addActionWindowLabels.Add(resetLocalRotationLabelBox);
+                
+                Box resetLocalRotationBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetLocalRotationBox.MarginTop = 2;
+                addActionWindowResponses.Add(resetLocalRotationBox);
+
+                RadioButton resetLocalRotationNo = new RadioButton("No");
+                resetLocalRotationNo.ModifyFg(StateType.Normal, almostWhite);
+                RadioButton resetLocalRotationYes = new RadioButton(resetLocalRotationNo, "Yes");
+                resetLocalRotationYes.ModifyFg(StateType.Normal, almostWhite);
+                resetLocalRotationBox.Add(resetLocalRotationYes);
+                resetLocalRotationBox.Add(resetLocalRotationNo);
+
+                Label localRotationAngleLabel = new Label("Local rotation angle:");
+                Box localRotationAngleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localRotationAngleLabel.ModifyFg(StateType.Normal, almostWhite);
+                localRotationAngleLabelBox.Add(localRotationAngleLabel);
+                localRotationAngleLabel.MarginStart = 5;
+                localRotationAngleLabel.MarginTop = 7;
+                localRotationAngleLabel.MarginEnd = 8;
+                addActionWindowLabels.Add(localRotationAngleLabelBox);
+
+                TextView localRotationAngleTextView = new TextView();
+                localRotationAngleTextView.MarginEnd = 6;
+                localRotationAngleTextView.MarginTop = 5;
+                addActionWindowResponses.Add(localRotationAngleTextView);
+                
+                Label localRotationUnitsLabel = new Label("Local rotation units:");
+                Box localRotationUnitsLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localRotationUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
+                localRotationUnitsLabelBox.Add(localRotationUnitsLabel);
+                localRotationUnitsLabel.MarginStart = 5;
+                localRotationUnitsLabel.MarginTop = 15;
+                localRotationUnitsLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(localRotationUnitsLabelBox);
+
+                string[] availableAngleUnits = new[]
+                {
+                    "rad",
+                    "deg"
+                };
+
+                ComboBox angleUnitsChooser = new ComboBox(availableAngleUnits);
+                Box angleUnitsChooserBox = new Box(Gtk.Orientation.Horizontal, 0);
+                angleUnitsChooserBox.MarginTop = 5;
+                angleUnitsChooser.Active = 1;
+                angleUnitsChooserBox.Add(angleUnitsChooser);
+                addActionWindowResponses.Add(angleUnitsChooserBox);
+                
+                Label localRotationVectorLabel = new Label("Local rotation vector:");
+                Box localRotationVectorLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localRotationVectorLabel.ModifyFg(StateType.Normal, almostWhite);
+                localRotationVectorLabelBox.Add(localRotationVectorLabel);
+                localRotationVectorLabel.MarginStart = 5;
+                localRotationVectorLabel.MarginTop = 15;
+                localRotationVectorLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(localRotationVectorLabelBox);
+
+                Box localRotationVectorBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localRotationVectorBox.MarginTop = 5;
+                addActionWindowResponses.Add(localRotationVectorBox);
+
+                TextView localRotationVectorX = new TextView();
+                localRotationVectorX.WidthRequest = 146;
+                localRotationVectorX.MarginEnd = 5;
+                TextView localRotationVectorY = new TextView();
+                localRotationVectorY.WidthRequest = 146;
+                localRotationVectorY.MarginEnd = 5;
+                TextView localRotationVectorZ = new TextView();
+                localRotationVectorZ.WidthRequest = 146;
+                
+                localRotationVectorBox.Add(localRotationVectorX);
+                localRotationVectorBox.Add(localRotationVectorY);
+                localRotationVectorBox.Add(localRotationVectorZ);
+                
+                Label resetPositionLabel = new Label("Reset position:");
+                Box resetPositionLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetPositionLabel.ModifyFg(StateType.Normal, almostWhite);
+                resetPositionLabelBox.Add(resetPositionLabel);
+                resetPositionLabel.MarginStart = 5;
+                resetPositionLabel.MarginTop = 8;
+                resetPositionLabel.MarginBottom = 5;
+                addActionWindowLabels.Add(resetPositionLabelBox);
+                
+                Box resetPositionBox = new Box(Gtk.Orientation.Horizontal, 0);
+                resetPositionBox.MarginTop = 5;
+                resetPositionBox.MarginBottom = 5;
+                addActionWindowResponses.Add(resetPositionBox);
+
+                RadioButton resetPositionNo = new RadioButton("No");
+                resetPositionNo.ModifyFg(StateType.Normal, almostWhite);
+                RadioButton resetPositionYes = new RadioButton(resetPositionNo, "Yes");
+                resetPositionYes.ModifyFg(StateType.Normal, almostWhite);
+                resetPositionBox.Add(resetPositionYes);
+                resetPositionBox.Add(resetPositionNo);
+                
+                Label globalMoveLabel = new Label("Global move:");
+                Box globalMoveLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                globalMoveLabel.ModifyFg(StateType.Normal, almostWhite);
+                globalMoveLabelBox.Add(globalMoveLabel);
+                globalMoveLabel.MarginStart = 5;
+                globalMoveLabel.MarginTop = 2;
+                globalMoveLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(globalMoveLabelBox);
+
+                Box globalMoveBox = new Box(Gtk.Orientation.Horizontal, 0);
+                addActionWindowResponses.Add(globalMoveBox);
+
+                TextView globalMoveX = new TextView();
+                globalMoveX.WidthRequest = 146;
+                globalMoveX.MarginEnd = 5;
+                TextView globalMoveY = new TextView();
+                globalMoveY.WidthRequest = 146;
+                globalMoveY.MarginEnd = 5;
+                TextView globalMoveZ = new TextView();
+                globalMoveZ.WidthRequest = 146;
+                
+                globalMoveBox.Add(globalMoveX);
+                globalMoveBox.Add(globalMoveY);
+                globalMoveBox.Add(globalMoveZ);
+                
+                Label localMoveLabel = new Label("Local move:");
+                Box localMoveLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localMoveLabel.ModifyFg(StateType.Normal, almostWhite);
+                localMoveLabelBox.Add(localMoveLabel);
+                localMoveLabel.MarginStart = 5;
+                localMoveLabel.MarginTop = 5;
+                localMoveLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(localMoveLabelBox);
+
+                Box localMoveBox = new Box(Gtk.Orientation.Horizontal, 0);
+                localMoveBox.MarginTop = 5;
+                addActionWindowResponses.Add(localMoveBox);
+
+                TextView localMoveX = new TextView();
+                localMoveX.WidthRequest = 146;
+                localMoveX.MarginEnd = 5;
+                TextView localMoveY = new TextView();
+                localMoveY.WidthRequest = 146;
+                localMoveY.MarginEnd = 5;
+                TextView localMoveZ = new TextView();
+                localMoveZ.WidthRequest = 146;
+                
+                localMoveBox.Add(localMoveX);
+                localMoveBox.Add(localMoveY);
+                localMoveBox.Add(localMoveZ);
+                
+                Label rotationAngleLabel = new Label("Rotation angle:");
+                Box rotationAngleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationAngleLabel.ModifyFg(StateType.Normal, almostWhite);
+                rotationAngleLabelBox.Add(rotationAngleLabel);
+                rotationAngleLabel.MarginStart = 5;
+                rotationAngleLabel.MarginTop = 5;
+                rotationAngleLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(rotationAngleLabelBox);
+                
+                TextView rotationAngleTextView = new TextView();
+                rotationAngleTextView.MarginEnd = 5;
+                rotationAngleTextView.MarginTop = 5;
+                rotationAngleTextView.MarginEnd = 8;
+                addActionWindowResponses.Add(rotationAngleTextView);
+                
+                Label rotationUnitsLabel = new Label("Rotation units:");
+                Box rotationUnitsLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
+                rotationUnitsLabelBox.Add(rotationUnitsLabel);
+                rotationUnitsLabel.MarginStart = 5;
+                rotationUnitsLabel.MarginTop = 15;
+                rotationUnitsLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(rotationUnitsLabelBox);
+
+                ComboBox rotationAngleUnitsChooser = new ComboBox(availableAngleUnits);
+                Box rotationAngleUnitsChooserBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationAngleUnitsChooser.Active = 1;
+                rotationAngleUnitsChooserBox.MarginTop = 5;
+                rotationAngleUnitsChooserBox.Add(rotationAngleUnitsChooser);
+                addActionWindowResponses.Add(rotationAngleUnitsChooserBox);
+                
+                Label rotationVectorStartLabel = new Label("Rotation vector start point:");
+                Box rotationVectorStartLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationVectorStartLabel.ModifyFg(StateType.Normal, almostWhite);
+                rotationVectorStartLabelBox.Add(rotationVectorStartLabel);
+                rotationVectorStartLabel.MarginStart = 5;
+                rotationVectorStartLabel.MarginTop = 14;
+                rotationVectorStartLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(rotationVectorStartLabelBox);
+
+                Box rotationVectorStartBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationVectorStartBox.MarginTop = 5;
+                addActionWindowResponses.Add(rotationVectorStartBox);
+
+                TextView rotationVectorStartX = new TextView();
+                rotationVectorStartX.WidthRequest = 146;
+                rotationVectorStartX.MarginEnd = 5;
+                TextView rotationVectorStartY = new TextView();
+                rotationVectorStartY.WidthRequest = 146;
+                rotationVectorStartY.MarginEnd = 5;
+                TextView rotationVectorStartZ = new TextView();
+                rotationVectorStartZ.WidthRequest = 146;
+                
+                rotationVectorStartBox.Add(rotationVectorStartX);
+                rotationVectorStartBox.Add(rotationVectorStartY);
+                rotationVectorStartBox.Add(rotationVectorStartZ);
+                
+                Label rotationVectorEndLabel = new Label("Rotation vector end point:");
+                Box rotationVectorEndLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationVectorEndLabel.ModifyFg(StateType.Normal, almostWhite);
+                rotationVectorEndLabelBox.Add(rotationVectorEndLabel);
+                rotationVectorEndLabel.MarginStart = 5;
+                rotationVectorEndLabel.MarginTop = 5;
+                rotationVectorEndLabel.MarginEnd = 5;
+                addActionWindowLabels.Add(rotationVectorEndLabelBox);
+
+                Box rotationVectorEndBox = new Box(Gtk.Orientation.Horizontal, 0);
+                rotationVectorEndBox.MarginTop = 5;
+                addActionWindowResponses.Add(rotationVectorEndBox);
+
+                TextView rotationVectorEndX = new TextView();
+                rotationVectorEndX.WidthRequest = 146;
+                rotationVectorEndX.MarginEnd = 5;
+                TextView rotationVectorEndY = new TextView();
+                rotationVectorEndY.WidthRequest = 146;
+                rotationVectorEndY.MarginEnd = 5;
+                TextView rotationVectorEndZ = new TextView();
+                rotationVectorEndZ.WidthRequest = 146;
+                
+                rotationVectorEndBox.Add(rotationVectorEndX);
+                rotationVectorEndBox.Add(rotationVectorEndY);
+                rotationVectorEndBox.Add(rotationVectorEndZ);
                 
                 chooseColorButton.Clicked += ChooseColorButton_Clicked; 
                 
