@@ -7,6 +7,7 @@ using Gdk;
 using GLib;
 using Gtk;
 using MiodenusUI.MafStructure;
+using Action = Gtk.Action;
 using Application = Gtk.Application;
 using Menu = Gtk.Menu;
 using MenuItem = Gtk.MenuItem;
@@ -424,9 +425,9 @@ namespace MiodenusUI
                 
                 addModelWindowLabelsAndChoices.Add(addNewModelLabels);
                 addModelWindowLabelsAndChoices.Add(addNewModelChoices);
-                
-                addModelWindowResponseButtons.Add(addNewModelButtonOk);
+
                 addModelWindowResponseButtons.Add(addNewModelButtonCancel);
+                addModelWindowResponseButtons.Add(addNewModelButtonOk);
                 
                 addModelWindowAllElements.Add(addModelWindowLabelsAndChoices);
                 addModelWindowAllElements.Add(addModelWindowResponseButtons);
@@ -722,12 +723,36 @@ namespace MiodenusUI
 
         private void AddActionButton_Clicked(object sender, EventArgs a)
         {
+            int modelNumber = (int)(((Button) sender).Data["id"]);
+            
             Box addActionWindowLabels = new Box(Gtk.Orientation.Vertical, 0);
             Box addActionWindowResponses = new Box(Gtk.Orientation.Vertical, 0);
             List<float[]> actionStatesColors = new List<float[]>();
+            
+            //Action state
             List<TextView> actionStateTimeTextViews = new List<TextView>();
             List<RadioButton> actionStateIsModelVisibleRadioButtons = new List<RadioButton>();
+            List<Label[]> colorComponentsLabels = new List<Label[]>();
+            
+            //Transformation
+            List<RadioButton> resetScaleRadioButtons = new List<RadioButton>();
+            List<TextView[]> scaleTextViews = new List<TextView[]>();
+            List<RadioButton> resetLocalRotationRadioButtons = new List<RadioButton>();
+            List<RadioButton> resetPositionRadioButtons = new List<RadioButton>();
+            List<TextView[]> globalMoveTextViews = new List<TextView[]>();
+            List<TextView[]> localMoveTextViews = new List<TextView[]>();
+            
+            //Local rotation
+            List<TextView> localRotationAngleTextViews = new List<TextView>();
+            List<ComboBox> localRotationUnitsComboBoxes = new List<ComboBox>();
+            List<TextView[]> localRotationVectorTextViews = new List<TextView[]>();
 
+            //Rotation
+            List<TextView> rotationAngleTextViews = new List<TextView>();
+            List<ComboBox> rotationUnitsComboBoxes = new List<ComboBox>();
+            List<TextView[]> rotationVectorsStartPointsTextViews = new List<TextView[]>();
+            List<TextView[]> rotationVectorsEndPointsTextViews = new List<TextView[]>();
+            
             Window addActionWindow = new Window("Set up your action");
             ScrolledWindow addActionWindowAllElementsScrolled = new ScrolledWindow();
             Box addActionWindowAllElements = new Box(Gtk.Orientation.Horizontal, 0);
@@ -777,19 +802,20 @@ namespace MiodenusUI
             addActionOkButton.MarginTop = 20;
             addActionOkButton.MarginBottom = 5;
             addActionOkButton.MarginStart = 5;
-            addActionWindowLabels.PackEnd(addActionOkButton, false, false, 0);
+            addActionOkButton.MarginEnd = 5;
+            addActionOkButton.Clicked += AddActionOk_Clicked;
+            addActionWindowResponses.PackEnd(addActionOkButton, false, false, 0);
             
             Button addActionCancelButton = new Button("Cancel");
             addActionCancelButton.Name = "dark_blue_button";
             addActionCancelButton.MarginTop = 20;
             addActionCancelButton.MarginBottom = 5;
             addActionCancelButton.MarginStart = 5;
-            addActionWindowResponses.PackEnd(addActionCancelButton, false, false, 0);
+            addActionWindowLabels.PackEnd(addActionCancelButton, false, false, 0);
 
             addActionWindow.Resizable = false;
             addNewActionStateButton.Clicked += AddActionState_Clicked;
             addActionCancelButton.Clicked += AddActionCancel_Clicked;
-            
             
             addActionWindowResponses.Add(addNewActionStateButton);
 
@@ -892,6 +918,9 @@ namespace MiodenusUI
                 Button chooseColorButton = new Button("Choose color");
                 chooseColorButton.Data.Add("id", actionStatesCounter-1);
                 chooseColorButton.Name = "light_blue_button";
+                
+                Label[] colorComponents = new Label[3];
+                
                 Label choosenColorRedComponent = new Label("");
                 Label choosenColorGreenComponent = new Label("");
                 Label choosenColorBlueComponent = new Label("");
@@ -924,6 +953,12 @@ namespace MiodenusUI
                 choosenColorRedComponent.MarginEnd = 5;
                 choosenColorGreenComponent.MarginEnd = 5;
                 choosenColorBlueComponent.MarginEnd = 5;
+
+                colorComponents[0] = choosenColorRedComponent;
+                colorComponents[1] = choosenColorGreenComponent;
+                colorComponents[2] = choosenColorBlueComponent;
+                
+                colorComponentsLabels.Add(colorComponents);
                 
                 backgroundColorComponentsVBox.Add(choosenColorRedComponent);
                 backgroundColorComponentsVBox.Add(choosenColorGreenComponent);
@@ -956,6 +991,7 @@ namespace MiodenusUI
                 RadioButton resetScaleYes = new RadioButton(resetScaleNo, "Yes");
                 resetScaleYes.ModifyFg(StateType.Normal, almostWhite);
                 resetScaleYes.Data.Add("id", actionStatesCounter-1);
+                resetScaleRadioButtons.Add(resetScaleYes);
                 resetScaleBox.Add(resetScaleYes);
                 resetScaleBox.Add(resetScaleNo);
 
@@ -979,13 +1015,20 @@ namespace MiodenusUI
                 TextView transformationScaleY = new TextView();
                 transformationScaleY.WidthRequest = 146;
                 transformationScaleY.MarginEnd = 5;
-                transformationScaleX.Buffer.Changed += CheckFloat;
+                transformationScaleY.Buffer.Changed += CheckFloat;
                 transformationScaleY.Data.Add("id", actionStatesCounter-1);
                 TextView transformationScaleZ = new TextView();
                 transformationScaleZ.WidthRequest = 146;
-                transformationScaleX.Buffer.Changed += CheckFloat;
+                transformationScaleZ.Buffer.Changed += CheckFloat;
                 transformationScaleZ.Data.Add("id", actionStatesCounter-1);
 
+                TextView[] scaleComponentsTextView = new TextView[3];
+                scaleComponentsTextView[0] = transformationScaleX;
+                scaleComponentsTextView[1] = transformationScaleY;
+                scaleComponentsTextView[2] = transformationScaleZ;
+                
+                scaleTextViews.Add(scaleComponentsTextView);
+                
                 transformationScaleBox.Add(transformationScaleX);
                 transformationScaleBox.Add(transformationScaleY);
                 transformationScaleBox.Add(transformationScaleZ);
@@ -1007,6 +1050,7 @@ namespace MiodenusUI
                 RadioButton resetLocalRotationYes = new RadioButton(resetLocalRotationNo, "Yes");
                 resetLocalRotationYes.ModifyFg(StateType.Normal, almostWhite);
                 resetLocalRotationYes.Data.Add("id", actionStatesCounter-1);
+                resetLocalRotationRadioButtons.Add(resetLocalRotationYes);
                 resetLocalRotationBox.Add(resetLocalRotationYes);
                 resetLocalRotationBox.Add(resetLocalRotationNo);
 
@@ -1024,6 +1068,7 @@ namespace MiodenusUI
                 localRotationAngleTextView.MarginEnd = 8;
                 localRotationAngleTextView.Data.Add("id", actionStatesCounter-1);
                 localRotationAngleTextView.Buffer.Changed += CheckFloat;
+                localRotationAngleTextViews.Add(localRotationAngleTextView);
                 addActionWindowResponses.Add(localRotationAngleTextView);
                 
                 Label localRotationUnitsLabel = new Label("Local rotation units:");
@@ -1046,6 +1091,7 @@ namespace MiodenusUI
                 angleUnitsChooserBox.MarginTop = 5;
                 angleUnitsChooser.Active = 1;
                 angleUnitsChooser.Data.Add("id",actionStatesCounter-1);
+                localRotationUnitsComboBoxes.Add(angleUnitsChooser);
                 angleUnitsChooserBox.Add(angleUnitsChooser);
                 addActionWindowResponses.Add(angleUnitsChooserBox);
                 
@@ -1071,9 +1117,18 @@ namespace MiodenusUI
                 localRotationVectorY.WidthRequest = 146;
                 localRotationVectorY.MarginEnd = 5;
                 localRotationVectorY.Buffer.Changed += CheckFloat;
-                localRotationVectorX.Data.Add("id", actionStatesCounter-1);
+                localRotationVectorY.Data.Add("id", actionStatesCounter-1);
                 TextView localRotationVectorZ = new TextView();
                 localRotationVectorZ.WidthRequest = 146;
+                localRotationVectorZ.Data.Add("id", actionStatesCounter-1);
+
+                TextView[] localRotationVector = new TextView[3];
+                localRotationVector[0] = localRotationVectorX;
+                localRotationVector[1] = localRotationVectorY;
+                localRotationVector[2] = localRotationVectorZ;
+                
+                localRotationVectorTextViews.Add(localRotationVector);
+
                 localRotationVectorZ.Buffer.Changed += CheckFloat;
 
                 localRotationVectorBox.Add(localRotationVectorX);
@@ -1098,6 +1153,8 @@ namespace MiodenusUI
                 resetPositionNo.ModifyFg(StateType.Normal, almostWhite);
                 RadioButton resetPositionYes = new RadioButton(resetPositionNo, "Yes");
                 resetPositionYes.ModifyFg(StateType.Normal, almostWhite);
+                resetPositionYes.Data.Add("id", actionStatesCounter-1);
+                resetPositionRadioButtons.Add(resetPositionYes);
                 resetPositionBox.Add(resetPositionYes);
                 resetPositionBox.Add(resetPositionNo);
                 
@@ -1116,11 +1173,21 @@ namespace MiodenusUI
                 TextView globalMoveX = new TextView();
                 globalMoveX.WidthRequest = 146;
                 globalMoveX.MarginEnd = 5;
+                globalMoveX.Data.Add("id", actionStatesCounter-1);
                 TextView globalMoveY = new TextView();
                 globalMoveY.WidthRequest = 146;
                 globalMoveY.MarginEnd = 5;
+                globalMoveY.Data.Add("id", actionStatesCounter-1);
                 TextView globalMoveZ = new TextView();
                 globalMoveZ.WidthRequest = 146;
+                globalMoveZ.Data.Add("id", actionStatesCounter-1);
+
+                TextView[] globalMove = new TextView[3];
+                globalMove[0] = globalMoveX;
+                globalMove[1] = globalMoveY;
+                globalMove[2] = globalMoveZ;
+                
+                globalMoveTextViews.Add(globalMove);
                 
                 globalMoveBox.Add(globalMoveX);
                 globalMoveBox.Add(globalMoveY);
@@ -1142,12 +1209,22 @@ namespace MiodenusUI
                 TextView localMoveX = new TextView();
                 localMoveX.WidthRequest = 146;
                 localMoveX.MarginEnd = 5;
+                localMoveX.Data.Add("id", actionStatesCounter-1);
                 TextView localMoveY = new TextView();
                 localMoveY.WidthRequest = 146;
                 localMoveY.MarginEnd = 5;
+                localMoveY.Data.Add("id", actionStatesCounter-1);
                 TextView localMoveZ = new TextView();
                 localMoveZ.WidthRequest = 146;
+                localMoveZ.Data.Add("id", actionStatesCounter-1);
+
+                TextView[] localMove = new TextView[3];
+                localMove[0] = localMoveX;
+                localMove[1] = localMoveY;
+                localMove[2] = localMoveZ;
                 
+                localMoveTextViews.Add(localMove);
+
                 localMoveBox.Add(localMoveX);
                 localMoveBox.Add(localMoveY);
                 localMoveBox.Add(localMoveZ);
@@ -1165,6 +1242,8 @@ namespace MiodenusUI
                 rotationAngleTextView.MarginEnd = 5;
                 rotationAngleTextView.MarginTop = 5;
                 rotationAngleTextView.MarginEnd = 8;
+                rotationAngleTextView.Data.Add("id", actionStatesCounter-1);
+                rotationAngleTextViews.Add(rotationAngleTextView);
                 addActionWindowResponses.Add(rotationAngleTextView);
                 
                 Label rotationUnitsLabel = new Label("Rotation units:");
@@ -1179,6 +1258,8 @@ namespace MiodenusUI
                 ComboBox rotationAngleUnitsChooser = new ComboBox(availableAngleUnits);
                 Box rotationAngleUnitsChooserBox = new Box(Gtk.Orientation.Horizontal, 0);
                 rotationAngleUnitsChooser.Active = 1;
+                rotationAngleUnitsChooser.Data.Add("id", actionStatesCounter-1);
+                rotationUnitsComboBoxes.Add(rotationAngleUnitsChooser);
                 rotationAngleUnitsChooserBox.MarginTop = 5;
                 rotationAngleUnitsChooserBox.Add(rotationAngleUnitsChooser);
                 addActionWindowResponses.Add(rotationAngleUnitsChooserBox);
@@ -1199,11 +1280,21 @@ namespace MiodenusUI
                 TextView rotationVectorStartX = new TextView();
                 rotationVectorStartX.WidthRequest = 146;
                 rotationVectorStartX.MarginEnd = 5;
+                rotationVectorStartX.Data.Add("id", actionStatesCounter-1);
                 TextView rotationVectorStartY = new TextView();
                 rotationVectorStartY.WidthRequest = 146;
                 rotationVectorStartY.MarginEnd = 5;
+                rotationVectorStartY.Data.Add("id", actionStatesCounter-1);
                 TextView rotationVectorStartZ = new TextView();
                 rotationVectorStartZ.WidthRequest = 146;
+                rotationVectorStartZ.Data.Add("id", actionStatesCounter-1);
+
+                TextView[] rotationVectorStartPoint = new TextView[3];
+                rotationVectorStartPoint[0] = rotationVectorStartX;
+                rotationVectorStartPoint[1] = rotationVectorStartY;
+                rotationVectorStartPoint[2] = rotationVectorStartZ;
+                
+                rotationVectorsStartPointsTextViews.Add(rotationVectorStartPoint);
                 
                 rotationVectorStartBox.Add(rotationVectorStartX);
                 rotationVectorStartBox.Add(rotationVectorStartY);
@@ -1225,11 +1316,21 @@ namespace MiodenusUI
                 TextView rotationVectorEndX = new TextView();
                 rotationVectorEndX.WidthRequest = 146;
                 rotationVectorEndX.MarginEnd = 5;
+                rotationVectorEndX.Data.Add("id", actionStatesCounter-1);
                 TextView rotationVectorEndY = new TextView();
                 rotationVectorEndY.WidthRequest = 146;
                 rotationVectorEndY.MarginEnd = 5;
+                rotationVectorEndY.Data.Add("id", actionStatesCounter-1);
                 TextView rotationVectorEndZ = new TextView();
                 rotationVectorEndZ.WidthRequest = 146;
+                rotationVectorEndZ.Data.Add("id", actionStatesCounter-1);
+
+                TextView[] rotationVectorEndPoint = new TextView[3];
+                rotationVectorEndPoint[0] = rotationVectorEndX;
+                rotationVectorEndPoint[1] = rotationVectorEndY;
+                rotationVectorEndPoint[2] = rotationVectorEndZ;
+                
+                rotationVectorsEndPointsTextViews.Add(rotationVectorEndPoint);
                 
                 rotationVectorEndBox.Add(rotationVectorEndX);
                 rotationVectorEndBox.Add(rotationVectorEndY);
@@ -1270,6 +1371,96 @@ namespace MiodenusUI
                 }
                 
             }
+            
+            void AddActionOk_Clicked(object sender, EventArgs a)
+            {
+                Binding actionBinding = new Binding();
+                actionBinding.ModelName = modelsNamesButtons[modelNumber].Label;
+                actionBinding.ActionName = actionNameTextView.Buffer.Text;
+                
+                if (actionStateTimeTextViews.Count > 0)
+                {
+                    actionBinding.StartTime = Int32.Parse(actionStateTimeTextViews[0].Buffer.Text);
+                }
+                else
+                {
+                    actionBinding.StartTime = DefaultMafParameters.Binding.StartTime;
+                }
+
+                actionBinding.TimeLength = DefaultMafParameters.Binding.TimeLength;
+                actionBinding.UseInterpolation = DefaultMafParameters.Binding.UseInterpolation;
+                
+                animation.Bindings.Add(actionBinding);
+
+                MafStructure.Action newAction = new MafStructure.Action();
+                newAction.Name = actionNameTextView.Buffer.Text;
+
+                ActionState newActionState = new ActionState();
+                
+                for (var i = 0; i < actionStateTimeTextViews.Count; i++)
+                {
+                    newActionState.Time = Int32.Parse(actionStateTimeTextViews[i].Buffer.Text);
+                    newActionState.IsModelVisible = actionStateIsModelVisibleRadioButtons[i].Active;
+                    newActionState.Color = actionStatesColors[i];
+                    newActionState.Transformation.ResetScale = resetScaleRadioButtons[i].Active;
+                    
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.Scale[j] = float.Parse(scaleTextViews[i][j].Buffer.Text);
+                    }
+
+                    newActionState.Transformation.ResetLocalRotation = resetLocalRotationRadioButtons[i].Active;
+                    newActionState.Transformation.ResetPosition = resetPositionRadioButtons[i].Active;
+                    
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.GlobalMove[j] = float.Parse(globalMoveTextViews[i][j].Buffer.Text);
+                    }
+
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.LocalMove[j] = float.Parse(localMoveTextViews[i][j].Buffer.Text);
+                    }
+
+                    newActionState.Transformation.LocalRotate.Angle =
+                        float.Parse(localRotationAngleTextViews[i].Buffer.Text);
+                    newActionState.Transformation.LocalRotate.Unit = localRotationUnitsComboBoxes[i].ActiveId;
+                    
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.LocalRotate.Vector[j] =
+                            float.Parse(localRotationVectorTextViews[i][j].Buffer.Text);
+                    }
+                    
+                    newActionState.Transformation.Rotate.Angle = float.Parse(rotationAngleTextViews[i].Buffer.Text);
+                    newActionState.Transformation.Rotate.Unit = rotationUnitsComboBoxes[i].ActiveId;
+                    
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.Rotate.RotationVectorStartPoint[j] =
+                            float.Parse(rotationVectorsStartPointsTextViews[i][j].Buffer.Text);
+                    }
+                    
+                    for (var j = 0; j < 3; j++)
+                    {
+                        newActionState.Transformation.Rotate.RotationVectorEndPoint[j] =
+                            float.Parse(rotationVectorsEndPointsTextViews[i][j].Buffer.Text);
+                    }
+                    
+                    newAction.States.Add(newActionState);
+                }
+                
+                animation.Actions.Add(newAction);
+                
+                var mafStr = maf.CreateMafString(animation);
+
+                var writer = File.CreateText(currentFilePath);
+                writer.Write(mafStr);
+                writer.Close();
+
+                addActionWindow.Close();
+            }
+            
             addActionWindow.ShowAll();
         }
 
@@ -1585,6 +1776,16 @@ namespace MiodenusUI
             
             responseBox.ModifyBg(StateType.Normal, mainColor);
             //Buttons
+            Button cancelButton = new Button("Cancel");
+            cancelButton.Name = "dark_blue_button";
+            cancelButton.Margin = 7;
+            cancelButton.Expand = true;
+            Box responseAndCreationBox = new Box(Gtk.Orientation.Vertical, 0);
+            
+            responseAndCreationBox.Add(newFileCreationBox);
+            
+            responseBox.Add(cancelButton);
+            
             Button okButton = new Button("Ok");
 
             okButton.Name = "light_blue_button";
@@ -1595,16 +1796,7 @@ namespace MiodenusUI
             okButton.Sensitive = false;
             
             responseBox.Add(okButton);
-
-            Button cancelButton = new Button("Cancel");
-            cancelButton.Name = "dark_blue_button";
-            cancelButton.Margin = 7;
-            cancelButton.Expand = true;
-            Box responseAndCreationBox = new Box(Gtk.Orientation.Vertical, 0);
             
-            responseAndCreationBox.Add(newFileCreationBox);
-            
-            responseBox.Add(cancelButton);
             responseAndCreationBox.Add(responseBox);
             init.Add(responseAndCreationBox);
             init.ShowAll();
