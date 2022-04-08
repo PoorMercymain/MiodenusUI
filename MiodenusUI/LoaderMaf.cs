@@ -16,7 +16,7 @@ namespace MiodenusUI
 
         public String CreateMafString(MafStructure.Animation animation)
         {
-            var animationString = JsonConvert.SerializeObject(animation);
+            var animationString = JsonConvert.SerializeObject(animation, Formatting.Indented);
 
             return animationString;
         }
