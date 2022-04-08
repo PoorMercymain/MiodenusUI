@@ -749,7 +749,7 @@ namespace MiodenusUI
             addActionWindowLabels.Add(actionNameLabelBox);
             actionNameLabelBox.MarginStart = 5;
             actionNameLabelBox.MarginTop = 5;
-            actionNameLabelBox.MarginEnd = 5;
+            actionNameLabelBox.MarginEnd = 80;
 
             TextView actionNameTextView = new TextView();
             actionNameTextView.SetSizeRequest(450, 16);
@@ -788,13 +788,26 @@ namespace MiodenusUI
 
             addActionWindow.Resizable = false;
             addNewActionStateButton.Clicked += AddActionState_Clicked;
-            addActionWindowResponses.Add(addNewActionStateButton);
+            addActionCancelButton.Clicked += AddActionCancel_Clicked;
             
+            
+            addActionWindowResponses.Add(addNewActionStateButton);
+
+            void AddActionCancel_Clicked(object sender, EventArgs a)
+            {
+                addActionWindow.Close();
+            }
+
+            List<ActionState> statesBuffer = new List<ActionState>();
+
             void AddActionState_Clicked(object sender, EventArgs a)
             {
                 actionStatesCounter++;
                 
                 addActionWindow.HeightRequest = 480;
+
+                ActionState actionStateBuffer = new ActionState();
+                
                 if (actionStatesCounter == 1)
                 {
                     Label actionStateTimeLabel = new Label("Action state time:");
@@ -810,8 +823,10 @@ namespace MiodenusUI
                     actionStateTimeTextView.SetSizeRequest(346, 16);
                     actionStateTimeTextView.MarginTop = 7;
                     actionStateTimeTextView.MarginEnd = 6;
+                    actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
+                    actionStateTimeTextView.Buffer.Changed += CheckInt;
                 }
                 else
                 {
@@ -828,8 +843,10 @@ namespace MiodenusUI
                     actionStateTimeTextView.SetSizeRequest(346, 16);
                     actionStateTimeTextView.MarginEnd = 7;
                     actionStateTimeTextView.MarginTop = 14;
+                    actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
+                    actionStateTimeTextView.Buffer.Changed += CheckInt;
                 }
 
                 
@@ -891,6 +908,15 @@ namespace MiodenusUI
                 rgbModelColor[1] = DefaultMafParameters.AnimationInfo.BackgroundColor[1];
                 rgbModelColor[2] = DefaultMafParameters.AnimationInfo.BackgroundColor[2];
                 
+                if (actionStatesColors.Count > (int) (chooseColorButton).Data["id"])
+                {
+                    actionStatesColors[(int) (chooseColorButton).Data["id"]] = rgbModelColor;
+                }
+                else
+                {
+                    actionStatesColors.Add(rgbModelColor);
+                }
+                
                 choosenColorRedComponent.Text = $"Red = {DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255}";
                 choosenColorGreenComponent.Text = $"Green = {DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255}";
                 choosenColorBlueComponent.Text = $"Blue = {DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255}";
@@ -929,6 +955,7 @@ namespace MiodenusUI
                 resetScaleNo.ModifyFg(StateType.Normal, almostWhite);
                 RadioButton resetScaleYes = new RadioButton(resetScaleNo, "Yes");
                 resetScaleYes.ModifyFg(StateType.Normal, almostWhite);
+                resetScaleYes.Data.Add("id", actionStatesCounter-1);
                 resetScaleBox.Add(resetScaleYes);
                 resetScaleBox.Add(resetScaleNo);
 
@@ -947,12 +974,18 @@ namespace MiodenusUI
                 TextView transformationScaleX = new TextView();
                 transformationScaleX.WidthRequest = 146;
                 transformationScaleX.MarginEnd = 5;
+                transformationScaleX.Buffer.Changed += CheckFloat;
+                transformationScaleX.Data.Add("id", actionStatesCounter-1);
                 TextView transformationScaleY = new TextView();
                 transformationScaleY.WidthRequest = 146;
                 transformationScaleY.MarginEnd = 5;
+                transformationScaleX.Buffer.Changed += CheckFloat;
+                transformationScaleY.Data.Add("id", actionStatesCounter-1);
                 TextView transformationScaleZ = new TextView();
                 transformationScaleZ.WidthRequest = 146;
-                
+                transformationScaleX.Buffer.Changed += CheckFloat;
+                transformationScaleZ.Data.Add("id", actionStatesCounter-1);
+
                 transformationScaleBox.Add(transformationScaleX);
                 transformationScaleBox.Add(transformationScaleY);
                 transformationScaleBox.Add(transformationScaleZ);
@@ -973,6 +1006,7 @@ namespace MiodenusUI
                 resetLocalRotationNo.ModifyFg(StateType.Normal, almostWhite);
                 RadioButton resetLocalRotationYes = new RadioButton(resetLocalRotationNo, "Yes");
                 resetLocalRotationYes.ModifyFg(StateType.Normal, almostWhite);
+                resetLocalRotationYes.Data.Add("id", actionStatesCounter-1);
                 resetLocalRotationBox.Add(resetLocalRotationYes);
                 resetLocalRotationBox.Add(resetLocalRotationNo);
 
@@ -986,8 +1020,10 @@ namespace MiodenusUI
                 addActionWindowLabels.Add(localRotationAngleLabelBox);
 
                 TextView localRotationAngleTextView = new TextView();
-                localRotationAngleTextView.MarginEnd = 6;
                 localRotationAngleTextView.MarginTop = 5;
+                localRotationAngleTextView.MarginEnd = 8;
+                localRotationAngleTextView.Data.Add("id", actionStatesCounter-1);
+                localRotationAngleTextView.Buffer.Changed += CheckFloat;
                 addActionWindowResponses.Add(localRotationAngleTextView);
                 
                 Label localRotationUnitsLabel = new Label("Local rotation units:");
@@ -1009,6 +1045,7 @@ namespace MiodenusUI
                 Box angleUnitsChooserBox = new Box(Gtk.Orientation.Horizontal, 0);
                 angleUnitsChooserBox.MarginTop = 5;
                 angleUnitsChooser.Active = 1;
+                angleUnitsChooser.Data.Add("id",actionStatesCounter-1);
                 angleUnitsChooserBox.Add(angleUnitsChooser);
                 addActionWindowResponses.Add(angleUnitsChooserBox);
                 
@@ -1028,12 +1065,17 @@ namespace MiodenusUI
                 TextView localRotationVectorX = new TextView();
                 localRotationVectorX.WidthRequest = 146;
                 localRotationVectorX.MarginEnd = 5;
+                localRotationVectorX.Buffer.Changed += CheckFloat;
+                localRotationVectorX.Data.Add("id", actionStatesCounter-1);
                 TextView localRotationVectorY = new TextView();
                 localRotationVectorY.WidthRequest = 146;
                 localRotationVectorY.MarginEnd = 5;
+                localRotationVectorY.Buffer.Changed += CheckFloat;
+                localRotationVectorX.Data.Add("id", actionStatesCounter-1);
                 TextView localRotationVectorZ = new TextView();
                 localRotationVectorZ.WidthRequest = 146;
-                
+                localRotationVectorZ.Buffer.Changed += CheckFloat;
+
                 localRotationVectorBox.Add(localRotationVectorX);
                 localRotationVectorBox.Add(localRotationVectorY);
                 localRotationVectorBox.Add(localRotationVectorZ);
@@ -1726,30 +1768,58 @@ namespace MiodenusUI
                 init.Close();
             }
 
-            void CheckInt(object sender, EventArgs eventArgs)
-            {
-                string parsedString = "";
-                
-                int inputLength = ((TextBuffer)sender).Text.Length;
-                var input = (string) ((TextBuffer)sender).Text.Clone();
-                
-                foreach (var ch in input)
-                {
-                    if (Int32.TryParse(ch.ToString(), out _))
-                    {
-                        parsedString += ch.ToString();
-                    }
-                }
-                
-                if (inputLength != parsedString.Length)
-                {
-                    ((TextBuffer)sender).Text = parsedString;
-                }
-            }
+            
         
             void CancelButton_Clicked(object sender, EventArgs a)
             {
                 init.Close();
+            }
+        }
+        void CheckInt(object sender, EventArgs eventArgs)
+        {
+            string parsedString = "";
+                
+            int inputLength = ((TextBuffer)sender).Text.Length;
+            var input = (string) ((TextBuffer)sender).Text.Clone();
+                
+            foreach (var ch in input)
+            {
+                if (Int32.TryParse(ch.ToString(), out _))
+                {
+                    parsedString += ch.ToString();
+                }
+            }
+                
+            if (inputLength != parsedString.Length)
+            {
+                ((TextBuffer)sender).Text = parsedString;
+            }
+        }
+        
+        void CheckFloat(object sender, EventArgs eventArgs)
+        {
+            string parsedString = "";
+                
+            int inputLength = ((TextBuffer)sender).Text.Length;
+            var input = (string) ((TextBuffer)sender).Text.Clone();
+            bool dotUsed = false;
+                
+            foreach (var ch in input)
+            {
+                if (float.TryParse(ch.ToString(), out _)||(ch=='.' && !dotUsed))
+                {
+                    parsedString += ch.ToString();
+
+                    if (parsedString.Contains('.'))
+                    {
+                        dotUsed = true;
+                    }
+                }
+            }
+                
+            if (inputLength != parsedString.Length)
+            {
+                ((TextBuffer)sender).Text = parsedString;
             }
         }
     }
