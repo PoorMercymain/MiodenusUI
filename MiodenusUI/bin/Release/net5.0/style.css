@@ -39,3 +39,11 @@
 #rounded_box{
 	border-radius : 10px;
 }
+
+#r_half_rounded_box{
+	border-radius : 0px 10px 10px 0px;
+}
+
+#l_half_rounded_box{
+	border-radius : 10px 0px 0px 10px;
+}

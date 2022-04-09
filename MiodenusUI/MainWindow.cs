@@ -118,9 +118,11 @@ namespace MiodenusUI
             propertiesVBox.Name = "rounded_box";
 
             timelinesNamesVBox.Margin = 5;
+            timelinesNamesVBox.MarginEnd = 0;
             timelinesVBox.Margin = 5;
             propertiesVBox.Margin = 5;
-            
+            propertiesVBox.MarginStart = 0;
+
             backgroundHBox.ModifyBg(Gtk.StateType.Normal, mainColor);
 
             timelinesNamesVBox.SetSizeRequest(400, 35);
@@ -128,7 +130,7 @@ namespace MiodenusUI
 
             Button createFirstColumnBox()
             {
-                Button firstColumnButton = new Button("Choose model path");
+                Button firstColumnButton = new Button("Add model");
                 
                 firstColumnButton.Margin = 5;
 
@@ -174,7 +176,8 @@ namespace MiodenusUI
             divBox.Add(divHBox);
             
             timelinesBox.Add(divBox);
-            
+
+            scrolledTimelinesNames.Name = "rounded_box";
             scrolledTimelinesNames.Add(timelinesBox);
             
             backgroundHBox.Add(scrolledTimelinesNames);
@@ -217,21 +220,22 @@ namespace MiodenusUI
     
                 modelsNamesRemoveButtons.Last().Name = "main_color_button";
                 modelsNamesRemoveButtons.Last().Margin = 5;
+                modelsNamesRemoveButtons.Last().MarginEnd = 0;
                 modelsNamesRemoveButtons.Last().ModifyFg(StateType.Normal, almostWhite);
     
                 modelsNamesButtons.Last().Name = "main_color_button";
                 modelsNamesButtons.Last().Margin = 5;
                 modelsNamesButtons.Last().ModifyFg(StateType.Normal, almostWhite);
                 modelsNamesButtons.Last().WidthRequest = 310;
-                modelAndRemoveButtonBox.Add(modelsNamesButtons.Last());
-                modelAndRemoveButtonBox.PackEnd(modelsNamesRemoveButtons.Last(), false, false, 0);
+                modelAndRemoveButtonBox.PackEnd(modelsNamesButtons.Last(), true, false, 0);
+                modelAndRemoveButtonBox.PackStart(modelsNamesRemoveButtons.Last(), false, false, 0);
                 scrolledTimelinesElementsBox.Add(modelAndRemoveButtonBox);
                 
                 modelsNamesRemoveButtons.Last().Data.Add("id", modelsNamesRemoveButtons.Count-1);
                 modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                 
                 Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
-                Button addActionButton = new Button("+");
+                Button addActionButton = new Button("Add action");
 
                 addActionButton.Name = "main_color_button";
                 addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
@@ -309,6 +313,7 @@ namespace MiodenusUI
                 newModelCalculatedNormalsLabel.ModifyFg(StateType.Normal, almostWhite);
                 newModelCalculatedNormalsLabel.MarginBottom = 5;
                 newModelCalculatedNormalsLabel.MarginStart = 5;
+                newModelCalculatedNormalsLabel.MarginEnd = 5;
 
                 addNewModelLabels.Add(newModelNameLabel);
                 addNewModelLabels.Add(newModelTypeLabel);
@@ -522,21 +527,22 @@ namespace MiodenusUI
 
                     modelsNamesRemoveButtons.Last().Name = "main_color_button";
                     modelsNamesRemoveButtons.Last().Margin = 5;
+                    modelsNamesRemoveButtons.Last().MarginEnd = 0;
                     modelsNamesRemoveButtons.Last().ModifyFg(StateType.Normal, almostWhite);
 
                     modelsNamesButtons.Last().Name = "main_color_button";
                     modelsNamesButtons.Last().Margin = 5;
                     modelsNamesButtons.Last().ModifyFg(StateType.Normal, almostWhite);
                     modelsNamesButtons.Last().WidthRequest = 310;
-                    modelAndRemoveButtonBox.Add(modelsNamesButtons.Last());
-                    modelAndRemoveButtonBox.PackEnd(modelsNamesRemoveButtons.Last(), false, false, 0);
+                    modelAndRemoveButtonBox.PackEnd(modelsNamesButtons.Last(), true, false, 0);
+                    modelAndRemoveButtonBox.PackStart(modelsNamesRemoveButtons.Last(), false, false, 0);
                     scrolledTimelinesElementsBox.Add(modelAndRemoveButtonBox);
 
                     modelsNamesRemoveButtons.Last().Data.Add("id", modelsNamesRemoveButtons.Count-1);
                     modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                     
                     Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
-                    Button addActionButton = new Button("+");
+                    Button addActionButton = new Button("Add action");
 
                     addActionButton.Name = "main_color_button";
                     addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
@@ -642,6 +648,8 @@ namespace MiodenusUI
                         modelsNamesButtons.Remove(modelsNamesButtons[i]);
                         modelsNamesRemoveButtons.Remove(modelsNamesRemoveButtons[i]);
                         addActionButtons.Remove(addActionButtons[i]);
+
+                        i--;
                     }
                     
                     currentFilePath = openDialog.Filename;
@@ -659,21 +667,22 @@ namespace MiodenusUI
     
                         modelsNamesRemoveButtons.Last().Name = "main_color_button";
                         modelsNamesRemoveButtons.Last().Margin = 5;
+                        modelsNamesRemoveButtons.Last().MarginEnd = 0;
                         modelsNamesRemoveButtons.Last().ModifyFg(StateType.Normal, almostWhite);
     
                         modelsNamesButtons.Last().Name = "main_color_button";
                         modelsNamesButtons.Last().Margin = 5;
                         modelsNamesButtons.Last().ModifyFg(StateType.Normal, almostWhite);
                         modelsNamesButtons.Last().WidthRequest = 310;
-                        modelAndRemoveButtonBox.Add(modelsNamesButtons.Last());
-                        modelAndRemoveButtonBox.PackEnd(modelsNamesRemoveButtons.Last(), false, false, 0);
+                        modelAndRemoveButtonBox.PackEnd(modelsNamesButtons.Last(), true, false, 0);
+                        modelAndRemoveButtonBox.PackStart(modelsNamesRemoveButtons.Last(), false, false, 0);
                         scrolledTimelinesElementsBox.Add(modelAndRemoveButtonBox);
                     
                         modelsNamesRemoveButtons.Last().Data.Add("id", modelsNamesRemoveButtons.Count-1);
                         modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                         
                         Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
-                        Button addActionButton = new Button("+");
+                        Button addActionButton = new Button("Add action");
 
                         addActionButton.Name = "main_color_button";
                         addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
@@ -769,22 +778,23 @@ namespace MiodenusUI
 
             Label actionNameLabel = new Label("Action name:");
             actionNameLabel.ModifyFg(StateType.Normal, almostWhite);
-            Box actionNameLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box actionNameLabelBox = new Box(Gtk.Orientation.Vertical, 0);
             actionNameLabelBox.Add(actionNameLabel);
             addActionWindowLabels.Add(actionNameLabelBox);
-            actionNameLabelBox.MarginStart = 5;
+            actionNameLabelBox.MarginStart = 42;
             actionNameLabelBox.MarginTop = 5;
-            actionNameLabelBox.MarginEnd = 80;
+            actionNameLabelBox.MarginEnd = 43;
 
             TextView actionNameTextView = new TextView();
             actionNameTextView.SetSizeRequest(450, 16);
             actionNameTextView.MarginEnd = 6;
             actionNameTextView.MarginTop = 5;
+            actionNameTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
             addActionWindowResponses.Add(actionNameTextView);
 
             Label actionStatesLabel = new Label("Action states:");
             actionStatesLabel.ModifyFg(StateType.Normal, almostWhite);
-            Box actionStatesLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+            Box actionStatesLabelBox = new Box(Gtk.Orientation.Vertical, 0);
             actionStatesLabelBox.Add(actionStatesLabel);
             addActionWindowLabels.Add(actionStatesLabelBox);
             actionStatesLabelBox.MarginStart = 5;
@@ -830,7 +840,7 @@ namespace MiodenusUI
             {
                 actionStatesCounter++;
                 
-                addActionWindow.HeightRequest = 480;
+                addActionWindow.HeightRequest = 524;
 
                 ActionState actionStateBuffer = new ActionState();
                 
@@ -838,7 +848,7 @@ namespace MiodenusUI
                 {
                     Label actionStateTimeLabel = new Label("Action state time:");
                     actionStateTimeLabel.ModifyFg(StateType.Normal, almostWhite);
-                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                     actionStateTimeLabelBox.Add(actionStateTimeLabel);
                     actionStateTimeLabelBox.MarginStart = 5;
                     actionStateTimeLabelBox.MarginTop = 15;
@@ -850,6 +860,7 @@ namespace MiodenusUI
                     actionStateTimeTextView.MarginTop = 7;
                     actionStateTimeTextView.MarginEnd = 6;
                     actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
+                    actionStateTimeTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                     actionStateTimeTextView.Buffer.Changed += CheckInt;
@@ -858,7 +869,7 @@ namespace MiodenusUI
                 {
                     Label actionStateTimeLabel = new Label("Action state time:");
                     actionStateTimeLabel.ModifyFg(StateType.Normal, almostWhite);
-                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    Box actionStateTimeLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                     actionStateTimeLabelBox.Add(actionStateTimeLabel);
                     actionStateTimeLabelBox.MarginStart = 5;
                     actionStateTimeLabelBox.MarginTop = 15;
@@ -870,6 +881,7 @@ namespace MiodenusUI
                     actionStateTimeTextView.MarginEnd = 7;
                     actionStateTimeTextView.MarginTop = 14;
                     actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
+                    actionStateTimeTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                     actionStateTimeTextView.Buffer.Changed += CheckInt;
@@ -878,7 +890,7 @@ namespace MiodenusUI
                 
 
                 Label actionStateModelVisibilityLabel = new Label("Model visibility:");
-                Box actionStateModelVisibilityLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box actionStateModelVisibilityLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 actionStateModelVisibilityLabel.ModifyFg(StateType.Normal, almostWhite);
                 actionStateModelVisibilityLabelBox.Add(actionStateModelVisibilityLabel);
                 actionStateModelVisibilityLabelBox.MarginStart = 5;
@@ -903,7 +915,7 @@ namespace MiodenusUI
                 float[] rgbModelColor = new float[3];
 
                 Label actionStateColorLabel = new Label("Model color:");
-                Box actionStateColorLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box actionStateColorLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 actionStateColorLabel.ModifyFg(StateType.Normal, almostWhite);
                 actionStateColorLabelBox.Add(actionStateColorLabel);
                 actionStateColorLabelBox.MarginTop = 7;
@@ -974,7 +986,7 @@ namespace MiodenusUI
                 addActionWindowResponses.Add(backgroundColorComponents);
 
                 Label resetScaleLabel = new Label("Reset scale:");
-                Box resetScaleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box resetScaleLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 resetScaleLabel.ModifyFg(StateType.Normal, almostWhite);
                 resetScaleLabelBox.Add(resetScaleLabel);
                 resetScaleLabelBox.MarginStart = 5;
@@ -996,7 +1008,7 @@ namespace MiodenusUI
                 resetScaleBox.Add(resetScaleNo);
 
                 Label transformationScale = new Label("Scale:");
-                Box transformationScaleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box transformationScaleLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 transformationScale.ModifyFg(StateType.Normal, almostWhite);
                 transformationScaleLabelBox.Add(transformationScale);
                 transformationScale.MarginStart = 5;
@@ -1012,15 +1024,21 @@ namespace MiodenusUI
                 transformationScaleX.MarginEnd = 5;
                 transformationScaleX.Buffer.Changed += CheckFloat;
                 transformationScaleX.Data.Add("id", actionStatesCounter-1);
+                transformationScaleX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleX.Buffer.Changed += CheckFloat;
                 TextView transformationScaleY = new TextView();
                 transformationScaleY.WidthRequest = 146;
                 transformationScaleY.MarginEnd = 5;
                 transformationScaleY.Buffer.Changed += CheckFloat;
                 transformationScaleY.Data.Add("id", actionStatesCounter-1);
+                transformationScaleY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleY.Buffer.Changed += CheckFloat;
                 TextView transformationScaleZ = new TextView();
                 transformationScaleZ.WidthRequest = 146;
                 transformationScaleZ.Buffer.Changed += CheckFloat;
                 transformationScaleZ.Data.Add("id", actionStatesCounter-1);
+                transformationScaleZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleZ.Buffer.Changed += CheckFloat;
 
                 TextView[] scaleComponentsTextView = new TextView[3];
                 scaleComponentsTextView[0] = transformationScaleX;
@@ -1034,7 +1052,7 @@ namespace MiodenusUI
                 transformationScaleBox.Add(transformationScaleZ);
 
                 Label resetLocalRotationLabel = new Label("Reset local rotation:");
-                Box resetLocalRotationLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box resetLocalRotationLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 resetLocalRotationLabel.ModifyFg(StateType.Normal, almostWhite);
                 resetLocalRotationLabelBox.Add(resetLocalRotationLabel);
                 resetLocalRotationLabelBox.MarginTop = 7;
@@ -1055,7 +1073,7 @@ namespace MiodenusUI
                 resetLocalRotationBox.Add(resetLocalRotationNo);
 
                 Label localRotationAngleLabel = new Label("Local rotation angle:");
-                Box localRotationAngleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box localRotationAngleLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 localRotationAngleLabel.ModifyFg(StateType.Normal, almostWhite);
                 localRotationAngleLabelBox.Add(localRotationAngleLabel);
                 localRotationAngleLabel.MarginStart = 5;
@@ -1068,11 +1086,13 @@ namespace MiodenusUI
                 localRotationAngleTextView.MarginEnd = 8;
                 localRotationAngleTextView.Data.Add("id", actionStatesCounter-1);
                 localRotationAngleTextView.Buffer.Changed += CheckFloat;
+                localRotationAngleTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationAngleTextView.Buffer.Changed += CheckFloat;
                 localRotationAngleTextViews.Add(localRotationAngleTextView);
                 addActionWindowResponses.Add(localRotationAngleTextView);
                 
                 Label localRotationUnitsLabel = new Label("Local rotation units:");
-                Box localRotationUnitsLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box localRotationUnitsLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 localRotationUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
                 localRotationUnitsLabelBox.Add(localRotationUnitsLabel);
                 localRotationUnitsLabel.MarginStart = 5;
@@ -1096,7 +1116,7 @@ namespace MiodenusUI
                 addActionWindowResponses.Add(angleUnitsChooserBox);
                 
                 Label localRotationVectorLabel = new Label("Local rotation vector:");
-                Box localRotationVectorLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box localRotationVectorLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 localRotationVectorLabel.ModifyFg(StateType.Normal, almostWhite);
                 localRotationVectorLabelBox.Add(localRotationVectorLabel);
                 localRotationVectorLabel.MarginStart = 5;
@@ -1113,14 +1133,20 @@ namespace MiodenusUI
                 localRotationVectorX.MarginEnd = 5;
                 localRotationVectorX.Buffer.Changed += CheckFloat;
                 localRotationVectorX.Data.Add("id", actionStatesCounter-1);
+                localRotationVectorX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorX.Buffer.Changed += CheckFloat;
                 TextView localRotationVectorY = new TextView();
                 localRotationVectorY.WidthRequest = 146;
                 localRotationVectorY.MarginEnd = 5;
                 localRotationVectorY.Buffer.Changed += CheckFloat;
                 localRotationVectorY.Data.Add("id", actionStatesCounter-1);
+                localRotationVectorY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorY.Buffer.Changed += CheckFloat;
                 TextView localRotationVectorZ = new TextView();
                 localRotationVectorZ.WidthRequest = 146;
                 localRotationVectorZ.Data.Add("id", actionStatesCounter-1);
+                localRotationVectorZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorZ.Buffer.Changed += CheckFloat;
 
                 TextView[] localRotationVector = new TextView[3];
                 localRotationVector[0] = localRotationVectorX;
@@ -1136,7 +1162,7 @@ namespace MiodenusUI
                 localRotationVectorBox.Add(localRotationVectorZ);
                 
                 Label resetPositionLabel = new Label("Reset position:");
-                Box resetPositionLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box resetPositionLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 resetPositionLabel.ModifyFg(StateType.Normal, almostWhite);
                 resetPositionLabelBox.Add(resetPositionLabel);
                 resetPositionLabel.MarginStart = 5;
@@ -1159,7 +1185,7 @@ namespace MiodenusUI
                 resetPositionBox.Add(resetPositionNo);
                 
                 Label globalMoveLabel = new Label("Global move:");
-                Box globalMoveLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box globalMoveLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 globalMoveLabel.ModifyFg(StateType.Normal, almostWhite);
                 globalMoveLabelBox.Add(globalMoveLabel);
                 globalMoveLabel.MarginStart = 5;
@@ -1174,13 +1200,19 @@ namespace MiodenusUI
                 globalMoveX.WidthRequest = 146;
                 globalMoveX.MarginEnd = 5;
                 globalMoveX.Data.Add("id", actionStatesCounter-1);
+                globalMoveX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveX.Buffer.Changed += CheckFloat;
                 TextView globalMoveY = new TextView();
                 globalMoveY.WidthRequest = 146;
                 globalMoveY.MarginEnd = 5;
                 globalMoveY.Data.Add("id", actionStatesCounter-1);
+                globalMoveY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveY.Buffer.Changed += CheckFloat;
                 TextView globalMoveZ = new TextView();
                 globalMoveZ.WidthRequest = 146;
                 globalMoveZ.Data.Add("id", actionStatesCounter-1);
+                globalMoveZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveZ.Buffer.Changed += CheckFloat;
 
                 TextView[] globalMove = new TextView[3];
                 globalMove[0] = globalMoveX;
@@ -1194,7 +1226,7 @@ namespace MiodenusUI
                 globalMoveBox.Add(globalMoveZ);
                 
                 Label localMoveLabel = new Label("Local move:");
-                Box localMoveLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box localMoveLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 localMoveLabel.ModifyFg(StateType.Normal, almostWhite);
                 localMoveLabelBox.Add(localMoveLabel);
                 localMoveLabel.MarginStart = 5;
@@ -1210,13 +1242,19 @@ namespace MiodenusUI
                 localMoveX.WidthRequest = 146;
                 localMoveX.MarginEnd = 5;
                 localMoveX.Data.Add("id", actionStatesCounter-1);
+                localMoveX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveX.Buffer.Changed += CheckFloat;
                 TextView localMoveY = new TextView();
                 localMoveY.WidthRequest = 146;
                 localMoveY.MarginEnd = 5;
                 localMoveY.Data.Add("id", actionStatesCounter-1);
+                localMoveY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveY.Buffer.Changed += CheckFloat;
                 TextView localMoveZ = new TextView();
                 localMoveZ.WidthRequest = 146;
                 localMoveZ.Data.Add("id", actionStatesCounter-1);
+                localMoveZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveZ.Buffer.Changed += CheckFloat;
 
                 TextView[] localMove = new TextView[3];
                 localMove[0] = localMoveX;
@@ -1230,7 +1268,7 @@ namespace MiodenusUI
                 localMoveBox.Add(localMoveZ);
                 
                 Label rotationAngleLabel = new Label("Rotation angle:");
-                Box rotationAngleLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box rotationAngleLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 rotationAngleLabel.ModifyFg(StateType.Normal, almostWhite);
                 rotationAngleLabelBox.Add(rotationAngleLabel);
                 rotationAngleLabel.MarginStart = 5;
@@ -1243,11 +1281,13 @@ namespace MiodenusUI
                 rotationAngleTextView.MarginTop = 5;
                 rotationAngleTextView.MarginEnd = 8;
                 rotationAngleTextView.Data.Add("id", actionStatesCounter-1);
+                rotationAngleTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationAngleTextView.Buffer.Changed += CheckFloat;
                 rotationAngleTextViews.Add(rotationAngleTextView);
                 addActionWindowResponses.Add(rotationAngleTextView);
                 
                 Label rotationUnitsLabel = new Label("Rotation units:");
-                Box rotationUnitsLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box rotationUnitsLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 rotationUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
                 rotationUnitsLabelBox.Add(rotationUnitsLabel);
                 rotationUnitsLabel.MarginStart = 5;
@@ -1265,7 +1305,7 @@ namespace MiodenusUI
                 addActionWindowResponses.Add(rotationAngleUnitsChooserBox);
                 
                 Label rotationVectorStartLabel = new Label("Rotation vector start point:");
-                Box rotationVectorStartLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box rotationVectorStartLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 rotationVectorStartLabel.ModifyFg(StateType.Normal, almostWhite);
                 rotationVectorStartLabelBox.Add(rotationVectorStartLabel);
                 rotationVectorStartLabel.MarginStart = 5;
@@ -1281,13 +1321,19 @@ namespace MiodenusUI
                 rotationVectorStartX.WidthRequest = 146;
                 rotationVectorStartX.MarginEnd = 5;
                 rotationVectorStartX.Data.Add("id", actionStatesCounter-1);
+                rotationVectorStartX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartX.Buffer.Changed += CheckFloat;
                 TextView rotationVectorStartY = new TextView();
                 rotationVectorStartY.WidthRequest = 146;
                 rotationVectorStartY.MarginEnd = 5;
                 rotationVectorStartY.Data.Add("id", actionStatesCounter-1);
+                rotationVectorStartY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartY.Buffer.Changed += CheckFloat;
                 TextView rotationVectorStartZ = new TextView();
                 rotationVectorStartZ.WidthRequest = 146;
                 rotationVectorStartZ.Data.Add("id", actionStatesCounter-1);
+                rotationVectorStartZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartZ.Buffer.Changed += CheckFloat;
 
                 TextView[] rotationVectorStartPoint = new TextView[3];
                 rotationVectorStartPoint[0] = rotationVectorStartX;
@@ -1301,7 +1347,7 @@ namespace MiodenusUI
                 rotationVectorStartBox.Add(rotationVectorStartZ);
                 
                 Label rotationVectorEndLabel = new Label("Rotation vector end point:");
-                Box rotationVectorEndLabelBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box rotationVectorEndLabelBox = new Box(Gtk.Orientation.Vertical, 0);
                 rotationVectorEndLabel.ModifyFg(StateType.Normal, almostWhite);
                 rotationVectorEndLabelBox.Add(rotationVectorEndLabel);
                 rotationVectorEndLabel.MarginStart = 5;
@@ -1317,13 +1363,19 @@ namespace MiodenusUI
                 rotationVectorEndX.WidthRequest = 146;
                 rotationVectorEndX.MarginEnd = 5;
                 rotationVectorEndX.Data.Add("id", actionStatesCounter-1);
+                rotationVectorEndX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndX.Buffer.Changed += CheckFloat;
                 TextView rotationVectorEndY = new TextView();
                 rotationVectorEndY.WidthRequest = 146;
                 rotationVectorEndY.MarginEnd = 5;
                 rotationVectorEndY.Data.Add("id", actionStatesCounter-1);
+                rotationVectorEndY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndY.Buffer.Changed += CheckFloat;
                 TextView rotationVectorEndZ = new TextView();
                 rotationVectorEndZ.WidthRequest = 146;
                 rotationVectorEndZ.Data.Add("id", actionStatesCounter-1);
+                rotationVectorEndZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndZ.Buffer.Changed += CheckFloat;
 
                 TextView[] rotationVectorEndPoint = new TextView[3];
                 rotationVectorEndPoint[0] = rotationVectorEndX;
@@ -1371,7 +1423,7 @@ namespace MiodenusUI
                 }
                 
             }
-            
+
             void AddActionOk_Clicked(object sender, EventArgs a)
             {
                 Binding actionBinding = new Binding();
@@ -1396,7 +1448,8 @@ namespace MiodenusUI
                 newAction.Name = actionNameTextView.Buffer.Text;
 
                 ActionState newActionState = new ActionState();
-                
+
+                string floatString = "";
                 for (var i = 0; i < actionStateTimeTextViews.Count; i++)
                 {
                     newActionState.Time = Int32.Parse(actionStateTimeTextViews[i].Buffer.Text);
@@ -1406,7 +1459,13 @@ namespace MiodenusUI
                     
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.Scale[j] = float.Parse(scaleTextViews[i][j].Buffer.Text);
+                        floatString = scaleTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.Scale[j] = (float) Convert.ToDouble(floatString);
                     }
 
                     newActionState.Transformation.ResetLocalRotation = resetLocalRotationRadioButtons[i].Active;
@@ -1414,12 +1473,24 @@ namespace MiodenusUI
                     
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.GlobalMove[j] = float.Parse(globalMoveTextViews[i][j].Buffer.Text);
+                        floatString = globalMoveTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.GlobalMove[j] = (float) Convert.ToDouble(floatString);
                     }
 
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.LocalMove[j] = float.Parse(localMoveTextViews[i][j].Buffer.Text);
+                        floatString = localMoveTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.LocalMove[j] = (float) Convert.ToDouble(floatString);
                     }
 
                     newActionState.Transformation.LocalRotate.Angle =
@@ -1428,25 +1499,40 @@ namespace MiodenusUI
                     
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.LocalRotate.Vector[j] =
-                            float.Parse(localRotationVectorTextViews[i][j].Buffer.Text);
+                        floatString = localRotationVectorTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.LocalRotate.Vector[j] = (float) Convert.ToDouble(floatString);
                     }
-                    
+
                     newActionState.Transformation.Rotate.Angle = float.Parse(rotationAngleTextViews[i].Buffer.Text);
                     newActionState.Transformation.Rotate.Unit = rotationUnitsComboBoxes[i].ActiveId;
                     
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.Rotate.RotationVectorStartPoint[j] =
-                            float.Parse(rotationVectorsStartPointsTextViews[i][j].Buffer.Text);
+                        floatString = rotationVectorsStartPointsTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.Rotate.RotationVectorStartPoint[j] = (float) Convert.ToDouble(floatString);
                     }
-                    
+
                     for (var j = 0; j < 3; j++)
                     {
-                        newActionState.Transformation.Rotate.RotationVectorEndPoint[j] =
-                            float.Parse(rotationVectorsEndPointsTextViews[i][j].Buffer.Text);
+                        floatString = rotationVectorsEndPointsTextViews[i][j].Buffer.Text;
+                        if (floatString.IndexOf('.') != -1)
+                        {
+                            floatString = floatString.Replace('.', ',');
+                        }
+                        
+                        newActionState.Transformation.Rotate.RotationVectorEndPoint[j] = (float) Convert.ToDouble(floatString);
                     }
-                    
+
                     newAction.States.Add(newActionState);
                 }
                 
@@ -1998,7 +2084,7 @@ namespace MiodenusUI
                 
             foreach (var ch in input)
             {
-                if (float.TryParse(ch.ToString(), out _)||(ch=='.' && !dotUsed))
+                if (float.TryParse(ch.ToString(), out _)||(ch == '.' && !dotUsed))
                 {
                     parsedString += ch.ToString();
 
