@@ -24,6 +24,7 @@ namespace MiodenusUI
         private List<Button> modelsNamesButtons = new List<Button>();
         private List<Button> modelsNamesRemoveButtons = new List<Button>();
         private List<Button> addActionButtons = new List<Button>();
+        private List<Button> showActionButtons = new List<Button>();
         Box timelinesVBox = new Box(Gtk.Orientation.Vertical, 0);
         private string currentFilePath = "test.txt";
         private Label animationInfoLabel = new Label();
@@ -235,28 +236,47 @@ namespace MiodenusUI
                 modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                 
                 Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
+                Box addAndShowActionsButtonsBox = new Box(Gtk.Orientation.Horizontal, 0);
                 Button addActionButton = new Button("Add action");
 
                 addActionButton.Name = "main_color_button";
                 addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
                 addActionButton.ModifyFg(StateType.Normal, almostWhite);
                 
+                Button showActionsButton = new Button("Show actions");
+                showActionsButton.Clicked += ShowActionsButton_Clicked;
+                showActionsButton.Data.Add("id", modelsNamesRemoveButtons.Count-1);
+                showActionsButton.Name = "main_color_button";
+                
                 if (i == 0)
                 {
                     addActionButton.MarginTop = 47;
+                    showActionsButton.MarginTop = 47;
                 }
                 else
                 {
                     addActionButton.MarginTop = 5;
+                    showActionsButton.MarginTop = 5;
                 }
 
                 addActionButton.MarginStart = 5;
                 addActionButton.MarginEnd = 5;
                 addActionButton.MarginBottom = 5;
                 
+                showActionsButton.MarginEnd = 5;
+                showActionsButton.MarginBottom = 5;
+                
                 addActionButton.Clicked += AddActionButton_Clicked;
 
-                timelineBox.Add(addActionButton);
+                addAndShowActionsButtonsBox.Add(addActionButton);
+
+                
+                
+                showActionButtons.Add(showActionsButton);
+                
+                addAndShowActionsButtonsBox.Add(showActionsButton);
+                
+                timelineBox.Add(addAndShowActionsButtonsBox);
                 timelinesVBox.Add(timelineBox);
                 
                 addActionButtons.Add(addActionButton);
@@ -542,28 +562,44 @@ namespace MiodenusUI
                     modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                     
                     Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
+                    Box addAndShowButtonsBox = new Box(Gtk.Orientation.Horizontal, 0);
                     Button addActionButton = new Button("Add action");
 
                     addActionButton.Name = "main_color_button";
                     addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
                     addActionButton.ModifyFg(StateType.Normal, almostWhite);
-                
+                    
+                    Button showActionsButton = new Button("Show actions");
+                    showActionsButton.Data.Add("id", modelsNamesRemoveButtons.Count-1);
+                    showActionsButton.Name = "main_color_button";
+                    showActionsButton.Clicked += ShowActionsButton_Clicked;
+                    
                     if (addActionButtons.Count == 0)
                     {
                         addActionButton.MarginTop = 47;
+                        showActionsButton.MarginTop = 47;
                     }
                     else
                     {
                         addActionButton.MarginTop = 5;
+                        showActionsButton.MarginTop = 5;
                     }
 
                     addActionButton.MarginStart = 5;
                     addActionButton.MarginEnd = 5;
                     addActionButton.MarginBottom = 5;
                     
+                    showActionsButton.MarginEnd = 5;
+                    showActionsButton.MarginBottom = 5;
+                    
                     addActionButton.Clicked += AddActionButton_Clicked;
 
-                    timelineBox.Add(addActionButton);
+                    showActionButtons.Add(showActionsButton);
+                    
+                    addAndShowButtonsBox.Add(addActionButton);
+                    addAndShowButtonsBox.Add(showActionsButton);
+                    
+                    timelineBox.Add(addAndShowButtonsBox);
                     timelinesVBox.Add(timelineBox);
                         
                     addActionButtons.Add(addActionButton);
@@ -599,10 +635,12 @@ namespace MiodenusUI
             modelsNamesButtons[i].Destroy();
             modelsNamesRemoveButtons[i].Destroy();
             addActionButtons[i].Destroy();
+            showActionButtons[i].Destroy();
                     
             modelsNamesButtons.Remove(modelsNamesButtons[i]);
             modelsNamesRemoveButtons.Remove(modelsNamesRemoveButtons[i]);
             addActionButtons.Remove(addActionButtons[i]);
+            showActionButtons.Remove(showActionButtons[i]);
             
             if (addActionButtons.Count > 0)
             {
@@ -644,10 +682,12 @@ namespace MiodenusUI
                         modelsNamesButtons[i].Destroy();
                         modelsNamesRemoveButtons[i].Destroy();
                         addActionButtons[i].Destroy();
+                        showActionButtons[i].Destroy();
 
                         modelsNamesButtons.Remove(modelsNamesButtons[i]);
                         modelsNamesRemoveButtons.Remove(modelsNamesRemoveButtons[i]);
                         addActionButtons.Remove(addActionButtons[i]);
+                        showActionButtons.Remove(showActionButtons[i]);
 
                         i--;
                     }
@@ -682,28 +722,44 @@ namespace MiodenusUI
                         modelsNamesRemoveButtons.Last().Clicked += RemoveModel_Clicked;
                         
                         Box timelineBox = new Box(Gtk.Orientation.Horizontal, 0);
+                        Box addAndShowActionsBox = new Box(Gtk.Orientation.Horizontal, 0);
                         Button addActionButton = new Button("Add action");
 
                         addActionButton.Name = "main_color_button";
                         addActionButton.Data.Add("id", modelsNamesRemoveButtons.Last().Data["id"]);
                         addActionButton.ModifyFg(StateType.Normal, almostWhite);
-                
+                        
+                        Button showActionsButton = new Button("Show actions");
+                        showActionsButton.Data.Add("id", modelsNamesRemoveButtons.Count-1);
+                        showActionsButton.Name = "main_color_button";
+                        showActionsButton.Clicked += ShowActionsButton_Clicked;
+                        
                         if (i == 0)
                         {
                             addActionButton.MarginTop = 47;
+                            showActionsButton.MarginTop = 47;
                         }
                         else
                         {
                             addActionButton.MarginTop = 5;
+                            showActionsButton.MarginTop = 5;
                         }
 
                         addActionButton.MarginStart = 5;
                         addActionButton.MarginEnd = 5;
                         addActionButton.MarginBottom = 5;
+                        
+                        showActionsButton.MarginEnd = 5;
+                        showActionsButton.MarginBottom = 5;
 
                         addActionButton.Clicked += AddActionButton_Clicked;
-                
-                        timelineBox.Add(addActionButton);
+                        
+                        showActionButtons.Add(showActionsButton);
+                        
+                        addAndShowActionsBox.Add(addActionButton);
+                        addAndShowActionsBox.Add(showActionsButton);
+                        
+                        timelineBox.Add(addAndShowActionsBox);
                         timelinesVBox.Add(timelineBox);
                         
                         addActionButtons.Add(addActionButton);
@@ -725,9 +781,225 @@ namespace MiodenusUI
 
             openDialog.Destroy();
         }
-        
-        
-        
+
+        private void ShowActionsButton_Clicked(object sender, EventArgs a)
+        {
+            string modelName = "";
+            int modelIndex = -1;
+            List<int> bindingIndexes = new List<int>();
+            List<MafStructure.Action> actions = new List<MafStructure.Action>();
+
+            for (var i = 0; i < modelsNamesButtons.Count; i++)
+            {
+                if ((int)(modelsNamesRemoveButtons[i].Data["id"]) == (int)(((Button) sender).Data["id"]))
+                {
+                    modelIndex = i;
+                    break;
+                }
+            }
+
+            if (modelIndex != -1)
+            {
+                modelName = modelsNamesButtons[modelIndex].Label;
+            }
+            else
+            {
+                modelName = "";
+            }
+
+            for (var i = 0; i < animation.Bindings.Count; i++)
+            {
+                if (animation.Bindings[i].ModelName == modelName)
+                {
+                    bindingIndexes.Add(i);
+                }
+            }
+
+            for (var i = 0; i < bindingIndexes.Count; i++)
+            {
+                for (var j = 0; j < animation.Actions.Count; j++)
+                {
+                    if (animation.Bindings[bindingIndexes[i]].ActionName == animation.Actions[j].Name)
+                    {
+                        actions.Add(animation.Actions[j]);
+                    }
+                }
+                
+            }
+
+            Window showActionsWindow = new Window("Actions");
+
+            ScrolledWindow showActionsWindowAllElementsScrolled = new ScrolledWindow();
+            showActionsWindowAllElementsScrolled.SetSizeRequest(220, 500);
+            showActionsWindow.Resizable = false;
+            Box showActionsWindowAllElements = new Box(Gtk.Orientation.Horizontal, 0);
+            showActionsWindowAllElementsScrolled.Add(showActionsWindowAllElements);
+            
+            showActionsWindow.Add(showActionsWindowAllElementsScrolled);
+
+            Box showActionWindowLabels = new Box(Gtk.Orientation.Vertical, 0);
+            Box showActionWindowActionsContent = new Box(Gtk.Orientation.Vertical, 0);
+            
+            showActionsWindowAllElements.Add(showActionWindowLabels);
+            showActionsWindowAllElements.Add(showActionWindowActionsContent);
+            
+            showActionsWindowAllElements.ModifyBg(StateType.Normal, mainColor);
+            
+            for (var i = 0; i < actions.Count; i++)
+            {
+                Label actionNameLabel = new Label("Action name:");
+                actionNameLabel.Margin = 5;
+                actionNameLabel.ModifyFg(StateType.Normal, almostWhite);
+                Label actionName = new Label(actions[i].Name);
+                actionName.Margin = 5;
+                actionName.ModifyFg(StateType.Normal, almostWhite);
+                showActionWindowLabels.Add(actionNameLabel);
+                showActionWindowActionsContent.Add(actionName);
+
+                for (var j = 0; j < actions[i].States.Count; j++)
+                {
+                    Label actionStateTimeLabel = new Label("Action state time:");
+                    Label actionStateColorLabel = new Label("\nAction state model color:\n");
+                    Label actionStateVisibilityLabel = new Label("Visibility:");
+                    Label actionStateResetScaleLabel = new Label("Reset scale:");
+                    Label actionStateScaleLabel = new Label("\nScale:\n");
+                    Label actionStateResetLocalRotationLabel = new Label("Reset local rotation:");
+                    Label actionStateLocalRotateAngleLabel = new Label("Local rotate angle:");
+                    Label actionStateLocalRotateUnitsLabel = new Label("Local rotate units:");
+                    Label actionStateLocalRotateVectorLabel = new Label("\nLocal rotate vector:\n");
+                    Label actionStateResetPositionLabel = new Label("Reset position:");
+                    Label actionStateGlobalMoveLabel = new Label("\nGlobal move:\n");
+                    Label actionStateLocalMoveLabel = new Label("\nLocal move:\n");
+                    Label actionStateRotationAngleLabel = new Label("Rotation angle:");
+                    Label actionStateRotationUnitsLabel = new Label("Rotation units:");
+                    Label actionStateRotationVectorStartPointLabel = new Label("\nRotation vector start point:\n");
+                    Label actionStateRotationVectorEndPointLabel = new Label("\nRotation vector end point:\n");
+
+                    actionStateTimeLabel.Margin = 5;
+                    actionStateColorLabel.Margin = 5;
+                    actionStateVisibilityLabel.Margin = 5;
+                    actionStateResetScaleLabel.Margin = 5;
+                    actionStateScaleLabel.Margin = 5;
+                    actionStateResetLocalRotationLabel.Margin = 5;
+                    actionStateLocalRotateAngleLabel.Margin = 5;
+                    actionStateLocalRotateUnitsLabel.Margin = 5;
+                    actionStateLocalRotateVectorLabel.Margin = 5;
+                    actionStateResetPositionLabel.Margin = 5;
+                    actionStateGlobalMoveLabel.Margin = 5;
+                    actionStateLocalMoveLabel.Margin = 5;
+                    actionStateRotationAngleLabel.Margin = 5;
+                    actionStateRotationUnitsLabel.Margin = 5;
+                    actionStateRotationVectorStartPointLabel.Margin = 5;
+                    actionStateRotationVectorEndPointLabel.Margin = 5;
+                    
+                    actionStateTimeLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateColorLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateVisibilityLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetScaleLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateScaleLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetLocalRotationLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateAngleLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateVectorLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetPositionLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateGlobalMoveLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalMoveLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationAngleLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationUnitsLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationVectorStartPointLabel.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationVectorEndPointLabel.ModifyFg(StateType.Normal, almostWhite);
+                    
+                    showActionWindowLabels.Add(actionStateTimeLabel);
+                    showActionWindowLabels.Add(actionStateColorLabel);
+                    showActionWindowLabels.Add(actionStateVisibilityLabel);
+                    showActionWindowLabels.Add(actionStateResetScaleLabel);
+                    showActionWindowLabels.Add(actionStateScaleLabel);
+                    showActionWindowLabels.Add(actionStateResetLocalRotationLabel);
+                    showActionWindowLabels.Add(actionStateLocalRotateAngleLabel);
+                    showActionWindowLabels.Add(actionStateLocalRotateUnitsLabel);
+                    showActionWindowLabels.Add(actionStateLocalRotateVectorLabel);
+                    showActionWindowLabels.Add(actionStateResetPositionLabel);
+                    showActionWindowLabels.Add(actionStateGlobalMoveLabel);
+                    showActionWindowLabels.Add(actionStateLocalMoveLabel);
+                    showActionWindowLabels.Add(actionStateRotationAngleLabel);
+                    showActionWindowLabels.Add(actionStateRotationUnitsLabel);
+                    showActionWindowLabels.Add(actionStateRotationVectorStartPointLabel);
+                    showActionWindowLabels.Add(actionStateRotationVectorEndPointLabel);
+                    
+                    Label actionStateTime = new Label(actions[i].States[j].Time.ToString());
+                    Label actionStateColor = new Label(actions[i].States[j].Color[0].ToString() + '\n' + actions[i].States[j].Color[1].ToString() + '\n' + actions[i].States[j].Color[2].ToString());
+                    Label actionStateVisibility = new Label(actions[i].States[j].IsModelVisible.ToString());
+                    Label actionStateResetScale = new Label(actions[i].States[j].Transformation.ResetScale.ToString());
+                    Label actionStateScale = new Label(actions[i].States[j].Transformation.Scale[0].ToString() + '\n' + actions[i].States[j].Transformation.Scale[1].ToString() + '\n' + actions[i].States[j].Transformation.Scale[2].ToString());
+                    Label actionStateResetLocalRotation = new Label(actions[i].States[j].Transformation.ResetLocalRotation.ToString());
+                    Label actionStateLocalRotateAngle = new Label(actions[i].States[j].Transformation.LocalRotate.Angle.ToString());
+                    Label actionStateLocalRotateUnits = new Label(actions[i].States[j].Transformation.LocalRotate.Unit);
+                    Label actionStateLocalRotateVector = new Label(actions[i].States[j].Transformation.LocalRotate.Vector[0].ToString() + '\n' + actions[i].States[j].Transformation.LocalRotate.Vector[1].ToString() + '\n' + actions[i].States[j].Transformation.LocalRotate.Vector[2].ToString());
+                    Label actionStateResetPosition = new Label(actions[i].States[j].Transformation.ResetPosition.ToString());
+                    Label actionStateGlobalMove = new Label(actions[i].States[j].Transformation.GlobalMove[0].ToString() + '\n' + actions[i].States[j].Transformation.GlobalMove[1].ToString() + '\n' + actions[i].States[j].Transformation.GlobalMove[2].ToString());
+                    Label actionStateLocalMove = new Label(actions[i].States[j].Transformation.LocalMove[0].ToString() + '\n' + actions[i].States[j].Transformation.LocalMove[1].ToString() + '\n' + actions[i].States[j].Transformation.LocalMove[2].ToString());
+                    Label actionStateRotationAngle = new Label(actions[i].States[j].Transformation.Rotate.Angle.ToString());
+                    Label actionStateRotationUnits = new Label(actions[i].States[j].Transformation.Rotate.Unit);
+                    Label actionStateRotationVectorStartPoint = new Label(actions[i].States[j].Transformation.Rotate.RotationVectorStartPoint[0].ToString() + '\n' + actions[i].States[j].Transformation.Rotate.RotationVectorStartPoint[1].ToString() + '\n' + actions[i].States[j].Transformation.Rotate.RotationVectorStartPoint[2].ToString());
+                    Label actionStateRotationVectorEndPoint = new Label(actions[i].States[j].Transformation.Rotate.RotationVectorEndPoint[0].ToString() + '\n' + actions[i].States[j].Transformation.Rotate.RotationVectorEndPoint[1].ToString() + '\n' + actions[i].States[j].Transformation.Rotate.RotationVectorEndPoint[2].ToString());
+                    
+                    actionStateTime.Margin = 5;
+                    actionStateColor.Margin = 5;
+                    actionStateVisibility.Margin = 5;
+                    actionStateResetScale.Margin = 5;
+                    actionStateScale.Margin = 5;
+                    actionStateResetLocalRotation.Margin = 5;
+                    actionStateLocalRotateAngle.Margin = 5;
+                    actionStateLocalRotateUnits.Margin = 5;
+                    actionStateLocalRotateVector.Margin = 5;
+                    actionStateResetPosition.Margin = 5;
+                    actionStateGlobalMove.Margin = 5;
+                    actionStateLocalMove.Margin = 5;
+                    actionStateRotationAngle.Margin = 5;
+                    actionStateRotationUnits.Margin = 5;
+                    actionStateRotationVectorStartPoint.Margin = 5;
+                    actionStateRotationVectorEndPoint.Margin = 5;
+                    
+                    actionStateTime.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateColor.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateVisibility.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetScale.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateScale.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetLocalRotation.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateAngle.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateUnits.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalRotateVector.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateResetPosition.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateGlobalMove.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateLocalMove.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationAngle.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationUnits.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationVectorStartPoint.ModifyFg(StateType.Normal, almostWhite);
+                    actionStateRotationVectorEndPoint.ModifyFg(StateType.Normal, almostWhite);
+                    
+                    showActionWindowActionsContent.Add(actionStateTime);
+                    showActionWindowActionsContent.Add(actionStateColor);
+                    showActionWindowActionsContent.Add(actionStateVisibility);
+                    showActionWindowActionsContent.Add(actionStateResetScale);
+                    showActionWindowActionsContent.Add(actionStateScale);
+                    showActionWindowActionsContent.Add(actionStateResetLocalRotation);
+                    showActionWindowActionsContent.Add(actionStateLocalRotateAngle);
+                    showActionWindowActionsContent.Add(actionStateLocalRotateUnits);
+                    showActionWindowActionsContent.Add(actionStateLocalRotateVector);
+                    showActionWindowActionsContent.Add(actionStateResetPosition);
+                    showActionWindowActionsContent.Add(actionStateGlobalMove);
+                    showActionWindowActionsContent.Add(actionStateLocalMove);
+                    showActionWindowActionsContent.Add(actionStateRotationAngle);
+                    showActionWindowActionsContent.Add(actionStateRotationUnits);
+                    showActionWindowActionsContent.Add(actionStateRotationVectorStartPoint);
+                    showActionWindowActionsContent.Add(actionStateRotationVectorEndPoint);
+                }
+            }
+            
+            
+            showActionsWindow.ShowAll();
+        }
+
         private int actionStatesCounter = 0;
 
         private void AddActionButton_Clicked(object sender, EventArgs a)
@@ -790,6 +1062,7 @@ namespace MiodenusUI
             actionNameTextView.MarginEnd = 6;
             actionNameTextView.MarginTop = 5;
             actionNameTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+            actionNameTextView.Buffer.Text = DefaultMafParameters.Action.Name;
             addActionWindowResponses.Add(actionNameTextView);
 
             Label actionStatesLabel = new Label("Action states:");
@@ -861,6 +1134,7 @@ namespace MiodenusUI
                     actionStateTimeTextView.MarginEnd = 6;
                     actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
                     actionStateTimeTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                    actionStateTimeTextView.Buffer.Text = DefaultMafParameters.ActionState.Time.ToString();
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                     actionStateTimeTextView.Buffer.Changed += CheckInt;
@@ -882,6 +1156,7 @@ namespace MiodenusUI
                     actionStateTimeTextView.MarginTop = 14;
                     actionStateTimeTextView.Data.Add("id", actionStatesCounter-1);
                     actionStateTimeTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                    actionStateTimeTextView.Buffer.Text = DefaultMafParameters.ActionState.Time.ToString();
                     actionStateTimeTextViews.Add(actionStateTimeTextView);
                     addActionWindowResponses.Add(actionStateTimeTextView);
                     actionStateTimeTextView.Buffer.Changed += CheckInt;
@@ -942,12 +1217,12 @@ namespace MiodenusUI
                 choosenColorBlueComponent.ModifyFg(StateType.Normal, almostWhite);
 
                 Box choosenColorBox = new Box(Gtk.Orientation.Horizontal,0);
-                choosenColorBox.ModifyBg(StateType.Normal, new Color((byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255),(byte)(DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255)));
+                choosenColorBox.ModifyBg(StateType.Normal, new Color(0,255,0));
 
 
-                rgbModelColor[0] = DefaultMafParameters.AnimationInfo.BackgroundColor[0];
-                rgbModelColor[1] = DefaultMafParameters.AnimationInfo.BackgroundColor[1];
-                rgbModelColor[2] = DefaultMafParameters.AnimationInfo.BackgroundColor[2];
+                rgbModelColor[0] = 0;
+                rgbModelColor[1] = 1;
+                rgbModelColor[2] = 0;
                 
                 if (actionStatesColors.Count > (int) (chooseColorButton).Data["id"])
                 {
@@ -958,9 +1233,9 @@ namespace MiodenusUI
                     actionStatesColors.Add(rgbModelColor);
                 }
                 
-                choosenColorRedComponent.Text = $"Red = {DefaultMafParameters.AnimationInfo.BackgroundColor[0]*255}";
-                choosenColorGreenComponent.Text = $"Green = {DefaultMafParameters.AnimationInfo.BackgroundColor[1]*255}";
-                choosenColorBlueComponent.Text = $"Blue = {DefaultMafParameters.AnimationInfo.BackgroundColor[2]*255}";
+                choosenColorRedComponent.Text = $"Red = {0}";
+                choosenColorGreenComponent.Text = $"Green = {255}";
+                choosenColorBlueComponent.Text = $"Blue = {0}";
                 
                 choosenColorRedComponent.MarginEnd = 5;
                 choosenColorGreenComponent.MarginEnd = 5;
@@ -1025,6 +1300,7 @@ namespace MiodenusUI
                 transformationScaleX.Buffer.Changed += CheckFloat;
                 transformationScaleX.Data.Add("id", actionStatesCounter-1);
                 transformationScaleX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleX.Buffer.Text = DefaultMafParameters.Transformation.Scale[0].ToString();
                 transformationScaleX.Buffer.Changed += CheckFloat;
                 TextView transformationScaleY = new TextView();
                 transformationScaleY.WidthRequest = 146;
@@ -1032,12 +1308,14 @@ namespace MiodenusUI
                 transformationScaleY.Buffer.Changed += CheckFloat;
                 transformationScaleY.Data.Add("id", actionStatesCounter-1);
                 transformationScaleY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleY.Buffer.Text = DefaultMafParameters.Transformation.Scale[1].ToString();
                 transformationScaleY.Buffer.Changed += CheckFloat;
                 TextView transformationScaleZ = new TextView();
                 transformationScaleZ.WidthRequest = 146;
                 transformationScaleZ.Buffer.Changed += CheckFloat;
                 transformationScaleZ.Data.Add("id", actionStatesCounter-1);
                 transformationScaleZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                transformationScaleZ.Buffer.Text = DefaultMafParameters.Transformation.Scale[2].ToString();
                 transformationScaleZ.Buffer.Changed += CheckFloat;
 
                 TextView[] scaleComponentsTextView = new TextView[3];
@@ -1087,6 +1365,7 @@ namespace MiodenusUI
                 localRotationAngleTextView.Data.Add("id", actionStatesCounter-1);
                 localRotationAngleTextView.Buffer.Changed += CheckFloat;
                 localRotationAngleTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationAngleTextView.Buffer.Text = DefaultMafParameters.LocalRotation.Angle.ToString();
                 localRotationAngleTextView.Buffer.Changed += CheckFloat;
                 localRotationAngleTextViews.Add(localRotationAngleTextView);
                 addActionWindowResponses.Add(localRotationAngleTextView);
@@ -1134,6 +1413,7 @@ namespace MiodenusUI
                 localRotationVectorX.Buffer.Changed += CheckFloat;
                 localRotationVectorX.Data.Add("id", actionStatesCounter-1);
                 localRotationVectorX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorX.Buffer.Text = DefaultMafParameters.LocalRotation.Vector[0].ToString();
                 localRotationVectorX.Buffer.Changed += CheckFloat;
                 TextView localRotationVectorY = new TextView();
                 localRotationVectorY.WidthRequest = 146;
@@ -1141,11 +1421,13 @@ namespace MiodenusUI
                 localRotationVectorY.Buffer.Changed += CheckFloat;
                 localRotationVectorY.Data.Add("id", actionStatesCounter-1);
                 localRotationVectorY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorY.Buffer.Text = DefaultMafParameters.LocalRotation.Vector[1].ToString();
                 localRotationVectorY.Buffer.Changed += CheckFloat;
                 TextView localRotationVectorZ = new TextView();
                 localRotationVectorZ.WidthRequest = 146;
                 localRotationVectorZ.Data.Add("id", actionStatesCounter-1);
                 localRotationVectorZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localRotationVectorZ.Buffer.Text = DefaultMafParameters.LocalRotation.Vector[2].ToString();
                 localRotationVectorZ.Buffer.Changed += CheckFloat;
 
                 TextView[] localRotationVector = new TextView[3];
@@ -1201,17 +1483,20 @@ namespace MiodenusUI
                 globalMoveX.MarginEnd = 5;
                 globalMoveX.Data.Add("id", actionStatesCounter-1);
                 globalMoveX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveX.Buffer.Text = DefaultMafParameters.Transformation.GlobalMove[0].ToString();
                 globalMoveX.Buffer.Changed += CheckFloat;
                 TextView globalMoveY = new TextView();
                 globalMoveY.WidthRequest = 146;
                 globalMoveY.MarginEnd = 5;
                 globalMoveY.Data.Add("id", actionStatesCounter-1);
                 globalMoveY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveY.Buffer.Text = DefaultMafParameters.Transformation.GlobalMove[1].ToString();
                 globalMoveY.Buffer.Changed += CheckFloat;
                 TextView globalMoveZ = new TextView();
                 globalMoveZ.WidthRequest = 146;
                 globalMoveZ.Data.Add("id", actionStatesCounter-1);
                 globalMoveZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                globalMoveZ.Buffer.Text = DefaultMafParameters.Transformation.GlobalMove[2].ToString();
                 globalMoveZ.Buffer.Changed += CheckFloat;
 
                 TextView[] globalMove = new TextView[3];
@@ -1243,17 +1528,20 @@ namespace MiodenusUI
                 localMoveX.MarginEnd = 5;
                 localMoveX.Data.Add("id", actionStatesCounter-1);
                 localMoveX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveX.Buffer.Text = DefaultMafParameters.Transformation.LocalMove[0].ToString();
                 localMoveX.Buffer.Changed += CheckFloat;
                 TextView localMoveY = new TextView();
                 localMoveY.WidthRequest = 146;
                 localMoveY.MarginEnd = 5;
                 localMoveY.Data.Add("id", actionStatesCounter-1);
                 localMoveY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveY.Buffer.Text = DefaultMafParameters.Transformation.LocalMove[1].ToString();
                 localMoveY.Buffer.Changed += CheckFloat;
                 TextView localMoveZ = new TextView();
                 localMoveZ.WidthRequest = 146;
                 localMoveZ.Data.Add("id", actionStatesCounter-1);
                 localMoveZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                localMoveZ.Buffer.Text = DefaultMafParameters.Transformation.LocalMove[2].ToString();
                 localMoveZ.Buffer.Changed += CheckFloat;
 
                 TextView[] localMove = new TextView[3];
@@ -1282,6 +1570,7 @@ namespace MiodenusUI
                 rotationAngleTextView.MarginEnd = 8;
                 rotationAngleTextView.Data.Add("id", actionStatesCounter-1);
                 rotationAngleTextView.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationAngleTextView.Buffer.Text = DefaultMafParameters.Rotation.Angle.ToString();
                 rotationAngleTextView.Buffer.Changed += CheckFloat;
                 rotationAngleTextViews.Add(rotationAngleTextView);
                 addActionWindowResponses.Add(rotationAngleTextView);
@@ -1322,17 +1611,20 @@ namespace MiodenusUI
                 rotationVectorStartX.MarginEnd = 5;
                 rotationVectorStartX.Data.Add("id", actionStatesCounter-1);
                 rotationVectorStartX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartX.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorStartPoint[0].ToString();
                 rotationVectorStartX.Buffer.Changed += CheckFloat;
                 TextView rotationVectorStartY = new TextView();
                 rotationVectorStartY.WidthRequest = 146;
                 rotationVectorStartY.MarginEnd = 5;
                 rotationVectorStartY.Data.Add("id", actionStatesCounter-1);
                 rotationVectorStartY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartY.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorStartPoint[1].ToString();
                 rotationVectorStartY.Buffer.Changed += CheckFloat;
                 TextView rotationVectorStartZ = new TextView();
                 rotationVectorStartZ.WidthRequest = 146;
                 rotationVectorStartZ.Data.Add("id", actionStatesCounter-1);
                 rotationVectorStartZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorStartZ.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorStartPoint[2].ToString();
                 rotationVectorStartZ.Buffer.Changed += CheckFloat;
 
                 TextView[] rotationVectorStartPoint = new TextView[3];
@@ -1364,17 +1656,20 @@ namespace MiodenusUI
                 rotationVectorEndX.MarginEnd = 5;
                 rotationVectorEndX.Data.Add("id", actionStatesCounter-1);
                 rotationVectorEndX.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndX.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorEndPoint[0].ToString();
                 rotationVectorEndX.Buffer.Changed += CheckFloat;
                 TextView rotationVectorEndY = new TextView();
                 rotationVectorEndY.WidthRequest = 146;
                 rotationVectorEndY.MarginEnd = 5;
                 rotationVectorEndY.Data.Add("id", actionStatesCounter-1);
                 rotationVectorEndY.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndY.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorEndPoint[1].ToString();
                 rotationVectorEndY.Buffer.Changed += CheckFloat;
                 TextView rotationVectorEndZ = new TextView();
                 rotationVectorEndZ.WidthRequest = 146;
                 rotationVectorEndZ.Data.Add("id", actionStatesCounter-1);
                 rotationVectorEndZ.ModifyBg(StateType.Normal, new Color(212,224,238));
+                rotationVectorEndZ.Buffer.Text = DefaultMafParameters.Rotation.RotationVectorEndPoint[2].ToString();
                 rotationVectorEndZ.Buffer.Changed += CheckFloat;
 
                 TextView[] rotationVectorEndPoint = new TextView[3];
@@ -1388,11 +1683,106 @@ namespace MiodenusUI
                 rotationVectorEndBox.Add(rotationVectorEndY);
                 rotationVectorEndBox.Add(rotationVectorEndZ);
                 
-                chooseColorButton.Clicked += ChooseColorButton_Clicked; 
+                chooseColorButton.Clicked += ChooseColorButton_Clicked;
+
+                actionNameTextView.Buffer.Changed += CheckOkAvailability;
                 
+                for (var i = 0; i < actionStateTimeTextViews.Count; i++)
+                {
+                    actionStateTimeTextViews[i].Buffer.Changed += CheckOkAvailability;
+                }
+
+                for (var i = 0; i < scaleTextViews.Count; i++)
+                {
+                    scaleTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    scaleTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    scaleTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+
+                for (var i = 0; i < localRotationAngleTextViews.Count; i++)
+                {
+                    localRotationAngleTextViews[i].Buffer.Changed += CheckOkAvailability;
+                }
+
+                for (var i = 0; i < localRotationVectorTextViews.Count; i++)
+                {
+                    localRotationVectorTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    localRotationVectorTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    localRotationVectorTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+
+                for (var i = 0; i < globalMoveTextViews.Count; i++)
+                {
+                    globalMoveTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    globalMoveTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    globalMoveTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+
+                for (var i = 0; i < localMoveTextViews.Count; i++)
+                {
+                    localMoveTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    localMoveTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    localMoveTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+                
+                for (var i = 0; i < rotationAngleTextViews.Count; i++)
+                {
+                    rotationAngleTextViews[i].Buffer.Changed += CheckOkAvailability;
+                }
+                
+                for (var i = 0; i < rotationVectorsStartPointsTextViews.Count; i++)
+                {
+                    rotationVectorsStartPointsTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    rotationVectorsStartPointsTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    rotationVectorsStartPointsTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+                
+                for (var i = 0; i < rotationVectorsEndPointsTextViews.Count; i++)
+                {
+                    rotationVectorsEndPointsTextViews[i][0].Buffer.Changed += CheckOkAvailability;
+                    rotationVectorsEndPointsTextViews[i][1].Buffer.Changed += CheckOkAvailability;
+                    rotationVectorsEndPointsTextViews[i][2].Buffer.Changed += CheckOkAvailability;
+                }
+
                 addActionWindowLabels.ShowAll();
                 addActionWindowResponses.ShowAll();
-                
+
+                void CheckOkAvailability(object sender, EventArgs a)
+                {
+                    bool actionNameOk = false;
+                    bool actionStateTimeOk = false;
+                    bool scaleOk = false;
+                    bool localRotationAngleOk = false;
+                    bool localRotationVectorOk = false;
+                    bool globalMoveOk = false;
+                    bool localMoveOk = false;
+                    bool rotationAngleOk = false;
+                    bool rotationVectorStartOk = false;
+                    bool rotationVectorEndOk = false;
+
+                    if (actionNameTextView.Buffer.Text != "")
+                    {
+                        actionNameOk = true;
+                    }
+                    else
+                    {
+                        actionNameOk = false;
+                    }
+                    
+                    actionStateTimeOk = true;
+                    
+                    for (var i = 0; i < actionStateTimeTextViews.Count; i++)
+                    {
+                        if (actionStateTimeTextViews[i].Buffer.Text == "")
+                        {
+                            actionStateTimeOk = false;
+                            break;
+                        }
+                    }
+                    
+                    addActionOkButton.Sensitive = actionStateTimeOk;
+                }
+
                 void ChooseColorButton_Clicked(object sender, EventArgs a)
                 {
                     ColorChooserDialog chooseColorWindow = new ColorChooserDialog("Choose color", addActionWindow);
@@ -1447,90 +1837,278 @@ namespace MiodenusUI
                 MafStructure.Action newAction = new MafStructure.Action();
                 newAction.Name = actionNameTextView.Buffer.Text;
 
-                ActionState newActionState = new ActionState();
+                
 
-                string floatString = "";
+                
                 for (var i = 0; i < actionStateTimeTextViews.Count; i++)
                 {
+                    string floatString = "";
+                    ActionState newActionState = new ActionState();
                     newActionState.Time = Int32.Parse(actionStateTimeTextViews[i].Buffer.Text);
                     newActionState.IsModelVisible = actionStateIsModelVisibleRadioButtons[i].Active;
                     newActionState.Color = actionStatesColors[i];
                     newActionState.Transformation.ResetScale = resetScaleRadioButtons[i].Active;
+
+                    string[] buffer = new string[3];
                     
+                    buffer[0] = scaleTextViews[i][0].Buffer.Text;
+                    buffer[1] = scaleTextViews[i][1].Buffer.Text;
+                    buffer[2] = scaleTextViews[i][2].Buffer.Text;
+
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = scaleTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
+                        
+                        if (floatString != "")
                         {
-                            floatString = floatString.Replace('.', ',');
+                               if (floatString.IndexOf('.') != -1)
+                               {
+                                   floatString = floatString.Replace('.', ',');
+                               }
+                                                       
+                               newActionState.Transformation.Scale[j] = (float) Convert.ToDouble(floatString.Clone());
+                        }
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                scaleTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
                         }
                         
-                        newActionState.Transformation.Scale[j] = (float) Convert.ToDouble(floatString);
+                        
                     }
 
                     newActionState.Transformation.ResetLocalRotation = resetLocalRotationRadioButtons[i].Active;
                     newActionState.Transformation.ResetPosition = resetPositionRadioButtons[i].Active;
                     
+                    buffer[0] = globalMoveTextViews[i][0].Buffer.Text;
+                    buffer[1] = globalMoveTextViews[i][1].Buffer.Text;
+                    buffer[2] = globalMoveTextViews[i][2].Buffer.Text;
+                    
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = globalMoveTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
-                        {
-                            floatString = floatString.Replace('.', ',');
-                        }
                         
-                        newActionState.Transformation.GlobalMove[j] = (float) Convert.ToDouble(floatString);
+                        if (floatString != "")
+                        {
+                            if (floatString.IndexOf('.') != -1)
+                            {
+                                floatString = floatString.Replace('.', ',');
+                            }
+
+                            newActionState.Transformation.GlobalMove[j] = (float) Convert.ToDouble(floatString);
+                        }
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                globalMoveTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
+                        }
                     }
+                    
+                    buffer[0] = localMoveTextViews[i][0].Buffer.Text;
+                    buffer[1] = localMoveTextViews[i][1].Buffer.Text;
+                    buffer[2] = localMoveTextViews[i][2].Buffer.Text;
 
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = localMoveTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
-                        {
-                            floatString = floatString.Replace('.', ',');
-                        }
                         
-                        newActionState.Transformation.LocalMove[j] = (float) Convert.ToDouble(floatString);
+                        if (floatString != "")
+                        {
+                            if (floatString.IndexOf('.') != -1)
+                            {
+                                floatString = floatString.Replace('.', ',');
+                            }
+
+                            newActionState.Transformation.LocalMove[j] = (float) Convert.ToDouble(floatString);
+                        }
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                localMoveTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
+                        }
                     }
 
-                    newActionState.Transformation.LocalRotate.Angle =
-                        float.Parse(localRotationAngleTextViews[i].Buffer.Text);
-                    newActionState.Transformation.LocalRotate.Unit = localRotationUnitsComboBoxes[i].ActiveId;
+                    if (localRotationAngleTextViews[i].Buffer.Text != "")
+                    {
+                        newActionState.Transformation.LocalRotate.Angle =
+                                                float.Parse(localRotationAngleTextViews[i].Buffer.Text);
+                        if (localRotationUnitsComboBoxes[i].Active == 0)
+                        {
+                            newActionState.Transformation.LocalRotate.Unit = "rad";
+                        }
+                        else if(localRotationUnitsComboBoxes[i].Active == 1)
+                        {
+                            newActionState.Transformation.LocalRotate.Unit = "deg";
+                        }
+                        
+                    }
+                    
+                    
+                    
+                    buffer[0] = localRotationVectorTextViews[i][0].Buffer.Text;
+                    buffer[1] = localRotationVectorTextViews[i][1].Buffer.Text;
+                    buffer[2] = localRotationVectorTextViews[i][2].Buffer.Text;
                     
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = localRotationVectorTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
+
+                        if (floatString != "")
                         {
-                            floatString = floatString.Replace('.', ',');
+                            if (floatString.IndexOf('.') != -1)
+                            {
+                                floatString = floatString.Replace('.', ',');
+                            }
+
+                            newActionState.Transformation.LocalRotate.Vector[j] = (float) Convert.ToDouble(floatString);
                         }
-                        
-                        newActionState.Transformation.LocalRotate.Vector[j] = (float) Convert.ToDouble(floatString);
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                localRotationVectorTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
+                        }
                     }
 
-                    newActionState.Transformation.Rotate.Angle = float.Parse(rotationAngleTextViews[i].Buffer.Text);
-                    newActionState.Transformation.Rotate.Unit = rotationUnitsComboBoxes[i].ActiveId;
+                    if (rotationAngleTextViews[i].Buffer.Text != "")
+                    {
+                        newActionState.Transformation.Rotate.Angle = float.Parse(rotationAngleTextViews[i].Buffer.Text);
+                        if (rotationUnitsComboBoxes[i].Active == 0)
+                        {
+                            newActionState.Transformation.Rotate.Unit = "rad";  
+                        }
+                        else if (rotationUnitsComboBoxes[i].Active == 1)
+                        {
+                            newActionState.Transformation.Rotate.Unit = "deg";  
+                        }
+                    }
+                    
+                    
+                    buffer[0] = rotationVectorsStartPointsTextViews[i][0].Buffer.Text;
+                    buffer[1] = rotationVectorsStartPointsTextViews[i][1].Buffer.Text;
+                    buffer[2] = rotationVectorsStartPointsTextViews[i][2].Buffer.Text;
                     
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = rotationVectorsStartPointsTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
+
+                        if (floatString != "")
                         {
-                            floatString = floatString.Replace('.', ',');
+                            if (floatString.IndexOf('.') != -1)
+                            {
+                                floatString = floatString.Replace('.', ',');
+                            }
+
+                            newActionState.Transformation.Rotate.RotationVectorStartPoint[j] =
+                                (float) Convert.ToDouble(floatString);
                         }
-                        
-                        newActionState.Transformation.Rotate.RotationVectorStartPoint[j] = (float) Convert.ToDouble(floatString);
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                rotationVectorsStartPointsTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
+                        }
                     }
 
+                    buffer[0] = rotationVectorsEndPointsTextViews[i][0].Buffer.Text;
+                    buffer[1] = rotationVectorsEndPointsTextViews[i][1].Buffer.Text;
+                    buffer[2] = rotationVectorsEndPointsTextViews[i][2].Buffer.Text;
+                    
                     for (var j = 0; j < 3; j++)
                     {
                         floatString = rotationVectorsEndPointsTextViews[i][j].Buffer.Text;
-                        if (floatString.IndexOf('.') != -1)
+
+                        if (floatString != "")
                         {
-                            floatString = floatString.Replace('.', ',');
+                            if (floatString.IndexOf('.') != -1)
+                            {
+                                floatString = floatString.Replace('.', ',');
+                            }
+
+                            newActionState.Transformation.Rotate.RotationVectorEndPoint[j] =
+                                (float) Convert.ToDouble(floatString);
                         }
-                        
-                        newActionState.Transformation.Rotate.RotationVectorEndPoint[j] = (float) Convert.ToDouble(floatString);
+                        else
+                        {
+                            int hasSymbolIndex = -1;
+                            for (var k = 0; k < 3; k++)
+                            {
+                                if (buffer[k] != "")
+                                {
+                                    hasSymbolIndex = k;
+                                    break;
+                                }
+                            }
+
+                            if (hasSymbolIndex != -1)
+                            {
+                                rotationVectorsEndPointsTextViews[i][j].Buffer.Text = buffer[hasSymbolIndex];
+                                j--;
+                            }
+                        }
                     }
 
                     newAction.States.Add(newActionState);
@@ -2038,6 +2616,7 @@ namespace MiodenusUI
                 writerNew.Close();
 
                 currentFilePath = animationPath.Text;
+                animation = maf.Read(currentFilePath);
                 animationInfoLabel.Text = animationNew.AnimationInfo.Type + ", " + animationNew.AnimationInfo.Version + ", " +
                                      animationNew.AnimationInfo.Name + ", " + animationNew.AnimationInfo.Fps + " fps, " +
                                      animationNew.AnimationInfo.FrameHeight + "x" +
